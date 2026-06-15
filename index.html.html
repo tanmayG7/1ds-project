@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1DS — Project Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #002433;
+    --blue: #1680AD;
+    --teal: #1CBED4;
+    --teal-dim: rgba(28,190,212,0.1);
+    --teal-border: rgba(28,190,212,0.25);
+    --bg: #F4F5F5;
+    --white: #ffffff;
+    --text: #131515;
+    --mid: #61686B;
+    --light: #DFE1E2;
+    --green: #39b54a;
+    --green-dim: rgba(57,181,74,0.08);
+    --green-border: rgba(57,181,74,0.25);
+    --amber: #F59E0B;
+    --amber-dim: rgba(245,158,11,0.08);
+    --amber-border: rgba(245,158,11,0.25);
+    --red: #DC2626;
+    --red-dim: rgba(220,38,38,0.08);
+    --font: 'Inter', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; }
+
+  header {
+    background: var(--navy);
+    padding: 20px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo-mark {
+    width:32px; height:32px;
+    background:var(--teal); border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; color:var(--navy);
+  }
+  .logo-name { font-size:16px; font-weight:600; color:var(--white); letter-spacing:-0.2px; }
+  .logo-name span { color:var(--teal); }
+  .header-right { text-align:right; }
+  .header-tag { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0a3d52 100%);
+    padding: 40px 56px 36px;
+    position:relative; overflow:hidden;
+  }
+  .hero::after {
+    content:''; position:absolute; top:-80px; right:-80px;
+    width:360px; height:360px;
+    background: radial-gradient(circle, rgba(28,190,212,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-label {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(28,190,212,0.12); border:1px solid var(--teal-border);
+    color:var(--teal); font-size:11px; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase;
+    padding:5px 14px; border-radius:20px; margin-bottom:14px;
+  }
+  .hero h1 { font-size:clamp(24px,3.5vw,40px); font-weight:700; letter-spacing:-0.8px; line-height:1.1; color:var(--white); margin-bottom:10px; }
+  .hero h1 em { font-style:normal; color:var(--teal); }
+  .hero p { font-size:13px; color:rgba(255,255,255,0.45); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background:var(--white);
+    border-bottom:1px solid var(--light);
+    padding:16px 56px;
+    display:flex; gap:32px; align-items:center;
+  }
+  .stat { display:flex; flex-direction:column; gap:2px; }
+  .stat-num { font-size:20px; font-weight:700; color:var(--navy); letter-spacing:-0.5px; }
+  .stat-num.green { color:var(--green); }
+  .stat-num.amber { color:var(--amber); }
+  .stat-label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--mid); }
+  .stat-divider { width:1px; height:36px; background:var(--light); }
+
+  /* TABS */
+  nav {
+    background:var(--white); border-bottom:1px solid var(--light);
+    padding:0 56px; display:flex; overflow-x:auto;
+    position:sticky; top:0; z-index:10;
+    box-shadow:0 1px 4px rgba(0,0,0,0.06);
+  }
+  .tab {
+    padding:14px 18px; font-size:12px; font-weight:600;
+    letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--mid); cursor:pointer;
+    border:none; border-bottom:2px solid transparent;
+    background:none; font-family:var(--font);
+    white-space:nowrap; transition:all 0.18s;
+  }
+  .tab:hover { color:var(--navy); }
+  .tab.active { color:var(--teal); border-bottom-color:var(--teal); }
+
+  /* SECTIONS */
+  .section { display:none; padding:40px 56px 64px; }
+  .section.active { display:block; animation:up 0.25s ease both; }
+  @keyframes up { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  .eyebrow { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--teal); margin-bottom:6px; }
+  .sec-title { font-size:clamp(20px,2.5vw,30px); font-weight:700; letter-spacing:-0.4px; color:var(--navy); margin-bottom:28px; }
+  .sec-title em { font-style:normal; color:var(--teal); }
+
+  /* TRACK HEADER */
+  .track-header {
+    font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--mid); margin-bottom:10px; margin-top:28px;
+    padding-bottom:8px; border-bottom:1px solid var(--light);
+  }
+  .track-header:first-child { margin-top:0; }
+
+  /* TASK ROWS */
+  .task {
+    background:var(--white); border:1px solid var(--light);
+    border-radius:8px; padding:14px 18px;
+    display:flex; align-items:flex-start; gap:14px;
+    margin-bottom:8px;
+    transition:border-color 0.18s;
+  }
+  .task:hover { border-color:var(--teal-border); }
+
+  .task.done { background:#fafffe; border-color:var(--green-border); }
+  .task.in-progress { background:#fffef5; border-color:var(--amber-border); }
+  .task.blocked { background:#fff8f8; border-color:rgba(220,38,38,0.2); }
+
+  .check {
+    width:20px; height:20px; border-radius:50%; flex-shrink:0; margin-top:1px;
+    display:flex; align-items:center; justify-content:center; font-size:10px;
+  }
+  .check.done { background:var(--green); color:white; }
+  .check.todo { background:var(--light); color:transparent; border:2px solid var(--light); }
+  .check.in-progress { background:var(--amber); color:white; font-size:9px; }
+  .check.blocked { background:var(--red); color:white; font-size:9px; }
+
+  .task-body { flex:1; }
+  .task-title { font-size:13px; font-weight:600; color:var(--navy); margin-bottom:3px; line-height:1.3; }
+  .task.done .task-title { color:var(--mid); }
+  .task-desc { font-size:12px; color:var(--mid); line-height:1.5; }
+
+  .badge {
+    font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    padding:2px 8px; border-radius:10px; flex-shrink:0; margin-top:2px;
+  }
+  .badge.done { background:var(--green-dim); color:#1a7a2e; border:1px solid var(--green-border); }
+  .badge.in-progress { background:var(--amber-dim); color:#92400e; border:1px solid var(--amber-border); }
+  .badge.todo { background:var(--light); color:var(--mid); }
+  .badge.blocked { background:var(--red-dim); color:var(--red); border:1px solid rgba(220,38,38,0.2); }
+
+  /* RESPONSIVE */
+  @media (max-width:860px) {
+    header, .stats-bar, nav, .section { padding-left:16px; padding-right:16px; }
+    .hero { padding:28px 16px 24px; }
+    .stats-bar { gap:16px; flex-wrap:wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">1DS</div>
+    <div class="logo-name">1Digital<span>Stack</span></div>
+  </div>
+  <div class="header-right">
+    <div class="header-tag">Marketing Infrastructure · Project Tracker</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Tanmay Garg · June 2026</div>
+  <h1>Fix the engine.<br><em>Then run it.</em></h1>
+  <p>2-month plan · CRM → Enrichment → Email → Automation → Reporting</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num green">27</div><div class="stat-label">Done</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num amber">3</div><div class="stat-label">In Progress</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num">14</div><div class="stat-label">To Do</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num" style="color:var(--navy)">10,608</div><div class="stat-label">Contacts</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num" style="color:var(--navy)">3,169</div><div class="stat-label">Companies</div></div>
+</div>
+
+<nav>
+  <button class="tab active" onclick="show(0,this)">Month 1 — Foundation</button>
+  <button class="tab" onclick="show(1,this)">Month 2 — Engine</button>
+  <button class="tab" onclick="show(2,this)">CRM Health</button>
+</nav>
+
+<!-- CRM HEALTH SNAPSHOT -->
+<section class="section" id="s2">
+  <div class="eyebrow">Live · June 15 2026</div>
+  <h2 class="sec-title">CRM <em>health snapshot</em></h2>
+
+  <style>
+    .hs-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+    .hs-stat { background:#f4f5f5; border-radius:10px; padding:14px 16px; }
+    .hs-stat .num { font-size:24px; font-weight:600; color:#002433; margin:4px 0 2px; }
+    .hs-stat .lbl { font-size:12px; color:#61686B; }
+    .hs-stat .sub { font-size:11px; color:#aaa; margin-top:2px; }
+    .hs-card { border:0.5px solid #DFE1E2; border-radius:12px; padding:16px 20px; margin-bottom:14px; }
+    .hs-card h3 { font-size:13px; font-weight:600; color:#002433; margin:0 0 14px; }
+    .bar-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+    .bar-row .name { font-size:12px; color:#61686B; }
+    .bar-row .val { font-size:12px; font-weight:600; color:#131515; min-width:40px; text-align:right; }
+    .bar-row .pct { font-size:11px; color:#aaa; margin-left:4px; }
+    .bar-wrap { width:80px; height:5px; background:#DFE1E2; border-radius:3px; margin:0 8px; }
+    .bar-fill { height:100%; border-radius:3px; }
+    .bar-row .bar-side { display:flex; align-items:center; gap:0; }
+    .flag { border-left:3px solid #ddd; padding:7px 10px; border-radius:0 8px 8px 0; margin-bottom:7px; }
+    .flag.red { border-color:#DC2626; background:#fef2f2; }
+    .flag.amber { border-color:#F59E0B; background:#fffbeb; }
+    .flag.green { border-color:#39b54a; background:#f0fdf4; }
+    .flag .ftitle { font-size:12px; font-weight:600; }
+    .flag.red .ftitle { color:#DC2626; }
+    .flag.amber .ftitle { color:#92400e; }
+    .flag.green .ftitle { color:#166534; }
+    .flag .fsub { font-size:11px; color:#61686B; margin-top:2px; }
+    .src-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .src-box { text-align:center; padding:10px; background:#f4f5f5; border-radius:8px; }
+    .src-box .snum { font-size:18px; font-weight:600; color:#002433; }
+    .src-box .slbl { font-size:11px; color:#61686B; margin-top:2px; }
+    .src-box .spct { font-size:11px; color:#aaa; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .cov-row { display:grid; grid-template-columns:1fr 1fr; gap:10px 32px; }
+  </style>
+
+  <!-- Top stats -->
+  <div class="hs-grid">
+    <div class="hs-stat">
+      <div class="lbl">Total contacts</div>
+      <div class="num">10,608</div>
+      <div class="sub">↓ from 13,197 pre-cleanup</div>
+    </div>
+    <div class="hs-stat">
+      <div class="lbl">Total companies</div>
+      <div class="num">3,169</div>
+      <div class="sub">↓ from 4,068 after dedup</div>
+    </div>
+    <div class="hs-stat">
+      <div class="lbl">Customers tagged</div>
+      <div class="num">134</div>
+      <div class="sub">companies · lifecycle = customer</div>
+    </div>
+    <div class="hs-stat">
+      <div class="lbl">Inbound (form)</div>
+      <div class="num">215</div>
+      <div class="sub">marketing contacts · organic</div>
+    </div>
+  </div>
+
+  <!-- Contact coverage -->
+  <div class="hs-card">
+    <h3>Contact field coverage</h3>
+    <div class="cov-row">
+      <div>
+        <div class="bar-row"><span class="name">Email</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:88%;background:#39b54a"></div></div><span class="val">9,352</span><span class="pct">88%</span></div></div>
+        <div class="bar-row"><span class="name">LinkedIn URL</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:79%;background:#39b54a"></div></div><span class="val">8,401</span><span class="pct">79%</span></div></div>
+        <div class="bar-row"><span class="name">Job title</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:80%;background:#39b54a"></div></div><span class="val">8,503</span><span class="pct">80%</span></div></div>
+      </div>
+      <div>
+        <div class="bar-row"><span class="name">Phone</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:26%;background:#F59E0B"></div></div><span class="val">2,787</span><span class="pct">26%</span></div></div>
+        <div class="bar-row"><span class="name">Company linked</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:94%;background:#39b54a"></div></div><span class="val">9,941</span><span class="pct">94%</span></div></div>
+        <div class="bar-row"><span class="name">No email · have LinkedIn</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:12%;background:#DC2626"></div></div><span class="val">1,256</span><span class="pct">12%</span></div></div>
+      </div>
+    </div>
+    <div class="flag green" style="margin-top:12px"><div class="ftitle">Job title missing (have LinkedIn): only 14</div><div class="fsub">Down from 692 — enrichment working</div></div>
+  </div>
+
+  <!-- Company coverage -->
+  <div class="hs-card">
+    <h3>Company field coverage</h3>
+    <div class="cov-row">
+      <div>
+        <div class="bar-row"><span class="name">Domain</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:94%;background:#39b54a"></div></div><span class="val">2,971</span><span class="pct">94%</span></div></div>
+        <div class="bar-row"><span class="name">LinkedIn page</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:52%;background:#F59E0B"></div></div><span class="val">1,644</span><span class="pct">52%</span></div></div>
+        <div class="bar-row"><span class="name">Multi category</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:27%;background:#F59E0B"></div></div><span class="val">862</span><span class="pct">27%</span></div></div>
+      </div>
+      <div>
+        <div class="bar-row"><span class="name">Parent company</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:20%;background:#F59E0B"></div></div><span class="val">621</span><span class="pct">20%</span></div></div>
+        <div class="bar-row"><span class="name">Annual revenue</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:16%;background:#DC2626"></div></div><span class="val">516</span><span class="pct">16%</span></div></div>
+        <div class="bar-row"><span class="name">2+ contacts</span><div class="bar-side"><div class="bar-wrap"><div class="bar-fill" style="width:40%;background:#39b54a"></div></div><span class="val">1,265</span><span class="pct">40%</span></div></div>
+      </div>
+    </div>
+    <div class="flag red" style="margin-top:12px"><div class="ftitle">529 orphan companies · 0 contacts</div><div class="fsub">Candidates for deletion or enrichment</div></div>
+  </div>
+
+  <!-- Action flags + Top companies -->
+  <div class="two-col">
+
+    <div class="hs-card">
+      <h3>Top companies by contacts</h3>
+      <div class="bar-row"><span class="name">ITC Limited</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:100%;background:#39b54a"></div></div><span class="val">202</span></div></div>
+      <div class="bar-row"><span class="name">Coca-Cola</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:49%;background:#39b54a"></div></div><span class="val">99</span></div></div>
+      <div class="bar-row"><span class="name">Kenvue</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:41%;background:#1680AD"></div></div><span class="val">83</span></div></div>
+      <div class="bar-row"><span class="name">Zomato</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:37%;background:#1680AD"></div></div><span class="val">74</span></div></div>
+      <div class="bar-row"><span class="name">Tata Consumer</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:33%;background:#1680AD"></div></div><span class="val">66</span></div></div>
+      <div class="bar-row"><span class="name">Beiersdorf</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:33%;background:#1680AD"></div></div><span class="val">66</span></div></div>
+      <div class="bar-row"><span class="name">P&amp;G</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:31%;background:#1680AD"></div></div><span class="val">62</span></div></div>
+      <div class="bar-row"><span class="name">Abbott</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:27%;background:#1680AD"></div></div><span class="val">54</span></div></div>
+      <div class="bar-row"><span class="name">Reckitt Benckiser</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:27%;background:#1680AD"></div></div><span class="val">54</span></div></div>
+      <div class="bar-row"><span class="name">Foxtale</span><div class="bar-side"><div class="bar-wrap" style="width:100px"><div class="bar-fill" style="width:26%;background:#1680AD"></div></div><span class="val">52</span></div></div>
+      <div style="font-size:11px;color:#aaa;margin-top:8px">green = customer · blue = lead</div>
+    </div>
+
+    <div class="hs-card">
+      <h3>Action flags</h3>
+      <div class="flag red"><div class="ftitle">667 contacts unlinked</div><div class="fsub">No company association — run fresh matching</div></div>
+      <div class="flag red"><div class="ftitle">1,256 no email · have LinkedIn</div><div class="fsub">Highest enrichment priority — give to Prakhar</div></div>
+      <div class="flag amber"><div class="ftitle">1,525 companies missing LinkedIn</div><div class="fsub">Was 2,200+ at start — external enrichment needed</div></div>
+      <div class="flag amber"><div class="ftitle">529 orphan companies</div><div class="fsub">Zero contacts — review for deletion</div></div>
+      <div class="flag amber"><div class="ftitle">Kenvue, Tata, Reckitt marked Lead</div><div class="fsub">High-contact clients — check if should be Customer</div></div>
+      <div class="flag amber"><div class="ftitle">22 customer companies · 0 contacts</div><div class="fsub">Clients with no people linked — needs association</div></div>
+      <div class="flag green"><div class="ftitle">94% contacts linked to company</div><div class="fsub">Up from 70% at start of migration</div></div>
+    </div>
+
+  </div>
+
+  <!-- Source breakdown -->
+  <div class="hs-card">
+    <h3>Contact sources</h3>
+    <div class="src-grid">
+      <div class="src-box"><div class="snum">10,416</div><div class="slbl">Offline / import</div><div class="spct">98%</div></div>
+      <div class="src-box"><div class="snum">148</div><div class="slbl">Organic social</div><div class="spct">1.4%</div></div>
+      <div class="src-box"><div class="snum">36</div><div class="slbl">Direct traffic</div><div class="spct">0.3%</div></div>
+      <div class="src-box"><div class="snum">8</div><div class="slbl">Organic search</div><div class="spct">0.1%</div></div>
+    </div>
+  </div>
+
+</section>
+<section class="section active" id="s0">
+  <div class="eyebrow">Month 1</div>
+  <h2 class="sec-title">Fix the <em>foundation</em></h2>
+
+  <!-- TRACK 1: CRM -->
+  <div class="track-header">Track 1 — CRM Cleanup & Migration</div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Zoho → HubSpot migration</div>
+      <div class="task-desc">7,614 Zoho leads cleaned and imported. 1,572 companies created. Custom properties set up: Lead Source Campaign, Zoho Sector, Zoho Pipeline Text, Zoho Geography.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Multi-source data consolidation</div>
+      <div class="task-desc">8 data sources imported: Sprouts India (4,472), Zepto brand mapping (643 companies), Devi's connections (540), Fresh enrichment (2,599), Relevant contacts (2,242), India Accounts (508 companies), Brand-parent mapping (416 companies).</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company category enrichment</div>
+      <div class="task-desc">643 companies mapped to Zepto categories. 508 companies updated with Amazon/Qcom revenue data. Category, Sub Category, Category Data Source properties live.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Contact → Company associations</div>
+      <div class="task-desc">3,157 no-email contacts linked to their companies via Record ID import. 70.5% → ~95%+ contacts now linked.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company enrichment (domain, LinkedIn, employees)</div>
+      <div class="task-desc">138 companies enriched with domain + social links (Devi's connections). 416 companies enriched with website, LinkedIn, employee count, Amazon rank.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Parent company mapping</div>
+      <div class="task-desc">605 companies have Parent Company Name filled. 104 company-to-company associations built via Record ID — pending Professional upgrade to activate.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Lifecycle Stage — Customer tagging</div>
+      <div class="task-desc">508 accounts from Qcom/Amazon list tagged as Lifecycle Stage = Customer.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Duplicate contact cleanup</div>
+      <div class="task-desc">Full deduplication run on 13,197 contacts. Found 603 duplicate name+company groups (3,033 contacts). Merged unique data from duplicates into primary records (125 updates, 61+64 in two passes). Deleted 2,430 duplicates via HubSpot segment. Net: 13,197 → 10,767 contacts. Phone numbers in scientific notation also fixed during pass.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Suspect duplicate cleanup (cross-source)</div>
+      <div class="task-desc">1,389 suspected duplicates analysed. 137 confirmed via LinkedIn URL + name+company matching. 113 primary records enriched before deletion. 137 duplicates deleted.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company data enrichment — LinkedIn, domain, Sub Category V2</div>
+      <div class="task-desc">15 company LinkedIn pages updated. 195 domain corrections applied. Sub Category V2 (multi-select, 50 options) created and populated for 711 companies from brand mapping, 384 from Sub Category migration, 461 from Category migration. 956 companies with Multi Category property after fuzzy review. Company-to-company: 566 parent-child associations imported.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Contact → Company association fix (unlinked contacts)</div>
+      <div class="task-desc">984 contacts had no company association. 248 linked via exact+fuzzy name matching (domain-based import). 64 junk contacts (gmail, no LinkedIn, no company) deleted. 672 remain unlinked — companies don't exist in HubSpot yet.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Fresh Enrichments 2026 + Sprouts QC2 import</div>
+      <div class="task-desc">119 new contacts added (109 Fresh + 10 Sprouts). 2,312 existing contacts updated with job title, phone, company domain, company LinkedIn — don't-overwrite applied throughout.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task in-progress">
+    <div class="check in-progress">→</div>
+    <div class="task-body">
+      <div class="task-title">LinkedIn URL enrichment</div>
+      <div class="task-desc">2,146 contacts still missing LinkedIn. Job title enrichment run completed — 678 contacts updated. Email enrichment for 1,256 LinkedIn-only contacts in progress.</div>
+    </div>
+    <div class="badge in-progress">In Progress</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company deduplication — rounds 2 & 3</div>
+      <div class="task-desc">354 duplicate pairs in round 1 (high + review). Round 2: 93 pairs found, 71 confirmed merges (including 5 merge-opposites). Primary records enriched, contacts reassociated, duplicates tagged and deleted. Company count reduced from 3,447 to ~3,150.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company LinkedIn enrichment — deep pass</div>
+      <div class="task-desc">416 companies from sheet matching + 164 combined (deep search + manual verified for ITC, Zomato, Samsung, Blinkit, L'Oréal etc.) + 260 from contact consensus aggregation. Company LinkedIn grew from 987 → ~1,700. 95 wrong LinkedIn values cleared.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Multi Category property — full build</div>
+      <div class="task-desc">New multi-select property created with 50 options. 956 companies tagged from brand mapping + Zepto 316→50 mapping + Sub Category migration. Multi-category use case enabled: contacts surface in all their company's category filters.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">13 active enrichment lists built in HubSpot</div>
+      <div class="task-desc">6 company lists (missing LinkedIn, revenue, category, domain, parent, zero contacts) + 5 contact lists (missing LinkedIn, email, job title, phone, no association) + 2 operational lists (to_delete, low quality). CSVs also exported for offline enrichment.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Website report download leads mapped + MQL analysis</div>
+      <div class="task-desc">187 leads mapped to HubSpot Record IDs. 139 unique contacts, 3 internal removed, 22 trash removed. 85 net MQLs identified (72 corporate + 13 FMCG). HubSpot segment created with clean 120-contact list.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Brand_Parent_V0 company enrichment</div>
+      <div class="task-desc">435 companies enriched with LinkedIn, domain, revenue, employees, parent from high-quality human-verified brand mapping sheet.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Company-company associations (native HubSpot)</div>
+      <div class="task-desc">566 parent-child associations imported via Marketing Hub. Parent-child mapping file built from 4 sources. 575 brand-to-parent links live. 2,840 top-level parent companies identified.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Upgrade HubSpot to Professional</div>
+      <div class="task-desc">Unlocks native parent-child hierarchy, company associations, and advanced reporting. Email Poornima re: 1-year contract.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Fix 2,305 phone formatting issues</div>
+      <div class="task-desc">HubSpot flagged phone numbers across multiple imports. Needs cleanup pass.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Import 424 unverified "Our Client" brands</div>
+      <div class="task-desc">From India Accounts Qcom/Amazon file. Pending verification with Devi/Sakshi before importing.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Create enrichment lists in HubSpot</div>
+      <div class="task-desc">13 active lists created: 6 company-level + 5 contact-level + 2 operational. All auto-updating. CSVs exported for offline enrichment runs.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <!-- TRACK 2: ENRICHMENT -->
+  <div class="track-header">Track 2 — Data Enrichment Pipeline</div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">Phone number enrichment + cleaning</div>
+      <div class="task-desc">Scientific notation fixed, +91 stripped, mobile > work priority consolidation across all imports.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task in-progress">
+    <div class="check in-progress">→</div>
+    <div class="task-body">
+      <div class="task-title">Email enrichment for no-email contacts</div>
+      <div class="task-desc">3,743 no-email contacts need enrichment. LinkedIn-based lookup underway. 508 emails recovered so far from enrichment sheet.</div>
+    </div>
+    <div class="badge in-progress">In Progress</div>
+  </div>
+
+  <div class="task in-progress">
+    <div class="check in-progress">→</div>
+    <div class="task-body">
+      <div class="task-title">Create missing company records for 672 unlinked contacts</div>
+      <div class="task-desc">672 contacts whose company names don't exist as HubSpot Company records. Need to create companies enriched with domain, LinkedIn, Multi Category before association can be made.</div>
+    </div>
+    <div class="badge in-progress">In Progress</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">ICP scoring model</div>
+      <div class="task-desc">Define and build tiers in HubSpot: company size, seniority, category, region. Every contact looks the same right now — this fixes that.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Target lists — SEA, MENA, EU, US</div>
+      <div class="task-desc">India data consolidated. Now need to crawl and map company domains → LinkedIn profiles for other regions and load into Sprouts.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <!-- TRACK 3: EMAIL -->
+  <div class="track-header">Track 3 — Email Infrastructure</div>
+
+  <div class="task done">
+    <div class="check done">✓</div>
+    <div class="task-body">
+      <div class="task-title">SPF / DKIM / DMARC audit</div>
+      <div class="task-desc">Audited via MXToolkit. Call with Vivek to understand current setup. All sending domains reviewed.</div>
+    </div>
+    <div class="badge done">Done</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Domain warmup strategy + ramp</div>
+      <div class="task-desc">Define warmup plan across 8-9 accounts. Target: 200–250 emails/day by end of month. Currently warming without a documented strategy.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Sprouts sequences rebuild</div>
+      <div class="task-desc">Current sequences misconfigured. Rebuild structure and sending logic from scratch with correct personalisation and cadence.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Sprouts → HubSpot sync + lead assignment</div>
+      <div class="task-desc">Bi-directional sync setup. Lead assignment rules built for Devi and Sakshi. Qualified leads routed automatically.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Waalaxy + n8n LinkedIn outreach setup</div>
+      <div class="task-desc">LinkedIn outreach configured via Waalaxy with n8n automation. ICP sequences targeting brand leads, ecommerce heads, CFOs, category managers.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+</section>
+
+<!-- MONTH 2 -->
+<section class="section" id="s1">
+  <div class="eyebrow">Month 2</div>
+  <h2 class="sec-title">Build the <em>engine</em></h2>
+
+  <div class="track-header">Track 4 — Campaigns & Outbound</div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">First segmented email campaign live</div>
+      <div class="task-desc">India ICP tier 1, structured + tracked. A/B tested. Reporting built from day one. Central tool (Mailchimp/Mailmodo/Instantly) confirmed.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">High-volume email campaign tool setup</div>
+      <div class="task-desc">Sprouts has sending limits. Dedicated tool (SendGrid / Instantly) needed for scaled outbound at 200+ emails/day.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="track-header">Track 5 — Tracking & Automation</div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">GTM setup on 1digitalstack.ai</div>
+      <div class="task-desc">Track demo requests, content downloads, key page visits. Feed into HubSpot automatically. Marketing landing pages connected with trigger-based automations.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Slack lead alerts</div>
+      <div class="task-desc">Real-time Slack notifications when qualified leads come in. Devi and Sakshi notified instantly. No more manually checking Sprouts/HubSpot.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="track-header">Track 6 — Reporting & Handover</div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Reporting dashboard</div>
+      <div class="task-desc">One view: pipeline health, outreach metrics, campaign performance, lead source attribution. Built in HubSpot or connected BI tool. Auto-updated.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+  <div class="task">
+    <div class="check todo"></div>
+    <div class="task-body">
+      <div class="task-title">Full stack documentation + Tanya handover</div>
+      <div class="task-desc">Every tool, workflow, and automation documented. Tanya trained on each workflow. Clean handover so she can maintain and build on it.</div>
+    </div>
+    <div class="badge todo">To Do</div>
+  </div>
+
+</section>
+
+<script>
+  function show(i, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('s'+i).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: document.querySelector('nav').offsetTop - 10, behavior:'smooth' });
+  }
+</script>
+</body>
+</html>
