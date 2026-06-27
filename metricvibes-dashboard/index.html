@@ -41,45 +41,25 @@
 
 <script>
 const SHEET_ID = "1VDJPQkPjAbPAKYt7UUrxithyVyOUZspEpT9pAUQfE64";
+const API_KEY = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
 
-function csvUrl(tab) {
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
-}
-
-// Minimal CSV parser handling quoted fields
-function parseCSV(text) {
-  const rows = [];
-  let row = [], field = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], next = text[i + 1];
-    if (inQuotes) {
-      if (c === '"' && next === '"') { field += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else { field += c; }
-    } else {
-      if (c === '"') { inQuotes = true; }
-      else if (c === ',') { row.push(field); field = ""; }
-      else if (c === '\n' || c === '\r') {
-        if (c === '\r' && next === '\n') continue;
-        row.push(field); rows.push(row); row = []; field = "";
-      } else { field += c; }
-    }
-  }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
-  return rows.filter(r => r.length > 1 || r[0] !== "");
+// Uses the Sheets API v4 directly (not gviz/CSV export), so results are always
+// the full raw data regardless of any filter applied on the sheet.
+function valuesUrl(tab) {
+  return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
 }
 
 async function fetchTab(tab) {
   try {
-    const resp = await fetch(csvUrl(tab));
+    const resp = await fetch(valuesUrl(tab));
     if (!resp.ok) return { headers: [], rows: [] };
-    const text = await resp.text();
-    const parsed = parseCSV(text);
-    if (!parsed.length) return { headers: [], rows: [] };
-    const headers = parsed[0].map(h => h.toLowerCase().trim());
-    const rows = parsed.slice(1).map(r => {
+    const data = await resp.json();
+    const values = data.values || [];
+    if (!values.length) return { headers: [], rows: [] };
+    const headers = values[0].map(h => (h || "").toLowerCase().trim());
+    const rows = values.slice(1).map(r => {
       const obj = {};
-      headers.forEach((h, i) => obj[h] = (r[i] || "").trim());
+      headers.forEach((h, i) => obj[h] = (r[i] || "").toString().trim());
       return obj;
     });
     return { headers, rows };
