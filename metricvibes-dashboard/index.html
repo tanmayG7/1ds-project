@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Outreach Master Dashboard</title>
+<style>
+  body { margin:0; padding:32px; background:#f0eff5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
+  .wrap { max-width:920px; margin:0 auto; }
+  h1 { font-size:22px; color:#191919; margin-bottom:4px; }
+  .updated { font-size:13px; color:#6b7280; margin-bottom:24px; }
+  .summary { display:flex; gap:12px; margin-bottom:28px; }
+  .summary-card { flex:1; border-radius:10px; padding:18px 20px; color:#fff; }
+  .summary-card p:first-child { margin:0 0 4px; font-size:11px; opacity:0.7; text-transform:uppercase; }
+  .summary-card p:last-child { margin:0; font-size:22px; font-weight:700; }
+  h2 { font-size:17px; color:#191919; margin:0 0 12px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+  .card { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:20px; }
+  .card h3 { margin:0 0 2px; font-size:15px; color:#191919; }
+  .card .sub { margin:0 0 12px; font-size:12px; color:#6b7280; }
+  .bar-bg { background:#f3f4f6; border-radius:6px; height:8px; overflow:hidden; margin-bottom:6px; }
+  .bar-fill { height:8px; }
+  .pct-label { margin:0 0 12px; font-size:11px; color:#6b7280; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  td { padding:3px 0; }
+  .loading { color:#6b7280; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Outreach Master Dashboard</h1>
+  <p class="updated" id="updated">Loading live data...</p>
+
+  <div class="summary" id="summary"></div>
+
+  <h2>Email Outreach</h2>
+  <div class="grid" id="emailGrid"><p class="loading">Loading...</p></div>
+
+  <h2>LinkedIn Outreach</h2>
+  <div class="grid" id="liGrid"><p class="loading">Loading...</p></div>
+</div>
+
+<script>
+const SHEET_ID = "1VDJPQkPjAbPAKYt7UUrxithyVyOUZspEpT9pAUQfE64";
+
+function csvUrl(tab) {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
+}
+
+// Minimal CSV parser handling quoted fields
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i + 1];
+    if (inQuotes) {
+      if (c === '"' && next === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else {
+      if (c === '"') { inQuotes = true; }
+      else if (c === ',') { row.push(field); field = ""; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && next === '\n') continue;
+        row.push(field); rows.push(row); row = []; field = "";
+      } else { field += c; }
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.length > 1 || r[0] !== "");
+}
+
+async function fetchTab(tab) {
+  try {
+    const resp = await fetch(csvUrl(tab));
+    if (!resp.ok) return { headers: [], rows: [] };
+    const text = await resp.text();
+    const parsed = parseCSV(text);
+    if (!parsed.length) return { headers: [], rows: [] };
+    const headers = parsed[0].map(h => h.toLowerCase().trim());
+    const rows = parsed.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] || "").trim());
+      return obj;
+    });
+    return { headers, rows };
+  } catch (e) {
+    console.error("Failed to fetch tab", tab, e);
+    return { headers: [], rows: [] };
+  }
+}
+
+function emailStats(rows, name, sender) {
+  const total = rows.length;
+  const sent = rows.filter(r => (r.status || "").toLowerCase() === "sent");
+  const bounced = rows.filter(r => (r.status || "").toLowerCase() === "bounced");
+  const moved = rows.filter(r => (r.status || "").toLowerCase() === "moved");
+  const failed = rows.filter(r => (r.status || "").toLowerCase().startsWith("failed"));
+  const pending = total - sent.length - bounced.length - moved.length - failed.length;
+  const replied = rows.filter(r => (r.replied || "").toLowerCase() === "yes");
+  const opened = rows.filter(r => (r.opened || "").toLowerCase() === "yes");
+  const replyRate = sent.length ? (replied.length / sent.length * 100) : 0;
+  const openRate = sent.length ? (opened.length / sent.length * 100) : 0;
+  return { name, sender, total, sent: sent.length, bounced: bounced.length, pending,
+           replied: replied.length, replyRate, opened: opened.length, openRate };
+}
+
+function emailCard(r) {
+  const pct = r.total ? (r.sent / r.total * 100) : 0;
+  return `
+  <div class="card">
+    <h3>${r.name}</h3>
+    <p class="sub">${r.sender}</p>
+    <div class="bar-bg"><div class="bar-fill" style="background:#3d1472;width:${pct.toFixed(0)}%;"></div></div>
+    <p class="pct-label">${r.sent} of ${r.total} sent (${pct.toFixed(0)}%)</p>
+    <table>
+      <tr><td style="color:#6b7280;">Bounced</td><td style="text-align:right;color:#da1c4b;">${r.bounced}</td></tr>
+      <tr><td style="color:#6b7280;">Pending</td><td style="text-align:right;">${r.pending}</td></tr>
+      <tr><td style="color:#6b7280;">Opened</td><td style="text-align:right;color:#5a2ba0;">${r.opened} (${r.openRate.toFixed(0)}%)</td></tr>
+      <tr><td style="color:#6b7280;font-weight:600;">Replied</td><td style="text-align:right;font-weight:700;color:#3d1472;">${r.replied} (${r.replyRate.toFixed(0)}%)</td></tr>
+    </table>
+  </div>`;
+}
+
+function normalizeLiStatus(raw) {
+  const s = (raw || "").toLowerCase().trim();
+  if (!s) return "Not started";
+  if (s.includes("not right") || s.includes("duplicate")) return "Excluded";
+  if (s.includes("dm sent") || s.includes("first message")) return "First Message Sent";
+  if (s.includes("replied")) return "Replied";
+  if (s.includes("demo")) return "Demo Booked";
+  if (s.includes("request") || s.includes("connection")) return "Connection Request Sent";
+  return "Other";
+}
+
+function tierOf(row) {
+  const t = (row["priority tier"] || "").toLowerCase();
+  if (t.includes("tier 1")) return "T1";
+  if (t.includes("tier 2")) return "T2";
+  if (t.includes("tier 3")) return "T3";
+  return "unknown";
+}
+
+const STAGE_ORDER = ["Not started", "Connection Request Sent", "First Message Sent", "Replied", "Demo Booked", "Excluded", "Other"];
+
+function liCard(name, rows) {
+  const stages = {};
+  rows.forEach(r => {
+    const s = normalizeLiStatus(r["outreach status"]);
+    stages[s] = (stages[s] || 0) + 1;
+  });
+  const total = rows.length;
+  const excluded = stages["Excluded"] || 0;
+  const active = total - excluded;
+  const contacted = Object.entries(stages).reduce((sum, [k, v]) => (k !== "Not started" && k !== "Excluded") ? sum + v : sum, 0);
+  const pct = active ? (contacted / active * 100) : 0;
+  const rowsHtml = STAGE_ORDER.filter(s => stages[s] !== undefined)
+    .map(s => `<tr><td style="color:#6b7280;">${s}</td><td style="text-align:right;">${stages[s]}</td></tr>`).join("");
+  return { html: `
+  <div class="card">
+    <h3>${name}</h3>
+    <div class="bar-bg"><div class="bar-fill" style="background:#0a66c2;width:${pct.toFixed(0)}%;"></div></div>
+    <p class="pct-label">${contacted} of ${active} active contacted (${pct.toFixed(0)}%)</p>
+    <table>${rowsHtml}</table>
+  </div>`, contacted };
+}
+
+async function load() {
+  const [test, anujT1, aiTanmay, aiAnuj, liData] = await Promise.all([
+    fetchTab("Test_Campaign"),
+    fetchTab("Anuj_T1_Campaign"),
+    fetchTab("AI_Campaign_Tanmay"),
+    fetchTab("AI_Campaign_Anuj"),
+    fetchTab("QS_Intelligence_Outreach_Enriched"),
+  ]);
+
+  const emailCampaigns = [
+    emailStats(test.rows, "QSIntelligence — Tier 2/3", "Tanmay Garg"),
+    emailStats(anujT1.rows, "QSIntelligence — Tier 1", "Anuj Bansal"),
+    emailStats(aiTanmay.rows, "AI Implementation — batch 2", "Tanmay Garg"),
+    emailStats(aiAnuj.rows, "AI Implementation — batch 1", "Anuj Bansal"),
+  ];
+  document.getElementById("emailGrid").innerHTML = emailCampaigns.map(emailCard).join("");
+
+  const anujRows = liData.rows.filter(r => tierOf(r) === "T1");
+  const tanmayRows = liData.rows.filter(r => ["T2", "T3"].includes(tierOf(r)));
+  const anujLi = liCard("Anuj (T1)", anujRows);
+  const tanmayLi = liCard("Tanmay (T2+T3)", tanmayRows);
+  document.getElementById("liGrid").innerHTML = anujLi.html + tanmayLi.html;
+
+  const totalEmailSent = emailCampaigns.reduce((s, c) => s + c.sent, 0);
+  const totalEmailReplied = emailCampaigns.reduce((s, c) => s + c.replied, 0);
+  const totalLiContacted = anujLi.contacted + tanmayLi.contacted;
+
+  document.getElementById("summary").innerHTML = `
+    <div class="summary-card" style="background:#3d1472;">
+      <p>Email</p><p>${totalEmailSent} sent &middot; ${totalEmailReplied} replied</p>
+    </div>
+    <div class="summary-card" style="background:#0a66c2;">
+      <p>LinkedIn</p><p>${totalLiContacted} contacted</p>
+    </div>`;
+
+  document.getElementById("updated").textContent = "Last loaded: " + new Date().toLocaleString();
+}
+
+load();
+</script>
+</body>
+</html>
