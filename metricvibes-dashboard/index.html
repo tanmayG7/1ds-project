@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <title>Outreach Master Dashboard</title>
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
   body { margin:0; padding:32px; background:#f0eff5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
-  .wrap { max-width:920px; margin:0 auto; }
+  .wrap { max-width:960px; margin:0 auto; }
   h1 { font-size:22px; color:#191919; margin-bottom:4px; }
   .updated { font-size:13px; color:#6b7280; margin-bottom:24px; }
   .summary { display:flex; gap:12px; margin-bottom:28px; }
@@ -23,18 +24,58 @@
   table { width:100%; border-collapse:collapse; font-size:12px; }
   td { padding:3px 0; }
   .loading { color:#6b7280; font-size:13px; }
-  .pipeline-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:28px; }
-  .pipeline-table th { background:#3d1472; color:#fff; padding:8px 10px; text-align:left; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
-  .pipeline-table td { padding:8px 10px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
-  .pipeline-table tr:last-child td { border-bottom:none; }
-  .pipeline-table tr:hover td { background:#f9f8ff; }
-  .stage-badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:600; }
-  .stage-negotiation { background:#fef3c7; color:#92400e; }
-  .stage-proposal { background:#dbeafe; color:#1e40af; }
-  .stage-demo { background:#d1fae5; color:#065f46; }
+
+  /* Pipeline */
+  .pipeline-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .pill-tabs { display:flex; background:#e9e7f0; border-radius:8px; padding:3px; gap:2px; }
+  .pill-tab { padding:5px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none; background:transparent; color:#6b7280; transition:all .15s; }
+  .pill-tab.active { background:#fff; color:#3d1472; box-shadow:0 1px 3px rgba(0,0,0,.12); }
+  .filter-select { padding:5px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:12px; color:#374151; background:#fff; cursor:pointer; }
+  .pipeline-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:28px; background:#fff; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden; }
+  .pipeline-table th { background:#3d1472; color:#fff; padding:9px 12px; text-align:left; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .pipeline-table td { padding:9px 12px; border-bottom:1px solid #f3f4f6; vertical-align:middle; }
+  .pipeline-table tbody tr:last-child td { border-bottom:none; }
+  .pipeline-table tbody tr:hover td { background:#faf9ff; }
+  .stage-badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:10px; font-weight:600; white-space:nowrap; }
+  .stage-negotiation    { background:#fef3c7; color:#92400e; }
+  .stage-proposal       { background:#dbeafe; color:#1e40af; }
+  .stage-demo           { background:#d1fae5; color:#065f46; }
   .stage-discovery-done { background:#ede9fe; color:#5b21b6; }
-  .stage-discovery-sched { background:#f3f4f6; color:#374151; }
-  .stage-winback { background:#fee2e2; color:#991b1b; }
+  .stage-discovery-sched{ background:#f3f4f6; color:#374151; }
+  .stage-winback        { background:#fee2e2; color:#991b1b; }
+  .stage-closed-won     { background:#dcfce7; color:#14532d; }
+  .stage-closed-lost    { background:#f1f5f9; color:#64748b; }
+  .edit-btn { background:none; border:1px solid #d1d5db; border-radius:6px; padding:3px 8px; cursor:pointer; font-size:11px; color:#6b7280; transition:all .15s; }
+  .edit-btn:hover { border-color:#3d1472; color:#3d1472; background:#faf9ff; }
+  .setup-banner { background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:12px 16px; font-size:12px; color:#856404; margin-bottom:14px; }
+  .setup-banner a { color:#856404; font-weight:600; }
+
+  /* Edit Modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:#fff; border-radius:14px; padding:28px; width:100%; max-width:500px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+  .modal h3 { margin:0 0 20px; font-size:17px; color:#191919; }
+  .form-row { margin-bottom:14px; }
+  .form-row label { display:block; font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+  .form-row input, .form-row select, .form-row textarea { width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; color:#191919; font-family:inherit; outline:none; transition:border .15s; }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color:#3d1472; }
+  .form-row textarea { height:72px; resize:vertical; }
+  .archive-row { display:flex; align-items:center; gap:10px; padding:10px 12px; background:#fff8f8; border:1px solid #fecaca; border-radius:8px; margin-bottom:14px; }
+  .archive-row input[type=checkbox] { width:16px; height:16px; cursor:pointer; accent-color:#dc2626; }
+  .archive-row label { font-size:13px; color:#dc2626; font-weight:600; cursor:pointer; margin:0; }
+  .modal-actions { display:flex; gap:10px; margin-top:6px; }
+  .btn-primary { flex:1; padding:10px; background:#3d1472; color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:background .15s; }
+  .btn-primary:hover { background:#2d0f56; }
+  .btn-primary:disabled { background:#9ca3af; cursor:not-allowed; }
+  .btn-cancel { padding:10px 20px; background:#f3f4f6; color:#374151; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+  .btn-cancel:hover { background:#e5e7eb; }
+  .save-status { font-size:12px; margin-top:8px; text-align:center; height:16px; }
+  .save-ok   { color:#065f46; }
+  .save-err  { color:#dc2626; }
+
+  /* Toast */
+  .toast { position:fixed; bottom:24px; right:24px; background:#191919; color:#fff; padding:10px 18px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:2000; }
+  .toast.show { opacity:1; }
 </style>
 </head>
 <body>
@@ -51,15 +92,78 @@
   <div class="grid" id="liGrid"><p class="loading">Loading...</p></div>
 
   <h2>Sales Pipeline</h2>
-  <div id="pipelineWrap"><p class="loading">Loading...</p></div>
+  <div id="pipelineSection"></div>
 </div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Edit Deal</h3>
+    <div class="form-row">
+      <label>Stage</label>
+      <select id="fStage">
+        <option>Discovery Scheduled</option>
+        <option>Discovery Done</option>
+        <option>Demo Done</option>
+        <option>Proposal Sent</option>
+        <option>Negotiation</option>
+        <option>Win Back</option>
+        <option>Closed Won</option>
+        <option>Closed Lost</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Owner</label>
+      <select id="fOwner">
+        <option>Tanmay</option>
+        <option>Anuj</option>
+        <option>Both</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Primary Contact</label>
+      <input type="text" id="fContact" placeholder="Name">
+    </div>
+    <div class="form-row">
+      <label>Contact Email</label>
+      <input type="email" id="fEmail" placeholder="email@company.com">
+    </div>
+    <div class="form-row">
+      <label>Next Action</label>
+      <input type="text" id="fNextAction" placeholder="What needs to happen next">
+    </div>
+    <div class="form-row">
+      <label>Action Owner</label>
+      <input type="text" id="fNextOwner" placeholder="Who does it">
+    </div>
+    <div class="form-row">
+      <label>Notes</label>
+      <textarea id="fNotes" placeholder="Context, links, anything relevant"></textarea>
+    </div>
+    <div class="archive-row">
+      <input type="checkbox" id="fArchived">
+      <label for="fArchived">Archive this deal (hide from active view)</label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="saveBtn" onclick="saveDeal()">Save</button>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const SHEET_ID = "1VDJPQkPjAbPAKYt7UUrxithyVyOUZspEpT9pAUQfE64";
-const API_KEY = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
+const API_KEY  = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
 
-// Uses the Sheets API v4 directly (not gviz/CSV export), so results are always
-// the full raw data regardless of any filter applied on the sheet.
+// Paste your Apps Script Web App URL here after deploying pipeline_api.gs
+// Instructions: D:\Project Email Auto\deploy_to_anuj\pipeline_api.gs
+const PIPELINE_API_URL = "";
+
+// ── Sheets fetch ─────────────────────────────────────────────────────────────
+
 function valuesUrl(tab) {
   return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
 }
@@ -79,22 +183,24 @@ async function fetchTab(tab) {
     });
     return { headers, rows };
   } catch (e) {
-    console.error("Failed to fetch tab", tab, e);
+    console.error("fetchTab failed:", tab, e);
     return { headers: [], rows: [] };
   }
 }
 
+// ── Email section ─────────────────────────────────────────────────────────────
+
 function emailStats(rows, name, sender) {
-  const total = rows.length;
-  const sent = rows.filter(r => (r.status || "").toLowerCase() === "sent");
+  const total   = rows.length;
+  const sent    = rows.filter(r => (r.status || "").toLowerCase() === "sent");
   const bounced = rows.filter(r => (r.status || "").toLowerCase() === "bounced");
-  const moved = rows.filter(r => (r.status || "").toLowerCase() === "moved");
-  const failed = rows.filter(r => (r.status || "").toLowerCase().startsWith("failed"));
+  const moved   = rows.filter(r => (r.status || "").toLowerCase() === "moved");
+  const failed  = rows.filter(r => (r.status || "").toLowerCase().startsWith("failed"));
   const pending = total - sent.length - bounced.length - moved.length - failed.length;
   const replied = rows.filter(r => (r.replied || "").toLowerCase() === "yes");
-  const opened = rows.filter(r => (r.opened || "").toLowerCase() === "yes");
+  const opened  = rows.filter(r => (r.opened  || "").toLowerCase() === "yes");
   const replyRate = sent.length ? (replied.length / sent.length * 100) : 0;
-  const openRate = sent.length ? (opened.length / sent.length * 100) : 0;
+  const openRate  = sent.length ? (opened.length  / sent.length * 100) : 0;
   return { name, sender, total, sent: sent.length, bounced: bounced.length, pending,
            replied: replied.length, replyRate, opened: opened.length, openRate };
 }
@@ -105,16 +211,18 @@ function emailCard(r) {
   <div class="card">
     <h3>${r.name}</h3>
     <p class="sub">${r.sender}</p>
-    <div class="bar-bg"><div class="bar-fill" style="background:#3d1472;width:${pct.toFixed(0)}%;"></div></div>
+    <div class="bar-bg"><div class="bar-fill" style="background:#3d1472;width:${pct.toFixed(0)}%"></div></div>
     <p class="pct-label">${r.sent} of ${r.total} sent (${pct.toFixed(0)}%)</p>
     <table>
-      <tr><td style="color:#6b7280;">Bounced</td><td style="text-align:right;color:#da1c4b;">${r.bounced}</td></tr>
-      <tr><td style="color:#6b7280;">Pending</td><td style="text-align:right;">${r.pending}</td></tr>
-      <tr><td style="color:#6b7280;">Opened</td><td style="text-align:right;color:#5a2ba0;">${r.opened} (${r.openRate.toFixed(0)}%)</td></tr>
-      <tr><td style="color:#6b7280;font-weight:600;">Replied</td><td style="text-align:right;font-weight:700;color:#3d1472;">${r.replied} (${r.replyRate.toFixed(0)}%)</td></tr>
+      <tr><td style="color:#6b7280">Bounced</td><td style="text-align:right;color:#da1c4b">${r.bounced}</td></tr>
+      <tr><td style="color:#6b7280">Pending</td><td style="text-align:right">${r.pending}</td></tr>
+      <tr><td style="color:#6b7280">Opened</td><td style="text-align:right;color:#5a2ba0">${r.opened} (${r.openRate.toFixed(0)}%)</td></tr>
+      <tr><td style="color:#6b7280;font-weight:600">Replied</td><td style="text-align:right;font-weight:700;color:#3d1472">${r.replied} (${r.replyRate.toFixed(0)}%)</td></tr>
     </table>
   </div>`;
 }
+
+// ── LinkedIn section ──────────────────────────────────────────────────────────
 
 function normalizeLiStatus(raw) {
   const s = (raw || "").toLowerCase().trim();
@@ -135,65 +243,233 @@ function tierOf(row) {
   return "unknown";
 }
 
-const STAGE_ORDER = ["Not started", "Connection Request Sent", "First Message Sent", "Replied", "Demo Booked", "Excluded", "Other"];
+const LI_STAGE_ORDER = ["Not started","Connection Request Sent","First Message Sent","Replied","Demo Booked","Excluded","Other"];
 
 function liCard(name, rows) {
   const stages = {};
-  rows.forEach(r => {
-    const s = normalizeLiStatus(r["outreach status"]);
-    stages[s] = (stages[s] || 0) + 1;
-  });
+  rows.forEach(r => { const s = normalizeLiStatus(r["outreach status"]); stages[s] = (stages[s]||0)+1; });
   const total = rows.length;
   const excluded = stages["Excluded"] || 0;
   const active = total - excluded;
-  const contacted = Object.entries(stages).reduce((sum, [k, v]) => (k !== "Not started" && k !== "Excluded") ? sum + v : sum, 0);
-  const pct = active ? (contacted / active * 100) : 0;
-  const rowsHtml = STAGE_ORDER.filter(s => stages[s] !== undefined)
-    .map(s => `<tr><td style="color:#6b7280;">${s}</td><td style="text-align:right;">${stages[s]}</td></tr>`).join("");
-  return { html: `
+  const contacted = Object.entries(stages).reduce((sum,[k,v]) => (k!=="Not started"&&k!=="Excluded")?sum+v:sum, 0);
+  const pct = active ? (contacted/active*100) : 0;
+  const rowsHtml = LI_STAGE_ORDER.filter(s=>stages[s]!==undefined)
+    .map(s=>`<tr><td style="color:#6b7280">${s}</td><td style="text-align:right">${stages[s]}</td></tr>`).join("");
+  return { html:`
   <div class="card">
     <h3>${name}</h3>
-    <div class="bar-bg"><div class="bar-fill" style="background:#0a66c2;width:${pct.toFixed(0)}%;"></div></div>
+    <div class="bar-bg"><div class="bar-fill" style="background:#0a66c2;width:${pct.toFixed(0)}%"></div></div>
     <p class="pct-label">${contacted} of ${active} active contacted (${pct.toFixed(0)}%)</p>
     <table>${rowsHtml}</table>
   </div>`, contacted };
 }
 
-const STAGE_BADGE_CLASS = {
-  "Negotiation": "stage-negotiation",
-  "Proposal Sent": "stage-proposal",
-  "Demo Done": "stage-demo",
-  "Discovery Done": "stage-discovery-done",
-  "Discovery Scheduled": "stage-discovery-sched",
-  "Win Back": "stage-winback",
+// ── Pipeline section ──────────────────────────────────────────────────────────
+
+const STAGE_BADGE = {
+  "Negotiation":          "stage-negotiation",
+  "Proposal Sent":        "stage-proposal",
+  "Demo Done":            "stage-demo",
+  "Discovery Done":       "stage-discovery-done",
+  "Discovery Scheduled":  "stage-discovery-sched",
+  "Win Back":             "stage-winback",
+  "Closed Won":           "stage-closed-won",
+  "Closed Lost":          "stage-closed-lost",
 };
 
-function pipelineTable(rows) {
-  if (!rows.length) return '<p class="loading">No pipeline data.</p>';
-  const stageOrder = ["Negotiation","Proposal Sent","Demo Done","Discovery Done","Discovery Scheduled","Win Back","Closed Won","Closed Lost"];
-  const sorted = [...rows].sort((a, b) => {
-    const ai = stageOrder.indexOf(a.stage); const bi = stageOrder.indexOf(b.stage);
-    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-  });
-  const rowsHtml = sorted.map(r => {
-    const badgeClass = STAGE_BADGE_CLASS[r.stage] || "stage-discovery-sched";
-    return `<tr>
-      <td style="font-weight:600;color:#191919;">${r.deal_name || r.company || ""}</td>
-      <td>${r.primary_contact || ""}</td>
-      <td><span class="stage-badge ${badgeClass}">${r.stage || ""}</span></td>
-      <td style="color:#3d1472;font-weight:600;">${r.owner || ""}</td>
-      <td style="color:#374151;">${r.next_action || ""}</td>
-      <td style="color:#6b7280;">${r.next_action_owner || ""}</td>
-      <td style="color:#9ca3af;font-size:11px;">${r.last_updated || ""}</td>
-    </tr>`;
-  }).join("");
-  return `<table class="pipeline-table">
-    <thead><tr>
-      <th>Deal</th><th>Contact</th><th>Stage</th><th>Owner</th><th>Next Action</th><th>Action Owner</th><th>Updated</th>
-    </tr></thead>
-    <tbody>${rowsHtml}</tbody>
-  </table>`;
+const STAGE_FUNNEL = ["Negotiation","Proposal Sent","Demo Done","Discovery Done","Discovery Scheduled","Win Back","Closed Won","Closed Lost"];
+
+let _pipelineRows = [];
+let _pipelineFilter = { view: "active", stage: "all", owner: "all" };
+let _editingDeal = null;
+
+function allStages(rows) {
+  const s = new Set(rows.map(r => r.stage).filter(Boolean));
+  return [...s].sort((a,b) => STAGE_FUNNEL.indexOf(a) - STAGE_FUNNEL.indexOf(b));
 }
+
+function allOwners(rows) {
+  return [...new Set(rows.map(r => r.owner).filter(Boolean))].sort();
+}
+
+function applyFilters(rows) {
+  return rows.filter(r => {
+    const archived = (r.archived || "").toLowerCase() === "yes";
+    if (_pipelineFilter.view === "active"   && archived) return false;
+    if (_pipelineFilter.view === "archived" && !archived) return false;
+    if (_pipelineFilter.stage !== "all" && r.stage !== _pipelineFilter.stage) return false;
+    if (_pipelineFilter.owner !== "all" && (r.owner||"").toLowerCase() !== _pipelineFilter.owner.toLowerCase()) return false;
+    return true;
+  });
+}
+
+function renderPipelineSection() {
+  const rows = applyFilters(_pipelineRows);
+  const stages = allStages(_pipelineRows);
+  const owners = allOwners(_pipelineRows);
+
+  const stageOptions = stages.map(s =>
+    `<option value="${s}" ${_pipelineFilter.stage===s?"selected":""}>${s}</option>`
+  ).join("");
+
+  const ownerOptions = owners.map(o =>
+    `<option value="${o}" ${_pipelineFilter.owner===o?"selected":""}>${o}</option>`
+  ).join("");
+
+  const setupBanner = !PIPELINE_API_URL
+    ? `<div class="setup-banner">
+        <strong>Edit mode needs setup:</strong> deploy <code>pipeline_api.gs</code> as a Google Apps Script Web App, then paste the URL into
+        <code>PIPELINE_API_URL</code> in this file and push to GitHub.
+        Editing buttons are visible but saves will not work until then.
+       </div>`
+    : "";
+
+  const sorted = [...rows].sort((a,b)=>{
+    const ai = STAGE_FUNNEL.indexOf(a.stage); const bi = STAGE_FUNNEL.indexOf(b.stage);
+    return (ai===-1?99:ai)-(bi===-1?99:bi);
+  });
+
+  const tableBody = sorted.length
+    ? sorted.map(r => {
+        const bc = STAGE_BADGE[r.stage] || "stage-discovery-sched";
+        const archived = (r.archived||"").toLowerCase() === "yes";
+        return `<tr style="${archived?"opacity:.55;font-style:italic":""}">
+          <td style="font-weight:600;color:#191919">${r.deal_name||r.company||""}</td>
+          <td style="color:#6b7280">${r.primary_contact||""}</td>
+          <td><span class="stage-badge ${bc}">${r.stage||""}</span></td>
+          <td style="color:#3d1472;font-weight:600">${r.owner||""}</td>
+          <td style="color:#374151;max-width:200px">${r.next_action||""}</td>
+          <td style="color:#9ca3af;font-size:11px">${r.last_updated||""}</td>
+          <td><button class="edit-btn" onclick="openEditModal(${JSON.stringify(r.deal_name)})">Edit</button></td>
+        </tr>`;
+      }).join("")
+    : `<tr><td colspan="7" style="text-align:center;color:#9ca3af;padding:20px">No deals match the current filter.</td></tr>`;
+
+  document.getElementById("pipelineSection").innerHTML = `
+    ${setupBanner}
+    <div class="pipeline-toolbar">
+      <div class="pill-tabs">
+        <button class="pill-tab ${_pipelineFilter.view==="active"?"active":""}"   onclick="setView('active')">Active</button>
+        <button class="pill-tab ${_pipelineFilter.view==="archived"?"active":""}" onclick="setView('archived')">Archived</button>
+        <button class="pill-tab ${_pipelineFilter.view==="all"?"active":""}"      onclick="setView('all')">All</button>
+      </div>
+      <select class="filter-select" onchange="setStageFilter(this.value)">
+        <option value="all" ${_pipelineFilter.stage==="all"?"selected":""}>All stages</option>
+        ${stageOptions}
+      </select>
+      <select class="filter-select" onchange="setOwnerFilter(this.value)">
+        <option value="all" ${_pipelineFilter.owner==="all"?"selected":""}>All owners</option>
+        ${ownerOptions}
+      </select>
+    </div>
+    <table class="pipeline-table">
+      <thead><tr>
+        <th>Deal</th><th>Contact</th><th>Stage</th><th>Owner</th><th>Next Action</th><th>Updated</th><th></th>
+      </tr></thead>
+      <tbody>${tableBody}</tbody>
+    </table>`;
+}
+
+function setView(v)  { _pipelineFilter.view  = v; renderPipelineSection(); }
+function setStageFilter(v) { _pipelineFilter.stage = v; renderPipelineSection(); }
+function setOwnerFilter(v) { _pipelineFilter.owner = v; renderPipelineSection(); }
+
+// ── Edit modal ────────────────────────────────────────────────────────────────
+
+function openEditModal(dealName) {
+  const row = _pipelineRows.find(r => r.deal_name === dealName);
+  if (!row) return;
+  _editingDeal = dealName;
+
+  document.getElementById("modalTitle").textContent = "Edit: " + dealName;
+  document.getElementById("fStage").value      = row.stage || "Discovery Scheduled";
+  document.getElementById("fOwner").value      = row.owner || "Tanmay";
+  document.getElementById("fContact").value    = row.primary_contact || "";
+  document.getElementById("fEmail").value      = row.contact_email || "";
+  document.getElementById("fNextAction").value = row.next_action || "";
+  document.getElementById("fNextOwner").value  = row.next_action_owner || "";
+  document.getElementById("fNotes").value      = row.notes || "";
+  document.getElementById("fArchived").checked = (row.archived||"").toLowerCase() === "yes";
+  document.getElementById("saveStatus").textContent = "";
+  document.getElementById("saveBtn").disabled = false;
+
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal() {
+  _editingDeal = null;
+  document.getElementById("modalOverlay").classList.remove("open");
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("modalOverlay")) closeModal();
+});
+
+async function saveDeal() {
+  if (!_editingDeal) return;
+  const saveBtn    = document.getElementById("saveBtn");
+  const saveStatus = document.getElementById("saveStatus");
+
+  const updates = {
+    stage:               document.getElementById("fStage").value,
+    owner:               document.getElementById("fOwner").value,
+    primary_contact:     document.getElementById("fContact").value,
+    contact_email:       document.getElementById("fEmail").value,
+    next_action:         document.getElementById("fNextAction").value,
+    next_action_owner:   document.getElementById("fNextOwner").value,
+    notes:               document.getElementById("fNotes").value,
+    archived:            document.getElementById("fArchived").checked ? "yes" : "",
+  };
+
+  // Update local cache immediately for snappy UI
+  const row = _pipelineRows.find(r => r.deal_name === _editingDeal);
+  if (row) {
+    Object.assign(row, updates);
+    row.last_updated = new Date().toISOString().slice(0,10);
+  }
+  renderPipelineSection();
+
+  // Persist to sheet via Apps Script
+  if (PIPELINE_API_URL) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+    saveStatus.textContent = "";
+
+    const params = new URLSearchParams({ action: "update", deal_name: _editingDeal, ...updates });
+    try {
+      const resp = await fetch(`${PIPELINE_API_URL}?${params}`);
+      const data = await resp.json().catch(() => ({}));
+      if (data.ok) {
+        saveBtn.textContent = "Save";
+        saveBtn.disabled = false;
+        showToast("Saved to sheet");
+        closeModal();
+      } else {
+        saveStatus.textContent = "Sheet error: " + (data.error || "unknown");
+        saveStatus.className = "save-status save-err";
+        saveBtn.textContent = "Retry";
+        saveBtn.disabled = false;
+      }
+    } catch (e) {
+      saveStatus.textContent = "Network error — local update applied, sheet may not be synced.";
+      saveStatus.className = "save-status save-err";
+      saveBtn.textContent = "Retry";
+      saveBtn.disabled = false;
+    }
+  } else {
+    showToast("Updated locally (sheet sync not configured)");
+    closeModal();
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ── Main load ─────────────────────────────────────────────────────────────────
 
 async function load() {
   const [test, anujT1, aiTanmay, aiAnuj, liData, pipelineData] = await Promise.all([
@@ -205,34 +481,43 @@ async function load() {
     fetchTab("Sales_Pipeline"),
   ]);
 
+  // Email
   const emailCampaigns = [
-    emailStats(test.rows, "QSIntelligence — Tier 2/3", "Tanmay Garg"),
-    emailStats(anujT1.rows, "QSIntelligence — Tier 1", "Anuj Bansal"),
-    emailStats(aiTanmay.rows, "AI Implementation — batch 2", "Tanmay Garg"),
-    emailStats(aiAnuj.rows, "AI Implementation — batch 1", "Anuj Bansal"),
+    emailStats(test.rows,    "QSIntelligence — Tier 2/3", "Tanmay Garg"),
+    emailStats(anujT1.rows,  "QSIntelligence — Tier 1",   "Anuj Bansal"),
+    emailStats(aiTanmay.rows,"AI Implementation — batch 2","Tanmay Garg"),
+    emailStats(aiAnuj.rows,  "AI Implementation — batch 1","Anuj Bansal"),
   ];
   document.getElementById("emailGrid").innerHTML = emailCampaigns.map(emailCard).join("");
 
-  const anujRows = liData.rows.filter(r => tierOf(r) === "T1");
-  const tanmayRows = liData.rows.filter(r => ["T2", "T3"].includes(tierOf(r)));
-  const anujLi = liCard("Anuj (T1)", anujRows);
-  const tanmayLi = liCard("Tanmay (T2+T3)", tanmayRows);
+  // LinkedIn
+  const anujRows  = liData.rows.filter(r => tierOf(r) === "T1");
+  const tanmayRows= liData.rows.filter(r => ["T2","T3"].includes(tierOf(r)));
+  const anujLi    = liCard("Anuj (T1)",      anujRows);
+  const tanmayLi  = liCard("Tanmay (T2+T3)", tanmayRows);
   document.getElementById("liGrid").innerHTML = anujLi.html + tanmayLi.html;
-  document.getElementById("pipelineWrap").innerHTML = pipelineTable(pipelineData.rows);
 
-  const totalEmailSent = emailCampaigns.reduce((s, c) => s + c.sent, 0);
-  const totalEmailReplied = emailCampaigns.reduce((s, c) => s + c.replied, 0);
-  const totalLiContacted = anujLi.contacted + tanmayLi.contacted;
+  // Pipeline
+  _pipelineRows = pipelineData.rows;
+  renderPipelineSection();
 
-  const activeDeals = pipelineData.rows.filter(r => r.stage && !["Closed Won","Closed Lost"].includes(r.stage)).length;
+  // Summary bar
+  const totalEmailSent    = emailCampaigns.reduce((s,c) => s+c.sent,    0);
+  const totalEmailReplied = emailCampaigns.reduce((s,c) => s+c.replied, 0);
+  const totalLiContacted  = anujLi.contacted + tanmayLi.contacted;
+  const activeDeals       = _pipelineRows.filter(r =>
+    (r.archived||"").toLowerCase() !== "yes" &&
+    r.stage && !["Closed Won","Closed Lost"].includes(r.stage)
+  ).length;
+
   document.getElementById("summary").innerHTML = `
-    <div class="summary-card" style="background:#3d1472;">
+    <div class="summary-card" style="background:#3d1472">
       <p>Email</p><p>${totalEmailSent} sent &middot; ${totalEmailReplied} replied</p>
     </div>
-    <div class="summary-card" style="background:#0a66c2;">
+    <div class="summary-card" style="background:#0a66c2">
       <p>LinkedIn</p><p>${totalLiContacted} contacted</p>
     </div>
-    <div class="summary-card" style="background:#065f46;">
+    <div class="summary-card" style="background:#065f46">
       <p>Pipeline</p><p>${activeDeals} active deals</p>
     </div>`;
 
