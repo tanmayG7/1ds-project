@@ -23,6 +23,18 @@
   table { width:100%; border-collapse:collapse; font-size:12px; }
   td { padding:3px 0; }
   .loading { color:#6b7280; font-size:13px; }
+  .pipeline-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:28px; }
+  .pipeline-table th { background:#3d1472; color:#fff; padding:8px 10px; text-align:left; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
+  .pipeline-table td { padding:8px 10px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
+  .pipeline-table tr:last-child td { border-bottom:none; }
+  .pipeline-table tr:hover td { background:#f9f8ff; }
+  .stage-badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:600; }
+  .stage-negotiation { background:#fef3c7; color:#92400e; }
+  .stage-proposal { background:#dbeafe; color:#1e40af; }
+  .stage-demo { background:#d1fae5; color:#065f46; }
+  .stage-discovery-done { background:#ede9fe; color:#5b21b6; }
+  .stage-discovery-sched { background:#f3f4f6; color:#374151; }
+  .stage-winback { background:#fee2e2; color:#991b1b; }
 </style>
 </head>
 <body>
@@ -37,6 +49,9 @@
 
   <h2>LinkedIn Outreach</h2>
   <div class="grid" id="liGrid"><p class="loading">Loading...</p></div>
+
+  <h2>Sales Pipeline</h2>
+  <div id="pipelineWrap"><p class="loading">Loading...</p></div>
 </div>
 
 <script>
@@ -144,13 +159,50 @@ function liCard(name, rows) {
   </div>`, contacted };
 }
 
+const STAGE_BADGE_CLASS = {
+  "Negotiation": "stage-negotiation",
+  "Proposal Sent": "stage-proposal",
+  "Demo Done": "stage-demo",
+  "Discovery Done": "stage-discovery-done",
+  "Discovery Scheduled": "stage-discovery-sched",
+  "Win Back": "stage-winback",
+};
+
+function pipelineTable(rows) {
+  if (!rows.length) return '<p class="loading">No pipeline data.</p>';
+  const stageOrder = ["Negotiation","Proposal Sent","Demo Done","Discovery Done","Discovery Scheduled","Win Back","Closed Won","Closed Lost"];
+  const sorted = [...rows].sort((a, b) => {
+    const ai = stageOrder.indexOf(a.stage); const bi = stageOrder.indexOf(b.stage);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+  const rowsHtml = sorted.map(r => {
+    const badgeClass = STAGE_BADGE_CLASS[r.stage] || "stage-discovery-sched";
+    return `<tr>
+      <td style="font-weight:600;color:#191919;">${r.deal_name || r.company || ""}</td>
+      <td>${r.primary_contact || ""}</td>
+      <td><span class="stage-badge ${badgeClass}">${r.stage || ""}</span></td>
+      <td style="color:#3d1472;font-weight:600;">${r.owner || ""}</td>
+      <td style="color:#374151;">${r.next_action || ""}</td>
+      <td style="color:#6b7280;">${r.next_action_owner || ""}</td>
+      <td style="color:#9ca3af;font-size:11px;">${r.last_updated || ""}</td>
+    </tr>`;
+  }).join("");
+  return `<table class="pipeline-table">
+    <thead><tr>
+      <th>Deal</th><th>Contact</th><th>Stage</th><th>Owner</th><th>Next Action</th><th>Action Owner</th><th>Updated</th>
+    </tr></thead>
+    <tbody>${rowsHtml}</tbody>
+  </table>`;
+}
+
 async function load() {
-  const [test, anujT1, aiTanmay, aiAnuj, liData] = await Promise.all([
+  const [test, anujT1, aiTanmay, aiAnuj, liData, pipelineData] = await Promise.all([
     fetchTab("Test_Campaign"),
     fetchTab("Anuj_T1_Campaign"),
     fetchTab("AI_Campaign_Tanmay"),
     fetchTab("AI_Campaign_Anuj"),
     fetchTab("QS_Intelligence_Outreach_Enriched"),
+    fetchTab("Sales_Pipeline"),
   ]);
 
   const emailCampaigns = [
@@ -166,17 +218,22 @@ async function load() {
   const anujLi = liCard("Anuj (T1)", anujRows);
   const tanmayLi = liCard("Tanmay (T2+T3)", tanmayRows);
   document.getElementById("liGrid").innerHTML = anujLi.html + tanmayLi.html;
+  document.getElementById("pipelineWrap").innerHTML = pipelineTable(pipelineData.rows);
 
   const totalEmailSent = emailCampaigns.reduce((s, c) => s + c.sent, 0);
   const totalEmailReplied = emailCampaigns.reduce((s, c) => s + c.replied, 0);
   const totalLiContacted = anujLi.contacted + tanmayLi.contacted;
 
+  const activeDeals = pipelineData.rows.filter(r => r.stage && !["Closed Won","Closed Lost"].includes(r.stage)).length;
   document.getElementById("summary").innerHTML = `
     <div class="summary-card" style="background:#3d1472;">
       <p>Email</p><p>${totalEmailSent} sent &middot; ${totalEmailReplied} replied</p>
     </div>
     <div class="summary-card" style="background:#0a66c2;">
       <p>LinkedIn</p><p>${totalLiContacted} contacted</p>
+    </div>
+    <div class="summary-card" style="background:#065f46;">
+      <p>Pipeline</p><p>${activeDeals} active deals</p>
     </div>`;
 
   document.getElementById("updated").textContent = "Last loaded: " + new Date().toLocaleString();
