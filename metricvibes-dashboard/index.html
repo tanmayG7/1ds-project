@@ -91,6 +91,9 @@
   <h2>LinkedIn Outreach</h2>
   <div class="grid" id="liGrid"><p class="loading">Loading...</p></div>
 
+  <h2>Kartikeya Campaign — AI Implementation</h2>
+  <div class="grid" id="kartikeyaGrid"><p class="loading">Loading...</p></div>
+
   <h2>Sales Pipeline</h2>
   <div id="pipelineSection"></div>
 </div>
@@ -155,17 +158,40 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const SHEET_ID = "1VDJPQkPjAbPAKYt7UUrxithyVyOUZspEpT9pAUQfE64";
-const API_KEY  = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
+const SHEET_ID           = "1VDJPQkPjAbPAKYt7UUrxithyVyOUZspEpT9pAUQfE64";
+const KARTIKEYA_SHEET_ID = "1qv236-ztMEB7hVQ3n7_3hFRrIAA4WK35Roodzba3cjs";
+const API_KEY            = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
 
-// Paste your Apps Script Web App URL here after deploying pipeline_api.gs
-// Instructions: D:\Project Email Auto\deploy_to_anuj\pipeline_api.gs
 const PIPELINE_API_URL = "https://script.google.com/macros/s/AKfycbzzK5UD2r_7k2fjE8q3UWPO8yoTQqPKDO82OvKSHMgqjQp5ZXr_k3kFNndzR-GKPINj5w/exec";
 
 // ── Sheets fetch ─────────────────────────────────────────────────────────────
 
 function valuesUrl(tab) {
   return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
+}
+
+function valuesUrlFrom(sheetId, tab) {
+  return `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
+}
+
+async function fetchFrom(sheetId, tab) {
+  try {
+    const resp = await fetch(valuesUrlFrom(sheetId, tab));
+    if (!resp.ok) return { headers: [], rows: [] };
+    const data = await resp.json();
+    const values = data.values || [];
+    if (!values.length) return { headers: [], rows: [] };
+    const headers = values[0].map(h => (h || "").toLowerCase().trim());
+    const rows = values.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] || "").toString().trim());
+      return obj;
+    });
+    return { headers, rows };
+  } catch (e) {
+    console.error("fetchFrom failed:", sheetId, tab, e);
+    return { headers: [], rows: [] };
+  }
 }
 
 async function fetchTab(tab) {
@@ -469,16 +495,67 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
+// ── Kartikeya per-account stats ───────────────────────────────────────────────
+
+function kartikeyaAccountCards(rows) {
+  if (!rows.length) return '<p style="color:#9ca3af">No data yet.</p>';
+
+  // Group by assigned_account
+  const accounts = {};
+  rows.forEach(r => {
+    const acc = r["assigned_account"] || "unknown";
+    if (!accounts[acc]) accounts[acc] = { total: 0, sent: 0, bounced: 0, replied: 0 };
+    accounts[acc].total++;
+    const st = (r["status"] || "").toLowerCase();
+    if (st === "sent")    accounts[acc].sent++;
+    if (st === "bounced") accounts[acc].bounced++;
+    if (st === "replied") accounts[acc].replied++;
+  });
+
+  // Sort: anuj accounts first, then tanmay; within each group alphabetically
+  const sorted = Object.keys(accounts).sort((a, b) => {
+    const aIsAnuj = a.startsWith("anuj");
+    const bIsAnuj = b.startsWith("anuj");
+    if (aIsAnuj !== bIsAnuj) return aIsAnuj ? -1 : 1;
+    return a.localeCompare(b);
+  });
+
+  return sorted.map(acc => {
+    const s = accounts[acc];
+    const pct = s.total ? Math.round(s.sent / s.total * 100) : 0;
+    const label = acc.replace("@getmetricvibes.com", "").replace("@metricvibes-team.com", " (team)");
+    const domainTag = acc.includes("metricvibes-team") ?
+      '<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:10px;margin-left:6px">new domain</span>' : "";
+    return `
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <strong style="font-size:13px">${label}${domainTag}</strong>
+          <span style="font-size:12px;color:#6b7280">${s.sent}/${s.total}</span>
+        </div>
+        <div style="background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:10px">
+          <div style="background:#3d1472;height:6px;border-radius:4px;width:${pct}%"></div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:12px;color:#6b7280">
+          <span>${pct}% sent</span>
+          ${s.replied ? `<span style="color:#065f46;font-weight:600">${s.replied} replied</span>` : ""}
+          ${s.bounced ? `<span style="color:#b91c1c">${s.bounced} bounced</span>` : ""}
+          <span style="margin-left:auto">${s.total - s.sent} pending</span>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 // ── Main load ─────────────────────────────────────────────────────────────────
 
 async function load() {
-  const [test, anujT1, aiTanmay, aiAnuj, liData, pipelineData] = await Promise.all([
+  const [test, anujT1, aiTanmay, aiAnuj, liData, pipelineData, kartikeyaData] = await Promise.all([
     fetchTab("Test_Campaign"),
     fetchTab("Anuj_T1_Campaign"),
     fetchTab("AI_Campaign_Tanmay"),
     fetchTab("AI_Campaign_Anuj"),
     fetchTab("QS_Intelligence_Outreach_Enriched"),
     fetchTab("Sales_Pipeline"),
+    fetchFrom(KARTIKEYA_SHEET_ID, "Kartikeya_Campaign"),
   ]);
 
   // Email
@@ -497,13 +574,18 @@ async function load() {
   const tanmayLi  = liCard("Tanmay (T2+T3)", tanmayRows);
   document.getElementById("liGrid").innerHTML = anujLi.html + tanmayLi.html;
 
+  // Kartikeya per-account
+  document.getElementById("kartikeyaGrid").innerHTML = kartikeyaAccountCards(kartikeyaData.rows);
+
   // Pipeline
   _pipelineRows = pipelineData.rows;
   renderPipelineSection();
 
   // Summary bar
-  const totalEmailSent    = emailCampaigns.reduce((s,c) => s+c.sent,    0);
+  const totalEmailSent    = emailCampaigns.reduce((s,c) => s+c.sent, 0);
   const totalEmailReplied = emailCampaigns.reduce((s,c) => s+c.replied, 0);
+  const kSent    = kartikeyaData.rows.filter(r => r.status === "sent").length;
+  const kReplied = kartikeyaData.rows.filter(r => r.status === "replied").length;
   const totalLiContacted  = anujLi.contacted + tanmayLi.contacted;
   const activeDeals       = _pipelineRows.filter(r =>
     (r.archived||"").toLowerCase() !== "yes" &&
@@ -512,7 +594,10 @@ async function load() {
 
   document.getElementById("summary").innerHTML = `
     <div class="summary-card" style="background:#3d1472">
-      <p>Email</p><p>${totalEmailSent} sent &middot; ${totalEmailReplied} replied</p>
+      <p>QS Email</p><p>${totalEmailSent} sent &middot; ${totalEmailReplied} replied</p>
+    </div>
+    <div class="summary-card" style="background:#6d28d9">
+      <p>Kartikeya Email</p><p>${kSent} sent &middot; ${kReplied} replied</p>
     </div>
     <div class="summary-card" style="background:#0a66c2">
       <p>LinkedIn</p><p>${totalLiContacted} contacted</p>
