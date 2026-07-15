@@ -548,11 +548,9 @@ function kartikeyaAccountCards(rows) {
 // ── Main load ─────────────────────────────────────────────────────────────────
 
 async function load() {
-  const [test, anujT1, aiTanmay, aiAnuj, liData, pipelineData, kartikeyaData] = await Promise.all([
+  const [test, anujT1, liData, pipelineData, kartikeyaData] = await Promise.all([
     fetchTab("Test_Campaign"),
     fetchTab("Anuj_T1_Campaign"),
-    fetchTab("AI_Campaign_Tanmay"),
-    fetchTab("AI_Campaign_Anuj"),
     fetchTab("QS_Intelligence_Outreach_Enriched"),
     fetchTab("Sales_Pipeline"),
     fetchFrom(KARTIKEYA_SHEET_ID, "Kartikeya_Campaign"),
@@ -560,10 +558,8 @@ async function load() {
 
   // Email
   const emailCampaigns = [
-    emailStats(test.rows,    "QSIntelligence — Tier 2/3", "Tanmay Garg"),
-    emailStats(anujT1.rows,  "QSIntelligence — Tier 1",   "Anuj Bansal"),
-    emailStats(aiTanmay.rows,"AI Implementation — batch 2","Tanmay Garg"),
-    emailStats(aiAnuj.rows,  "AI Implementation — batch 1","Anuj Bansal"),
+    emailStats(test.rows,   "QSIntelligence — Tier 2/3", "Tanmay Garg"),
+    emailStats(anujT1.rows, "QSIntelligence — Tier 1",   "Anuj Bansal"),
   ];
   document.getElementById("emailGrid").innerHTML = emailCampaigns.map(emailCard).join("");
 
