@@ -366,7 +366,7 @@ function renderPipelineSection() {
           <td style="color:#3d1472;font-weight:600">${r.owner||""}</td>
           <td style="color:#374151;max-width:200px">${r.next_action||""}</td>
           <td style="color:#9ca3af;font-size:11px">${r.last_updated||""}</td>
-          <td><button class="edit-btn" onclick="openEditModal(${JSON.stringify(r.deal_name)})">Edit</button></td>
+          <td><button class="edit-btn" onclick="openEditModal('${(r.deal_name||'').replace(/'/g,&quot;\\'&quot;)}')">Edit</button></td>
         </tr>`;
       }).join("")
     : `<tr><td colspan="7" style="text-align:center;color:#9ca3af;padding:20px">No deals match the current filter.</td></tr>`;
