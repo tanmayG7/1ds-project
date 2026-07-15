@@ -580,8 +580,8 @@ async function load() {
   // Summary bar
   const totalEmailSent    = emailCampaigns.reduce((s,c) => s+c.sent, 0);
   const totalEmailReplied = emailCampaigns.reduce((s,c) => s+c.replied, 0);
-  const kSent    = kartikeyaData.rows.filter(r => r.status === "sent").length;
-  const kReplied = kartikeyaData.rows.filter(r => r.status === "replied").length;
+  const kSent    = kartikeyaData.rows.filter(r => (r.status||"").toLowerCase() === "sent").length;
+  const kReplied = kartikeyaData.rows.filter(r => (r.status||"").toLowerCase() === "replied").length;
   const totalLiContacted  = anujLi.contacted + tanmayLi.contacted;
   const activeDeals       = _pipelineRows.filter(r =>
     (r.archived||"").toLowerCase() !== "yes" &&
