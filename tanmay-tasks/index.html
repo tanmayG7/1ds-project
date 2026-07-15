@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanmay's Task Tracker</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin:0; padding:32px; background:#f0eff5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; }
+  h1 { font-size:22px; color:#191919; margin-bottom:4px; }
+  .updated { font-size:13px; color:#6b7280; margin-bottom:24px; }
+
+  .setup-banner { background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:12px 16px; font-size:12px; color:#856404; margin-bottom:14px; }
+  .setup-banner code { background:rgba(0,0,0,.06); padding:1px 5px; border-radius:4px; }
+
+  .summary { display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+  .summary-card { flex:1; min-width:140px; border-radius:10px; padding:18px 20px; color:#fff; background:#3d1472; }
+  .summary-card p:first-child { margin:0 0 4px; font-size:11px; opacity:0.7; text-transform:uppercase; }
+  .summary-card p:last-child { margin:0; font-size:22px; font-weight:700; }
+  .progress-card { flex:2; min-width:220px; border-radius:10px; padding:18px 20px; background:#fff; border:1px solid #e5e7eb; }
+  .progress-card p.label { margin:0 0 8px; font-size:11px; color:#6b7280; text-transform:uppercase; }
+  .bar-bg { background:#f3f4f6; border-radius:6px; height:10px; overflow:hidden; margin-bottom:8px; }
+  .bar-fill { height:10px; background:#3d1472; }
+  .progress-card p.pct { margin:0; font-size:13px; color:#191919; font-weight:600; }
+
+  .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-bottom:24px; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:14px 18px; }
+  .filter-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+  .filter-label { font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-right:4px; }
+  .filter-pill { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid #d1d5db; background:#fff; color:#6b7280; transition:all .15s; }
+  .filter-pill.active { background:#3d1472; border-color:#3d1472; color:#fff; }
+  .toggle-wrap { display:flex; align-items:center; gap:8px; font-size:12px; color:#374151; font-weight:600; }
+  .toggle-wrap input { width:16px; height:16px; cursor:pointer; accent-color:#3d1472; }
+  .btn-add { margin-left:auto; padding:7px 16px; background:#3d1472; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; }
+  .btn-add:hover { background:#2d0f56; }
+
+  .area-group { background:#fff; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:16px; overflow:hidden; }
+  .area-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid #f3f4f6; }
+  .area-header h2 { margin:0; font-size:15px; color:#191919; }
+  .area-count { font-size:11px; font-weight:600; color:#6b7280; background:#f3f4f6; padding:3px 10px; border-radius:20px; }
+
+  .task-row { display:flex; align-items:flex-start; gap:12px; padding:12px 18px; border-bottom:1px solid #f3f4f6; }
+  .task-row:last-child { border-bottom:none; }
+  .task-row:hover { background:#faf9ff; }
+  .task-main { flex:1; min-width:0; cursor:pointer; }
+  .task-title { font-size:13px; font-weight:600; color:#191919; margin-bottom:2px; }
+  .task-title.done { color:#9ca3af; text-decoration:line-through; }
+  .task-note { font-size:12px; color:#6b7280; line-height:1.4; }
+  .task-side { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .due-date { font-size:11px; color:#6b7280; min-width:64px; text-align:right; }
+  .due-date.overdue { color:#da1c4b; font-weight:600; }
+
+  .pri-pill { display:inline-block; padding:2px 9px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; text-transform:uppercase; letter-spacing:.02em; }
+  .pri-urgent { background:#fee2e2; color:#991b1b; }
+  .pri-high   { background:#fef3c7; color:#92400e; }
+  .pri-medium { background:#dbeafe; color:#1e40af; }
+  .pri-low    { background:#f3f4f6; color:#4b5563; }
+  .pri-other  { background:#ede9fe; color:#5b21b6; }
+
+  .status-select { font-size:10px; font-weight:600; border-radius:20px; padding:3px 22px 3px 10px; border:none; cursor:pointer; -webkit-appearance:none; appearance:none; background-repeat:no-repeat; background-position:right 8px center; background-size:8px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E"); }
+  .status-pending     { background-color:#f3f4f6; color:#374151; }
+  .status-in-progress { background-color:#fef3c7; color:#92400e; }
+  .status-done        { background-color:#dcfce7; color:#14532d; }
+
+  .edit-btn { background:none; border:1px solid #d1d5db; border-radius:6px; padding:3px 8px; cursor:pointer; font-size:11px; color:#6b7280; transition:all .15s; }
+  .edit-btn:hover { border-color:#3d1472; color:#3d1472; background:#faf9ff; }
+
+  .empty-state { padding:24px 18px; text-align:center; color:#9ca3af; font-size:13px; }
+  .loading { color:#6b7280; font-size:13px; padding:20px; }
+
+  /* Modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:#fff; border-radius:14px; padding:28px; width:100%; max-width:480px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.2); margin:16px; }
+  .modal h3 { margin:0 0 20px; font-size:17px; color:#191919; }
+  .form-row { margin-bottom:14px; }
+  .form-row-split { display:flex; gap:12px; }
+  .form-row-split .form-row { flex:1; }
+  .form-row label { display:block; font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+  .form-row input, .form-row select, .form-row textarea { width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; color:#191919; font-family:inherit; outline:none; transition:border .15s; }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color:#3d1472; }
+  .form-row textarea { height:64px; resize:vertical; }
+  .modal-actions { display:flex; gap:10px; margin-top:6px; }
+  .btn-primary { flex:1; padding:10px; background:#3d1472; color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:background .15s; }
+  .btn-primary:hover { background:#2d0f56; }
+  .btn-primary:disabled { background:#9ca3af; cursor:not-allowed; }
+  .btn-cancel { padding:10px 16px; background:#f3f4f6; color:#374151; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+  .btn-cancel:hover { background:#e5e7eb; }
+  .btn-danger { padding:10px 16px; background:#fff; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+  .btn-danger:hover { background:#fef2f2; }
+  .save-status { font-size:12px; margin-top:8px; text-align:center; min-height:16px; }
+  .save-ok  { color:#065f46; }
+  .save-err { color:#dc2626; }
+
+  /* Toast */
+  .toast { position:fixed; bottom:24px; right:24px; background:#191919; color:#fff; padding:10px 18px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:2000; }
+  .toast.show { opacity:1; }
+
+  @media (max-width:640px) {
+    body { padding:16px; }
+    .task-row { flex-wrap:wrap; }
+    .task-side { width:100%; justify-content:space-between; margin-top:6px; }
+    .btn-add { margin-left:0; width:100%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tanmay's Task Tracker</h1>
+  <p class="updated" id="updated">Loading live data...</p>
+
+  <div id="setupBanner"></div>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="toolbar">
+    <div class="filter-group" id="areaFilters"></div>
+    <div class="filter-group" id="priorityFilters"></div>
+    <div class="toggle-wrap">
+      <input type="checkbox" id="showDoneToggle" onchange="toggleShowDone()">
+      <label for="showDoneToggle">Show Done</label>
+    </div>
+    <button class="btn-add" onclick="openAddModal()">+ New Task</button>
+  </div>
+
+  <div id="groups"><p class="loading">Loading tasks...</p></div>
+</div>
+
+<!-- Edit / Add Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">New Task</h3>
+    <div class="form-row">
+      <label>Title</label>
+      <input type="text" id="fTitle" placeholder="Task title">
+    </div>
+    <div class="form-row-split">
+      <div class="form-row">
+        <label>Area</label>
+        <select id="fArea">
+          <option>1DS</option>
+          <option>MetricVibes</option>
+          <option>Service Clients</option>
+          <option>Current Clients</option>
+          <option>AiPply</option>
+          <option>Personal</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Priority</label>
+        <select id="fPriority">
+          <option>Urgent</option>
+          <option>High</option>
+          <option selected>Medium</option>
+          <option>Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-split">
+      <div class="form-row">
+        <label>Status</label>
+        <select id="fStatus">
+          <option selected>Pending</option>
+          <option>In Progress</option>
+          <option>Done</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Due Date</label>
+        <input type="date" id="fDueDate">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Note</label>
+      <textarea id="fNote" placeholder="Optional context"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-danger" id="deleteBtn" onclick="deleteTaskConfirm()" style="display:none">Delete</button>
+      <button class="btn-primary" id="saveBtn" onclick="saveTask()">Save</button>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEET_ID = "1Qy1dVTOfSaMG4rQjKjd5-O1yImipQsDVUpiJ1TqWGuY";
+const API_KEY  = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
+const TAB      = "Sheet1";
+
+const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbzh2K2H0RBgCS2YUIh0pQj6VxGJXH2qlVxmA33fzSjT1WDeZqVj4VWQGW8baXb6S3CG/exec";
+
+const AREA_ORDER     = ["1DS", "MetricVibes", "Service Clients", "Current Clients", "AiPply", "Personal"];
+const PRIORITY_ORDER = ["Urgent", "High", "Medium", "Low"];
+const STATUS_KNOWN    = ["Pending", "In Progress", "Done"];
+
+const PRIORITY_CLASS = { Urgent: "pri-urgent", High: "pri-high", Medium: "pri-medium", Low: "pri-low" };
+const STATUS_CLASS   = { "Pending": "status-pending", "In Progress": "status-in-progress", "Done": "status-done" };
+
+let _rows = [];
+let _editingId = null;
+const _filters = {
+  areas: new Set(AREA_ORDER),
+  priorities: new Set(PRIORITY_ORDER),
+  showDone: false,
+};
+
+function valuesUrl(tab) {
+  return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
+}
+
+async function fetchTab(tab) {
+  try {
+    const resp = await fetch(valuesUrl(tab));
+    if (!resp.ok) return { rows: [], error: resp.status };
+    const data = await resp.json();
+    const values = data.values || [];
+    if (!values.length) return { rows: [], error: null };
+    const headers = values[0].map(h => (h || "").toLowerCase().trim());
+    const rows = values.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] || "").toString().trim());
+      return obj;
+    });
+    return { rows, error: null };
+  } catch (e) {
+    console.error("fetchTab failed:", tab, e);
+    return { rows: [], error: "network" };
+  }
+}
+
+function normalize(raw, known) {
+  const v = (raw || "").trim();
+  const found = known.find(x => x.toLowerCase() === v.toLowerCase());
+  return found || (v || "");
+}
+
+function priorityRank(p) {
+  const i = PRIORITY_ORDER.indexOf(p);
+  return i === -1 ? 99 : i;
+}
+
+function parseDate(s) {
+  const t = Date.parse(s);
+  return isNaN(t) ? Infinity : t;
+}
+
+function formatDate(s) {
+  const t = Date.parse(s);
+  if (isNaN(t)) return "No due date";
+  return new Date(t).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function toDateInputValue(s) {
+  const t = Date.parse(s);
+  if (isNaN(t)) return "";
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function isOverdue(s, status) {
+  if (status === "Done") return false;
+  const t = Date.parse(s);
+  if (isNaN(t)) return false;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  return t < today.getTime();
+}
+
+function toggleArea(name) {
+  if (_filters.areas.has(name)) _filters.areas.delete(name); else _filters.areas.add(name);
+  render();
+}
+function togglePriority(name) {
+  if (_filters.priorities.has(name)) _filters.priorities.delete(name); else _filters.priorities.add(name);
+  render();
+}
+function toggleShowDone() {
+  _filters.showDone = document.getElementById("showDoneToggle").checked;
+  render();
+}
+
+function renderFilterPills() {
+  document.getElementById("areaFilters").innerHTML =
+    `<span class="filter-label">Area</span>` +
+    AREA_ORDER.map(a =>
+      `<button class="filter-pill ${_filters.areas.has(a) ? "active" : ""}" onclick="toggleArea('${a}')">${a}</button>`
+    ).join("");
+
+  document.getElementById("priorityFilters").innerHTML =
+    `<span class="filter-label">Priority</span>` +
+    PRIORITY_ORDER.map(p =>
+      `<button class="filter-pill ${_filters.priorities.has(p) ? "active" : ""}" onclick="togglePriority('${p}')">${p}</button>`
+    ).join("");
+}
+
+function visibleRows() {
+  return _rows.filter(r => {
+    if (r._area !== "Unspecified" && !_filters.areas.has(r._area)) return false;
+    if (r._priority !== "Unspecified" && !_filters.priorities.has(r._priority)) return false;
+    if (r._status === "Done" && !_filters.showDone) return false;
+    return true;
+  });
+}
+
+function groupByArea(rows) {
+  const groups = {};
+  rows.forEach(r => {
+    const key = r._area || "Unspecified";
+    (groups[key] = groups[key] || []).push(r);
+  });
+  return groups;
+}
+
+function sortTasks(rows) {
+  return [...rows].sort((a, b) => {
+    const pr = priorityRank(a._priority) - priorityRank(b._priority);
+    if (pr !== 0) return pr;
+    return parseDate(a["due date"]) - parseDate(b["due date"]);
+  });
+}
+
+function taskRowHtml(r) {
+  const priClass = PRIORITY_CLASS[r._priority] || "pri-other";
+  const statClass = STATUS_CLASS[r._status] || "status-pending";
+  const overdue = isOverdue(r["due date"], r._status);
+  const statusOptions = STATUS_KNOWN.map(s =>
+    `<option value="${s}" ${r._status === s ? "selected" : ""}>${s}</option>`
+  ).join("");
+  return `
+    <div class="task-row">
+      <span class="pri-pill ${priClass}">${r._priority || "Unspecified"}</span>
+      <div class="task-main" onclick="openEditModal('${escapeAttr(r.id)}')">
+        <div class="task-title ${r._status === "Done" ? "done" : ""}">${escapeHtml(r.title || "Untitled")}</div>
+        ${r.note ? `<div class="task-note">${escapeHtml(r.note)}</div>` : ""}
+      </div>
+      <div class="task-side">
+        <select class="status-select ${statClass}" onchange="quickUpdateStatus('${escapeAttr(r.id)}', this.value)" onclick="event.stopPropagation()">
+          ${statusOptions}
+        </select>
+        <span class="due-date ${overdue ? "overdue" : ""}">${formatDate(r["due date"])}</span>
+        <button class="edit-btn" onclick="event.stopPropagation(); openEditModal('${escapeAttr(r.id)}')">Edit</button>
+      </div>
+    </div>`;
+}
+
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+function escapeAttr(s) {
+  return (s || "").toString().replace(/'/g, "\\'");
+}
+
+function renderGroups() {
+  const rows = visibleRows();
+  const groups = groupByArea(rows);
+
+  const orderedKeys = [...AREA_ORDER.filter(a => groups[a]), ...Object.keys(groups).filter(k => !AREA_ORDER.includes(k))];
+
+  if (!orderedKeys.length) {
+    document.getElementById("groups").innerHTML = `<div class="area-group"><div class="empty-state">No tasks match the current filters.</div></div>`;
+    return;
+  }
+
+  document.getElementById("groups").innerHTML = orderedKeys.map(area => {
+    const tasks = sortTasks(groups[area]);
+    return `
+      <div class="area-group">
+        <div class="area-header">
+          <h2>${area}</h2>
+          <span class="area-count">${tasks.length}</span>
+        </div>
+        ${tasks.map(taskRowHtml).join("")}
+      </div>`;
+  }).join("");
+}
+
+function renderSummary() {
+  const total = _rows.length;
+  const done = _rows.filter(r => r._status === "Done").length;
+  const inProgress = _rows.filter(r => r._status === "In Progress").length;
+  const pending = _rows.filter(r => r._status === "Pending").length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById("summary").innerHTML = `
+    <div class="summary-card">
+      <p>Total Tasks</p><p>${total}</p>
+    </div>
+    <div class="summary-card" style="background:#0a66c2">
+      <p>In Progress</p><p>${inProgress}</p>
+    </div>
+    <div class="summary-card" style="background:#6b7280">
+      <p>Pending</p><p>${pending}</p>
+    </div>
+    <div class="progress-card">
+      <p class="label">Overall progress</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+      <p class="pct">${done} of ${total} done (${pct}%)</p>
+    </div>`;
+}
+
+function renderSetupBanner() {
+  document.getElementById("setupBanner").innerHTML = !TASKS_API_URL
+    ? `<div class="setup-banner">
+        <strong>Edit mode needs setup:</strong> deploy <code>tasks_api.gs</code> (in this folder) as a Google Apps Script Web App,
+        then paste the URL into <code>TASKS_API_URL</code> in this file and push to GitHub.
+        Add/Edit/Delete/status changes are visible but won't save until then.
+       </div>`
+    : "";
+}
+
+function render() {
+  renderFilterPills();
+  renderSummary();
+  renderGroups();
+  renderSetupBanner();
+}
+
+// ── Add / Edit / Delete ────────────────────────────────────────────────────────
+
+function openAddModal() {
+  _editingId = null;
+  document.getElementById("modalTitle").textContent = "New Task";
+  document.getElementById("fTitle").value = "";
+  document.getElementById("fArea").value = AREA_ORDER[0];
+  document.getElementById("fPriority").value = "Medium";
+  document.getElementById("fStatus").value = "Pending";
+  document.getElementById("fNote").value = "";
+  document.getElementById("fDueDate").value = "";
+  document.getElementById("deleteBtn").style.display = "none";
+  document.getElementById("saveStatus").textContent = "";
+  document.getElementById("saveBtn").disabled = false;
+  document.getElementById("saveBtn").textContent = "Save";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function openEditModal(id) {
+  const row = _rows.find(r => String(r.id) === String(id));
+  if (!row) return;
+  _editingId = id;
+  document.getElementById("modalTitle").textContent = "Edit Task";
+  document.getElementById("fTitle").value = row.title || "";
+  document.getElementById("fArea").value = AREA_ORDER.includes(row._area) ? row._area : AREA_ORDER[0];
+  document.getElementById("fPriority").value = PRIORITY_ORDER.includes(row._priority) ? row._priority : "Medium";
+  document.getElementById("fStatus").value = row._status || "Pending";
+  document.getElementById("fNote").value = row.note || "";
+  document.getElementById("fDueDate").value = toDateInputValue(row["due date"]);
+  document.getElementById("deleteBtn").style.display = "";
+  document.getElementById("saveStatus").textContent = "";
+  document.getElementById("saveBtn").disabled = false;
+  document.getElementById("saveBtn").textContent = "Save";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal() {
+  _editingId = null;
+  document.getElementById("modalOverlay").classList.remove("open");
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("modalOverlay")) closeModal();
+});
+
+async function saveTask() {
+  const saveBtn = document.getElementById("saveBtn");
+  const saveStatus = document.getElementById("saveStatus");
+  const title = document.getElementById("fTitle").value.trim();
+  if (!title) {
+    saveStatus.textContent = "Title is required";
+    saveStatus.className = "save-status save-err";
+    return;
+  }
+
+  const payload = {
+    title,
+    area: document.getElementById("fArea").value,
+    priority: document.getElementById("fPriority").value,
+    status: document.getElementById("fStatus").value,
+    note: document.getElementById("fNote").value,
+    due_date: document.getElementById("fDueDate").value,
+  };
+
+  if (!TASKS_API_URL) {
+    showToast("Sheet sync not configured, see setup banner");
+    return;
+  }
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving...";
+  saveStatus.textContent = "";
+
+  try {
+    const action = _editingId ? "update" : "create";
+    const params = new URLSearchParams({ action, ...(_editingId ? { id: _editingId } : {}), ...payload });
+    const resp = await fetch(`${TASKS_API_URL}?${params}`);
+    const data = await resp.json().catch(() => ({}));
+    if (data.ok) {
+      showToast(_editingId ? "Task updated" : "Task created");
+      closeModal();
+      await load();
+    } else {
+      saveStatus.textContent = "Error: " + (data.error || "unknown");
+      saveStatus.className = "save-status save-err";
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save";
+    }
+  } catch (e) {
+    saveStatus.textContent = "Network error, try again.";
+    saveStatus.className = "save-status save-err";
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save";
+  }
+}
+
+async function deleteTaskConfirm() {
+  if (!_editingId) return;
+  if (!confirm("Delete this task? This cannot be undone.")) return;
+  if (!TASKS_API_URL) {
+    showToast("Sheet sync not configured");
+    return;
+  }
+
+  const params = new URLSearchParams({ action: "delete", id: _editingId });
+  try {
+    const resp = await fetch(`${TASKS_API_URL}?${params}`);
+    const data = await resp.json().catch(() => ({}));
+    if (data.ok) {
+      showToast("Task deleted");
+      closeModal();
+      await load();
+    } else {
+      showToast("Error: " + (data.error || "unknown"));
+    }
+  } catch (e) {
+    showToast("Network error");
+  }
+}
+
+async function quickUpdateStatus(id, newStatus) {
+  const row = _rows.find(r => String(r.id) === String(id));
+  if (!row) return;
+  const prevStatus = row._status;
+  row._status = newStatus;
+  render();
+
+  if (!TASKS_API_URL) {
+    showToast("Sheet sync not configured, change not saved");
+    return;
+  }
+
+  const params = new URLSearchParams({ action: "update", id, status: newStatus });
+  try {
+    const resp = await fetch(`${TASKS_API_URL}?${params}`);
+    const data = await resp.json().catch(() => ({}));
+    if (data.ok) {
+      showToast("Status updated");
+    } else {
+      row._status = prevStatus;
+      render();
+      showToast("Error: " + (data.error || "unknown"));
+    }
+  } catch (e) {
+    row._status = prevStatus;
+    render();
+    showToast("Network error, status not saved");
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ── Main load ─────────────────────────────────────────────────────────────────
+
+async function load() {
+  const { rows, error } = await fetchTab(TAB);
+
+  if (error) {
+    document.getElementById("groups").innerHTML =
+      `<div class="area-group"><div class="empty-state">Could not load the sheet (error: ${error}). Make sure it is shared as "Anyone with the link can view".</div></div>`;
+    document.getElementById("updated").textContent = "Load failed";
+    return;
+  }
+
+  _rows = rows.map(r => ({
+    ...r,
+    _area: normalize(r.area, AREA_ORDER) || "Unspecified",
+    _priority: normalize(r.priority, PRIORITY_ORDER) || "Unspecified",
+    _status: normalize(r.status, STATUS_KNOWN) || "Pending",
+  }));
+
+  render();
+  document.getElementById("updated").textContent = "Last loaded: " + new Date().toLocaleString();
+}
+
+load();
+</script>
+</body>
+</html>
