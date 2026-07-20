@@ -140,6 +140,10 @@
       <input type="text" id="fNextOwner" placeholder="Who does it">
     </div>
     <div class="form-row">
+      <label>Solution Mapping</label>
+      <textarea id="fSolutionMapping" placeholder="Which MetricVibes solutions are relevant for this deal"></textarea>
+    </div>
+    <div class="form-row">
       <label>Notes</label>
       <textarea id="fNotes" placeholder="Context, links, anything relevant"></textarea>
     </div>
@@ -364,12 +368,13 @@ function renderPipelineSection() {
           <td style="color:#6b7280">${r.primary_contact||""}</td>
           <td><span class="stage-badge ${bc}">${r.stage||""}</span></td>
           <td style="color:#3d1472;font-weight:600">${r.owner||""}</td>
-          <td style="color:#374151;max-width:200px">${r.next_action||""}</td>
+          <td style="color:#374151;max-width:180px;font-size:11px">${r.solution_mapping||""}</td>
+          <td style="color:#374151;max-width:180px">${r.next_action||""}</td>
           <td style="color:#9ca3af;font-size:11px">${r.last_updated||""}</td>
           <td><button class="edit-btn" onclick="openEditModal('${(r.deal_name||'').replace(/'/g,"\\'")}')">Edit</button></td>
         </tr>`;
       }).join("")
-    : `<tr><td colspan="7" style="text-align:center;color:#9ca3af;padding:20px">No deals match the current filter.</td></tr>`;
+    : `<tr><td colspan="8" style="text-align:center;color:#9ca3af;padding:20px">No deals match the current filter.</td></tr>`;
 
   document.getElementById("pipelineSection").innerHTML = `
     ${setupBanner}
@@ -390,7 +395,7 @@ function renderPipelineSection() {
     </div>
     <table class="pipeline-table">
       <thead><tr>
-        <th>Deal</th><th>Contact</th><th>Stage</th><th>Owner</th><th>Next Action</th><th>Updated</th><th></th>
+        <th>Deal</th><th>Contact</th><th>Stage</th><th>Owner</th><th>Solution Mapping</th><th>Next Action</th><th>Updated</th><th></th>
       </tr></thead>
       <tbody>${tableBody}</tbody>
     </table>`;
@@ -413,8 +418,9 @@ function openEditModal(dealName) {
   document.getElementById("fContact").value    = row.primary_contact || "";
   document.getElementById("fEmail").value      = row.contact_email || "";
   document.getElementById("fNextAction").value = row.next_action || "";
-  document.getElementById("fNextOwner").value  = row.next_action_owner || "";
-  document.getElementById("fNotes").value      = row.notes || "";
+  document.getElementById("fNextOwner").value        = row.next_action_owner || "";
+  document.getElementById("fSolutionMapping").value  = row.solution_mapping || "";
+  document.getElementById("fNotes").value             = row.notes || "";
   document.getElementById("fArchived").checked = (row.archived||"").toLowerCase() === "yes";
   document.getElementById("saveStatus").textContent = "";
   document.getElementById("saveBtn").disabled = false;
@@ -443,6 +449,7 @@ async function saveDeal() {
     contact_email:       document.getElementById("fEmail").value,
     next_action:         document.getElementById("fNextAction").value,
     next_action_owner:   document.getElementById("fNextOwner").value,
+    solution_mapping:    document.getElementById("fSolutionMapping").value,
     notes:               document.getElementById("fNotes").value,
     archived:            document.getElementById("fArchived").checked ? "yes" : "",
   };
