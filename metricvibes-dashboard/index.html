@@ -50,6 +50,11 @@
   .setup-banner { background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:12px 16px; font-size:12px; color:#856404; margin-bottom:14px; }
   .setup-banner a { color:#856404; font-weight:600; }
 
+  /* Add Deal card */
+  .add-deal-card { display:flex; align-items:center; gap:10px; background:#fff; border:2px dashed #d1d5db; border-radius:10px; padding:14px 20px; cursor:pointer; margin-bottom:14px; transition:all .15s; color:#6b7280; font-size:13px; font-weight:600; }
+  .add-deal-card:hover { border-color:#3d1472; color:#3d1472; background:#faf9ff; }
+  .add-deal-card .plus { font-size:22px; font-weight:300; line-height:1; }
+
   /* Edit Modal */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center; }
   .modal-overlay.open { display:flex; }
@@ -102,6 +107,14 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h3 id="modalTitle">Edit Deal</h3>
+    <div class="form-row" id="fRowDealName" style="display:none">
+      <label>Deal Name</label>
+      <input type="text" id="fDealName" placeholder="Company or deal label">
+    </div>
+    <div class="form-row" id="fRowCompany" style="display:none">
+      <label>Company</label>
+      <input type="text" id="fCompany" placeholder="Company name">
+    </div>
     <div class="form-row">
       <label>Stage</label>
       <select id="fStage">
@@ -378,6 +391,9 @@ function renderPipelineSection() {
 
   document.getElementById("pipelineSection").innerHTML = `
     ${setupBanner}
+    <div class="add-deal-card" onclick="openAddModal()">
+      <span class="plus">+</span> Add New Deal
+    </div>
     <div class="pipeline-toolbar">
       <div class="pill-tabs">
         <button class="pill-tab ${_pipelineFilter.view==="active"?"active":""}"   onclick="setView('active')">Active</button>
@@ -407,24 +423,52 @@ function setOwnerFilter(v) { _pipelineFilter.owner = v; renderPipelineSection();
 
 // ── Edit modal ────────────────────────────────────────────────────────────────
 
+let _addMode = false;
+
+function openAddModal() {
+  _addMode = true;
+  _editingDeal = null;
+  document.getElementById("modalTitle").textContent = "Add New Deal";
+  document.getElementById("fRowDealName").style.display = "";
+  document.getElementById("fRowCompany").style.display  = "";
+  document.getElementById("fDealName").value         = "";
+  document.getElementById("fCompany").value          = "";
+  document.getElementById("fStage").value            = "Discovery Scheduled";
+  document.getElementById("fOwner").value            = "Tanmay";
+  document.getElementById("fContact").value          = "";
+  document.getElementById("fEmail").value            = "";
+  document.getElementById("fNextAction").value       = "";
+  document.getElementById("fNextOwner").value        = "";
+  document.getElementById("fSolutionMapping").value  = "";
+  document.getElementById("fNotes").value            = "";
+  document.getElementById("fArchived").checked       = false;
+  document.getElementById("saveStatus").textContent  = "";
+  document.getElementById("saveBtn").disabled        = false;
+  document.getElementById("saveBtn").textContent     = "Add Deal";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
 function openEditModal(dealName) {
   const row = _pipelineRows.find(r => r.deal_name === dealName);
   if (!row) return;
+  _addMode = false;
   _editingDeal = dealName;
 
   document.getElementById("modalTitle").textContent = "Edit: " + dealName;
-  document.getElementById("fStage").value      = row.stage || "Discovery Scheduled";
-  document.getElementById("fOwner").value      = row.owner || "Tanmay";
-  document.getElementById("fContact").value    = row.primary_contact || "";
-  document.getElementById("fEmail").value      = row.contact_email || "";
-  document.getElementById("fNextAction").value = row.next_action || "";
+  document.getElementById("fRowDealName").style.display = "none";
+  document.getElementById("fRowCompany").style.display  = "none";
+  document.getElementById("fStage").value            = row.stage || "Discovery Scheduled";
+  document.getElementById("fOwner").value            = row.owner || "Tanmay";
+  document.getElementById("fContact").value          = row.primary_contact || "";
+  document.getElementById("fEmail").value            = row.contact_email || "";
+  document.getElementById("fNextAction").value       = row.next_action || "";
   document.getElementById("fNextOwner").value        = row.next_action_owner || "";
   document.getElementById("fSolutionMapping").value  = row.solution_mapping || "";
-  document.getElementById("fNotes").value             = row.notes || "";
-  document.getElementById("fArchived").checked = (row.archived||"").toLowerCase() === "yes";
-  document.getElementById("saveStatus").textContent = "";
-  document.getElementById("saveBtn").disabled = false;
-
+  document.getElementById("fNotes").value            = row.notes || "";
+  document.getElementById("fArchived").checked       = (row.archived||"").toLowerCase() === "yes";
+  document.getElementById("saveStatus").textContent  = "";
+  document.getElementById("saveBtn").disabled        = false;
+  document.getElementById("saveBtn").textContent     = "Save";
   document.getElementById("modalOverlay").classList.add("open");
 }
 
@@ -438,37 +482,78 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 });
 
 async function saveDeal() {
-  if (!_editingDeal) return;
+  if (!_addMode && !_editingDeal) return;
   const saveBtn    = document.getElementById("saveBtn");
   const saveStatus = document.getElementById("saveStatus");
 
-  const updates = {
-    stage:               document.getElementById("fStage").value,
-    owner:               document.getElementById("fOwner").value,
-    primary_contact:     document.getElementById("fContact").value,
-    contact_email:       document.getElementById("fEmail").value,
-    next_action:         document.getElementById("fNextAction").value,
-    next_action_owner:   document.getElementById("fNextOwner").value,
-    solution_mapping:    document.getElementById("fSolutionMapping").value,
-    notes:               document.getElementById("fNotes").value,
-    archived:            document.getElementById("fArchived").checked ? "yes" : "",
+  const fields = {
+    stage:             document.getElementById("fStage").value,
+    owner:             document.getElementById("fOwner").value,
+    primary_contact:   document.getElementById("fContact").value,
+    contact_email:     document.getElementById("fEmail").value,
+    next_action:       document.getElementById("fNextAction").value,
+    next_action_owner: document.getElementById("fNextOwner").value,
+    solution_mapping:  document.getElementById("fSolutionMapping").value,
+    notes:             document.getElementById("fNotes").value,
+    archived:          document.getElementById("fArchived").checked ? "yes" : "",
   };
 
-  // Update local cache immediately for snappy UI
+  if (_addMode) {
+    const dealName = document.getElementById("fDealName").value.trim();
+    if (!dealName) { saveStatus.textContent = "Deal name is required."; saveStatus.className = "save-status save-err"; return; }
+    fields.deal_name = dealName;
+    fields.company   = document.getElementById("fCompany").value.trim() || dealName;
+    fields.last_updated = new Date().toISOString().slice(0,10);
+
+    // Optimistic local add
+    _pipelineRows.push({ ...fields });
+    renderPipelineSection();
+
+    if (PIPELINE_API_URL) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Adding...";
+      saveStatus.textContent = "";
+      const params = new URLSearchParams({ action: "add", ...fields });
+      try {
+        const resp = await fetch(`${PIPELINE_API_URL}?${params}`);
+        const data = await resp.json().catch(() => ({}));
+        if (data.ok) {
+          saveBtn.textContent = "Add Deal";
+          saveBtn.disabled = false;
+          showToast("Deal added to sheet");
+          closeModal();
+        } else {
+          saveStatus.textContent = "Sheet error: " + (data.error || "unknown");
+          saveStatus.className = "save-status save-err";
+          saveBtn.textContent = "Retry";
+          saveBtn.disabled = false;
+        }
+      } catch (e) {
+        saveStatus.textContent = "Network error — added locally, sheet may not be synced.";
+        saveStatus.className = "save-status save-err";
+        saveBtn.textContent = "Retry";
+        saveBtn.disabled = false;
+      }
+    } else {
+      showToast("Added locally (sheet sync not configured)");
+      closeModal();
+    }
+    return;
+  }
+
+  // Edit mode
   const row = _pipelineRows.find(r => r.deal_name === _editingDeal);
   if (row) {
-    Object.assign(row, updates);
+    Object.assign(row, fields);
     row.last_updated = new Date().toISOString().slice(0,10);
   }
   renderPipelineSection();
 
-  // Persist to sheet via Apps Script
   if (PIPELINE_API_URL) {
     saveBtn.disabled = true;
     saveBtn.textContent = "Saving...";
     saveStatus.textContent = "";
-
-    const params = new URLSearchParams({ action: "update", deal_name: _editingDeal, ...updates });
+    const params = new URLSearchParams({ action: "update", deal_name: _editingDeal, ...fields });
     try {
       const resp = await fetch(`${PIPELINE_API_URL}?${params}`);
       const data = await resp.json().catch(() => ({}));
