@@ -141,7 +141,6 @@
           <option>1DS</option>
           <option>MetricVibes</option>
           <option>Service Clients</option>
-          <option>Current Clients</option>
           <option>AiPply</option>
           <option>Personal</option>
         </select>
@@ -192,7 +191,8 @@ const TAB      = "Sheet1";
 
 const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbzh2K2H0RBgCS2YUIh0pQj6VxGJXH2qlVxmA33fzSjT1WDeZqVj4VWQGW8baXb6S3CG/exec";
 
-const AREA_ORDER     = ["1DS", "MetricVibes", "Service Clients", "Current Clients", "AiPply", "Personal"];
+const AREA_ORDER     = ["1DS", "MetricVibes", "Service Clients", "AiPply", "Personal"];
+const AREA_ALIASES   = { "current clients": "Service Clients" };
 const PRIORITY_ORDER = ["Urgent", "High", "Medium", "Low"];
 const STATUS_KNOWN    = ["Pending", "In Progress", "Done"];
 
@@ -235,6 +235,13 @@ function normalize(raw, known) {
   const v = (raw || "").trim();
   const found = known.find(x => x.toLowerCase() === v.toLowerCase());
   return found || (v || "");
+}
+
+function normalizeArea(raw) {
+  const v = (raw || "").trim();
+  const alias = AREA_ALIASES[v.toLowerCase()];
+  if (alias) return alias;
+  return normalize(v, AREA_ORDER);
 }
 
 function priorityRank(p) {
@@ -587,7 +594,7 @@ async function load() {
 
   _rows = rows.map(r => ({
     ...r,
-    _area: normalize(r.area, AREA_ORDER) || "Unspecified",
+    _area: normalizeArea(r.area) || "Unspecified",
     _priority: normalize(r.priority, PRIORITY_ORDER) || "Unspecified",
     _status: normalize(r.status, STATUS_KNOWN) || "Pending",
   }));
