@@ -178,9 +178,9 @@ function dailyDigest() {
     const completed= compIdx     !== undefined ? fmtCell(row[compIdx]) : '';
     const isDone   = status.toLowerCase() === 'done';
 
-    if (priority.toLowerCase() === 'urgent' && !isDone) urgentOpen.push({ title, area, status });
-    if (priority.toLowerCase() === 'high'   && !isDone) highOpen.push({ title, area, status });
-    if (due === todayStr && !isDone)                     dueToday.push({ title, area, priority });
+    if (priority.toLowerCase() === 'urgent' && !isDone) urgentOpen.push({ title, area, status, priority, due });
+    if (priority.toLowerCase() === 'high'   && !isDone) highOpen.push({ title, area, status, priority, due });
+    if (due === todayStr && !isDone)                     dueToday.push({ title, area, priority, status, due });
     if (completed === yesterdayStr)                       doneYesterday.push({ title, area });
   });
 
@@ -192,19 +192,33 @@ function dailyDigest() {
     ? 'NO URGENT TASKS, HIGH PRIORITY OPEN (' + highOpen.length + ')'
     : 'URGENT AND OPEN (' + urgentOpen.length + ')';
 
+  // Google Calendar "quick add" link — opens a pre-filled event the user saves
+  // themselves with one click. No calendar API access or extra scope needed.
+  function calendarLink(t) {
+    const start = (t.due && !isNaN(Date.parse(t.due))) ? new Date(t.due) : new Date();
+    const startStr = Utilities.formatDate(start, tz, 'yyyyMMdd');
+    const end = new Date(start); end.setDate(end.getDate() + 1);
+    const endStr = Utilities.formatDate(end, tz, 'yyyyMMdd');
+    const details = 'Area: ' + (t.area || 'n/a') + '\nPriority: ' + (t.priority || 'n/a') + '\nStatus: ' + (t.status || 'n/a');
+    return 'https://www.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + encodeURIComponent(t.title)
+      + '&dates=' + startStr + '/' + endStr
+      + '&details=' + encodeURIComponent(details);
+  }
+
   const lines = [];
   lines.push('Daily task digest for ' + todayStr);
   lines.push('');
   lines.push(topLabel);
   if (topList.length) {
-    topList.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.status + ')'));
+    topList.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.status + ') ' + calendarLink(t)));
   } else {
     lines.push('None.');
   }
   lines.push('');
   lines.push('DUE TODAY (' + dueToday.length + ')');
   if (dueToday.length) {
-    dueToday.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.priority + ')'));
+    dueToday.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.priority + ') ' + calendarLink(t)));
   } else {
     lines.push('None.');
   }
@@ -216,10 +230,30 @@ function dailyDigest() {
     lines.push('None.');
   }
 
+  function htmlSection(label, items, showCalendar) {
+    let html = '<h3 style="margin:18px 0 6px;font-size:14px;color:#191919">' + label + '</h3>';
+    if (!items.length) return html + '<p style="color:#9ca3af;font-size:13px;margin:0">None.</p>';
+    html += '<ul style="margin:0;padding-left:18px;font-size:13px;color:#191919">';
+    items.forEach(t => {
+      html += '<li style="margin-bottom:6px">[' + t.area + '] ' + t.title
+        + (showCalendar ? ' &nbsp; <a href="' + calendarLink(t) + '" style="color:#3d1472">Add to Calendar</a>' : '')
+        + '</li>';
+    });
+    html += '</ul>';
+    return html;
+  }
+
+  const htmlBody = '<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif">'
+    + '<p style="font-size:15px;color:#191919;margin:0 0 4px">Daily task digest for ' + todayStr + '</p>'
+    + htmlSection(topLabel, topList, true)
+    + htmlSection('Due today (' + dueToday.length + ')', dueToday, true)
+    + htmlSection('Done yesterday (' + doneYesterday.length + ')', doneYesterday, false)
+    + '</div>';
+
   const subject = showHighInstead
     ? 'Task digest: 0 urgent (' + highOpen.length + ' high), ' + dueToday.length + ' due today'
     : 'Task digest: ' + urgentOpen.length + ' urgent, ' + dueToday.length + ' due today';
-  MailApp.sendEmail(RECIPIENT_EMAIL, subject, lines.join('\n'));
+  MailApp.sendEmail(RECIPIENT_EMAIL, subject, lines.join('\n'), { htmlBody: htmlBody });
 }
 
 // Run this once manually (select it in the function dropdown, click Run) to install
