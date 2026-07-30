@@ -192,10 +192,12 @@ function dailyDigest() {
     ? 'NO URGENT TASKS, HIGH PRIORITY OPEN (' + highOpen.length + ')'
     : 'URGENT AND OPEN (' + urgentOpen.length + ')';
 
-  // Google Calendar "quick add" link — opens a pre-filled event the user saves
-  // themselves with one click. No calendar API access or extra scope needed.
+  // Google Calendar "quick add" link — always scheduled for today (the day the
+  // digest is read and the link is clicked), not the task's due date. Opens a
+  // pre-filled event the user saves themselves with one click; no calendar API
+  // access or extra scope needed.
   function calendarLink(t) {
-    const start = (t.due && !isNaN(Date.parse(t.due))) ? new Date(t.due) : new Date();
+    const start = new Date();
     const startStr = Utilities.formatDate(start, tz, 'yyyyMMdd');
     const end = new Date(start); end.setDate(end.getDate() + 1);
     const endStr = Utilities.formatDate(end, tz, 'yyyyMMdd');
