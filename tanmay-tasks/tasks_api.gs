@@ -166,7 +166,7 @@ function dailyDigest() {
   const idIdx = map['id'], titleIdx = map['title'], areaIdx = map['area'], priIdx = map['priority'],
         statusIdx = map['status'], dueIdx = map['due_date'], compIdx = map['completed'];
 
-  const urgentOpen = [], dueToday = [], doneYesterday = [];
+  const urgentOpen = [], highOpen = [], dueToday = [], doneYesterday = [];
 
   data.forEach(row => {
     const title = titleIdx !== undefined ? (row[titleIdx] || '').toString().trim() : '';
@@ -179,16 +179,25 @@ function dailyDigest() {
     const isDone   = status.toLowerCase() === 'done';
 
     if (priority.toLowerCase() === 'urgent' && !isDone) urgentOpen.push({ title, area, status });
+    if (priority.toLowerCase() === 'high'   && !isDone) highOpen.push({ title, area, status });
     if (due === todayStr && !isDone)                     dueToday.push({ title, area, priority });
     if (completed === yesterdayStr)                       doneYesterday.push({ title, area });
   });
 
+  // When there are no open urgent tasks, show open high-priority ones instead
+  // so the top section of the digest is never empty while work is pending.
+  const showHighInstead = urgentOpen.length === 0 && highOpen.length > 0;
+  const topList = showHighInstead ? highOpen : urgentOpen;
+  const topLabel = showHighInstead
+    ? 'NO URGENT TASKS, HIGH PRIORITY OPEN (' + highOpen.length + ')'
+    : 'URGENT AND OPEN (' + urgentOpen.length + ')';
+
   const lines = [];
   lines.push('Daily task digest for ' + todayStr);
   lines.push('');
-  lines.push('URGENT AND OPEN (' + urgentOpen.length + ')');
-  if (urgentOpen.length) {
-    urgentOpen.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.status + ')'));
+  lines.push(topLabel);
+  if (topList.length) {
+    topList.forEach(t => lines.push('- [' + t.area + '] ' + t.title + ' (' + t.status + ')'));
   } else {
     lines.push('None.');
   }
@@ -207,7 +216,9 @@ function dailyDigest() {
     lines.push('None.');
   }
 
-  const subject = 'Task digest: ' + urgentOpen.length + ' urgent, ' + dueToday.length + ' due today';
+  const subject = showHighInstead
+    ? 'Task digest: 0 urgent (' + highOpen.length + ' high), ' + dueToday.length + ' due today'
+    : 'Task digest: ' + urgentOpen.length + ' urgent, ' + dueToday.length + ' due today';
   MailApp.sendEmail(RECIPIENT_EMAIL, subject, lines.join('\n'));
 }
 
