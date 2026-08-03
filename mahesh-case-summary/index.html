@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Case File — Mahesh Kumar Garg, 70M · Acute Right MCA Infarct</title>
+<meta name="description" content="Structured case summary and full record library for a stroke admission, Yatharth SSH Noida, 1–3 Aug 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1a2b;
+  --ink-2:#1c2b42;
+  --bg:#eef2f6;
+  --surface:#ffffff;
+  --line:#d9e1ea;
+  --line-2:#e8eef4;
+  --muted:#5f7186;
+  --stable:#0d7a72;
+  --stable-bg:#e0f1ef;
+  --watch:#b8760c;
+  --watch-bg:#fbf0dc;
+  --alert:#b03f38;
+  --alert-bg:#f9e8e6;
+  --await:#4a5da8;
+  --await-bg:#e8ebf8;
+  --rail:248px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'IBM Plex Sans',system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:15px;line-height:1.55;
+}
+h1,h2,h3,.disp{font-family:'Archivo',system-ui,sans-serif;letter-spacing:-.015em}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+a{color:var(--stable)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ============ RAIL ============ */
+.rail{
+  position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;
+  background:var(--ink);color:#fff;display:flex;flex-direction:column;
+  padding:22px 0 0;overflow-y:auto;
+}
+.rail-id{padding:0 22px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+.rail-id .kicker{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#5fb8b0}
+.rail-id h1{font-size:19px;font-weight:800;line-height:1.2;margin:6px 0 4px;color:#fff}
+.rail-id .dx{font-size:12.5px;color:#a9bccf;line-height:1.4}
+.rail-id .meta{margin-top:10px;font-size:11px;color:#7d92a8;line-height:1.7}
+.rail-id .meta b{color:#cfdcea;font-weight:600}
+
+.views{padding:16px 14px 8px;display:flex;flex-direction:column;gap:5px}
+.views button{
+  font-family:'IBM Plex Sans',sans-serif;text-align:left;
+  background:transparent;border:none;color:#a9bccf;
+  padding:10px 12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:9px;transition:background .15s,color .15s;
+}
+.views button:hover{background:rgba(255,255,255,.07);color:#fff}
+.views button.on{background:#fff;color:var(--ink)}
+.views button .n{margin-left:auto;font-size:11px;opacity:.6;font-family:'IBM Plex Mono',monospace}
+
+.rail-sec{padding:10px 14px 26px;border-top:1px solid rgba(255,255,255,.12);margin-top:10px}
+.rail-sec .lbl{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#5f7d99;padding:6px 12px 8px}
+.rail-sec a{
+  display:block;padding:7px 12px 7px 14px;font-size:13px;color:#a9bccf;text-decoration:none;
+  border-left:2px solid transparent;transition:color .15s,border-color .15s;
+}
+.rail-sec a:hover{color:#fff}
+.rail-sec a.here{color:#fff;border-left-color:#5fb8b0;font-weight:600}
+
+/* ============ MAIN ============ */
+.main{margin-left:var(--rail);padding:34px 40px 90px;max-width:1180px}
+.view{display:none}
+.view.on{display:block}
+.sec{margin-bottom:38px;scroll-margin-top:26px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.sec-h h2{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.sec-h .rule{flex:1;height:1px;background:var(--line)}
+.sec-h .note{font-size:12px;color:var(--muted)}
+
+.lede{font-size:17px;line-height:1.6;max-width:70ch;margin-bottom:8px}
+.lede b{font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.card + .card{margin-top:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* ---- signature: monitor band ---- */
+.monitor{
+  background:var(--ink);border-radius:16px;padding:6px;margin-bottom:14px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+}
+.mcell{background:var(--ink-2);border-radius:11px;padding:15px 16px 13px;position:relative;overflow:hidden}
+.mcell .ml{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7d92a8}
+.mcell .mv{font-family:'Archivo',sans-serif;font-size:19px;font-weight:700;margin-top:5px;line-height:1.15}
+.mcell .ms{font-size:11.5px;color:#8fa5bb;margin-top:3px}
+.mcell.st .mv{color:#4fd1c0}
+.mcell.wt .mv{color:#f0b558}
+.mcell.aw .mv{color:#93a4ec}
+.mcell .trace{position:absolute;left:0;right:0;bottom:0;height:26px;opacity:.5}
+.mcell .trace path{fill:none;stroke-width:1.6}
+.mcell.st .trace path{stroke:#4fd1c0}
+.mcell.wt .trace path{stroke:#f0b558}
+.mcell.aw .trace path{stroke:#93a4ec}
+.dash{stroke-dasharray:180;stroke-dashoffset:180;animation:draw 1.6s ease-out .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ---- status list ---- */
+.srow{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--line-2)}
+.srow:first-child{padding-top:2px}
+.srow:last-child{border-bottom:none;padding-bottom:2px}
+.pip{width:9px;height:9px;border-radius:50%;flex:none;margin-top:7px}
+.pip.st{background:var(--stable)}.pip.wt{background:var(--watch)}
+.pip.al{background:var(--alert)}.pip.aw{background:var(--await)}
+.srow .t{font-weight:600;font-size:14.5px}
+.srow .d{font-size:13.5px;color:var(--muted);margin-top:2px}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;margin-left:7px;vertical-align:1px}
+.badge.al{background:var(--alert-bg);color:var(--alert)}
+.badge.wt{background:var(--watch-bg);color:var(--watch)}
+.badge.aw{background:var(--await-bg);color:var(--await)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:14px}
+.legend span{display:flex;align-items:center;gap:7px}
+
+/* ---- timeline ---- */
+.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tl .day{padding:18px 20px;border-right:1px solid var(--line-2)}
+.tl .day:last-child{border-right:none}
+.tl .dnum{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--stable);letter-spacing:.08em}
+.tl .dt{font-family:'Archivo',sans-serif;font-size:15.5px;font-weight:700;margin:5px 0 7px}
+.tl .dd{font-size:13px;color:var(--muted);line-height:1.5}
+.tl .dd b{color:var(--ink);font-weight:600}
+
+/* ---- gcs sparkline card ---- */
+.gcs{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.gcs .big{font-family:'Archivo',sans-serif;font-size:38px;font-weight:800;line-height:1;color:var(--stable)}
+.gcs .cap{font-size:12px;color:var(--muted);margin-top:4px}
+.gcs svg{flex:1;min-width:220px;height:64px}
+
+/* ---- tables ---- */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:540px}
+th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:9px 12px;border-bottom:2px solid var(--ink)}
+td{padding:10px 12px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#f7fafc}
+
+/* ---- key/value ---- */
+.kv{display:grid;grid-template-columns:180px 1fr;gap:0 16px;font-size:13.5px}
+.kv dt{color:var(--muted);font-weight:600;padding:6px 0;border-bottom:1px solid var(--line-2)}
+.kv dd{padding:6px 0;border-bottom:1px solid var(--line-2)}
+.kv dt:last-of-type,.kv dd:last-of-type{border-bottom:none}
+.hi{color:var(--alert);font-weight:700}
+.mid{color:var(--watch);font-weight:700}
+
+/* ---- boxes ---- */
+.box{border-radius:14px;padding:18px 20px}
+.box h3{font-size:14px;font-weight:700;margin-bottom:10px}
+.box ol,.box ul{margin-left:19px;font-size:13.8px}
+.box li{margin-bottom:6px}
+.box.alert{background:var(--alert-bg);border:1px solid #e9c6c2}
+.box.alert h3{color:var(--alert)}
+.box.act{background:var(--stable-bg);border:1px solid #bfe0dc}
+.box.act h3{color:var(--stable)}
+.box.await{background:var(--await-bg);border:1px solid #c6cef0}
+.box.await h3{color:var(--await)}
+.tel{display:inline-block;margin-top:10px;font-weight:700;color:var(--alert);font-size:13.5px}
+
+/* ---- records ---- */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;position:sticky;top:0;z-index:20;background:var(--bg);padding:12px 0 12px}
+.search{
+  flex:1;min-width:230px;border:1px solid var(--line);background:var(--surface);
+  border-radius:10px;padding:11px 14px;font-size:14px;font-family:inherit;color:var(--ink);
+}
+.search:focus{outline:2px solid var(--stable);outline-offset:-1px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{
+  font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  padding:9px 13px;border-radius:9px;transition:.14s;
+}
+.chip em{font-style:normal;font-family:'IBM Plex Mono',monospace;opacity:.55;margin-left:4px;font-size:11px}
+.chip:hover{border-color:var(--stable);color:var(--ink)}
+.chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.active em{opacity:.6}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.shot{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:.14s}
+.shot:hover,.shot:focus{border-color:var(--stable);box-shadow:0 8px 22px rgba(15,26,43,.11);transform:translateY(-2px);outline:none}
+.shot-img{height:168px;background:#e6ecf2;overflow:hidden}
+.shot-img img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.shot figcaption{padding:10px 12px 12px;font-size:12px;line-height:1.4;font-weight:500}
+.tag{display:block;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;color:var(--muted)}
+.tag-neuro{color:#4a5da8}.tag-cardiac{color:var(--alert)}.tag-labs{color:var(--stable)}
+.tag-nursing{color:var(--watch)}.tag-charts{color:#7a5aa8}.tag-imaging{color:#2f7fa8}.tag-admin{color:#6b7b8c}
+.empty{display:none;padding:40px;text-align:center;color:var(--muted);font-size:14px}
+
+/* ---- lightbox ---- */
+.lb{position:fixed;inset:0;z-index:200;background:rgba(9,15,25,.96);display:none;flex-direction:column}
+.lb.on{display:flex}
+.lb-top{display:flex;align-items:center;gap:12px;padding:14px 18px;color:#fff;background:rgba(0,0,0,.4)}
+.lb-top .c{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.55);flex:none}
+.lb-top .l{flex:1;font-size:13.5px;font-weight:600;line-height:1.35}
+.lb-top button{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;width:38px;height:38px;font-size:17px;cursor:pointer;flex:none}
+.lb-stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:10px}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;transition:transform .2s}
+.lb-stage img.zoom{max-width:none;max-height:none;width:170%;cursor:zoom-out}
+.lb-bot{display:flex;gap:10px;justify-content:center;padding:12px 18px 20px;flex-wrap:wrap}
+.lb-bot button,.lb-bot a{
+  font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;
+  display:inline-flex;align-items:center;padding:0 20px;border-radius:10px;text-decoration:none;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;
+}
+.lb-bot a.pri{background:#fff;color:var(--ink);border-color:#fff}
+
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);max-width:80ch}
+
+/* ---- mobile ---- */
+.mbar{display:none}
+@media(max-width:1000px){
+  .g3{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:860px){
+  :root{--rail:0px}
+  .rail{position:static;width:auto;padding:18px 0 0;overflow:visible}
+  .rail-sec{display:none}
+  .views{flex-direction:row;padding:14px 16px 16px;gap:7px}
+  .views button{flex:1;justify-content:center;font-size:13px;padding:11px 8px}
+  .views button .n{display:none}
+  .rail-id{padding:0 16px 16px}
+  .main{margin-left:0;padding:20px 16px 84px}
+  .monitor{grid-template-columns:1fr 1fr}
+  .g2,.tl{grid-template-columns:1fr}
+  .tl .day{border-right:none;border-bottom:1px solid var(--line-2)}
+  .tl .day:last-child{border-bottom:none}
+  .kv{grid-template-columns:1fr}
+  .kv dt{padding-bottom:0;border-bottom:none;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+  .gal{grid-template-columns:repeat(2,1fr);gap:11px}
+  .shot-img{height:130px}
+  .lede{font-size:15.5px}
+  .tools{position:sticky;top:0}
+}
+@media(max-width:420px){.monitor{grid-template-columns:1fr}.gal{grid-template-columns:1fr}.shot-img{height:200px}}
+</style>
+</head>
+<body>
+
+<aside class="rail">
+  <div class="rail-id">
+    <div class="kicker">Case file</div>
+    <h1>Mahesh Kumar Garg</h1>
+    <div class="dx">70M · Acute right MCA infarct</div>
+    <div class="meta">
+      <b>Yatharth SSH</b>, Sector-110 Noida<br>
+      Admitted <b>1 Aug 2026</b> · Neurology<br>
+      UHID <b>20140186</b><br>Ward · room <b>1002A</b> (semi-private)<br><span style="color:#4fd1c0">Out of ICU 3 Aug, 21:00</span>
+    </div>
+  </div>
+  <nav class="views">
+    <button id="v-ov" class="on" onclick="go('ov')">Overview</button>
+    <button id="v-cl" onclick="go('cl')">Clinical</button>
+    <button id="v-rc" onclick="go('rc')">Records <span class="n">75</span></button>
+  </nav>
+  <div class="rail-sec" id="railSec"></div>
+</aside>
+
+<main class="main">
+
+<!-- ======================= OVERVIEW ======================= -->
+<section class="view on" id="ov">
+
+  <div class="sec" id="ov-status" data-t="Status now">
+    <p class="lede">On <b>1 August 2026</b> Papa collapsed suddenly with weakness on his <b>left side</b> and confusion. Scans found <b>small clots blocking circulation in the right side of his brain</b> — a stroke. The clots were small and scattered rather than one large blockage, and within hours he was awake, talking and moving all four limbs.</p>
+
+    <div class="monitor" style="margin-top:18px">
+      <div class="mcell st"><div class="ml">Speech &amp; movement</div><div class="mv">Recovered</div><div class="ms">Power 5/5, all four limbs</div>
+        <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 20 L40 20 L52 6 L64 22 L76 14 L200 14"/></svg></div>
+      <div class="mcell st"><div class="ml">Level of care</div><div class="mv">Ward · 1002A</div><div class="ms">Left ICU 3 Aug, 21:00 · GCS 15/15</div>
+        <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 22 L30 22 L44 8 L58 20 L72 12 L200 12"/></svg></div>
+      <div class="mcell wt"><div class="ml">Diabetes control</div><div class="mv">HbA1c 8.2%</div><div class="ms">Target below 7 — needs work</div>
+        <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 18 L60 18 L90 8 L130 16 L200 10"/></svg></div>
+      <div class="mcell aw"><div class="ml">Cause of clots</div><div class="mv">Under test</div><div class="ms">Holter + CT angio pending</div>
+        <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 14 L200 14" stroke-dasharray="4 5"/></svg></div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-journey" data-t="Day by day">
+    <div class="sec-h"><h2>Day by day</h2><div class="rule"></div><span class="note">1–3 Aug 2026</span></div>
+    <div class="tl">
+      <div class="day">
+        <div class="dnum">DAY 1 · 1 AUG</div>
+        <div class="dt">Collapse → ICU</div>
+        <div class="dd">CT head, urgent MRI (<b>strokes confirmed</b>), ECG, heart echo, chest X-ray, abdominal ultrasound, full bloods. Blood thinners and statin started the same day. Speech returned within hours.</div>
+      </div>
+      <div class="day">
+        <div class="dnum">DAY 2 · 2 AUG</div>
+        <div class="dt">Stable, tests continue</div>
+        <div class="dd">CT angiography of brain and neck arteries. Urine test showed a mild infection brewing; white cells rose briefly. <b>Catheter removed</b> — passing urine on his own. Alert all day.</div>
+      </div>
+      <div class="day">
+        <div class="dnum">DAY 3 · 3 AUG</div>
+        <div class="dt">Clearly improving</div>
+        <div class="dd">White cells back to normal. Eating soft diet, no oxygen needed. EEG done, 24-hour heart monitor attached. Skin specialist called for a fungal rash. <b>Moved out of ICU at 9 pm</b> into ward room 1002A (semi-private).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-ward" data-t="Now in ward">
+    <div class="sec-h"><h2>Now in the ward</h2><div class="rule"></div><span class="note">from 3 Aug, 9:00 pm</span></div>
+    <div class="g2">
+      <div class="card">
+        <p style="font-size:15px">Moving out of intensive care on <b>Day 3</b> is the clearest signal yet that the team considers him stable. It means continuous monitoring is no longer needed, he is breathing on his own, eating, passing urine normally and holding a full consciousness score.</p>
+        <p style="font-size:15px;margin-top:10px">A semi-private room also makes recovery easier — family can stay longer, sleep is less broken, and there is space to start moving him about with the physio.</p>
+      </div>
+      <div class="box act">
+        <h3>What changes now</h3>
+        <ul>
+          <li><b>Mobilisation begins.</b> Sitting up, then standing with support, then short walks. Ask about a physiotherapy referral if it has not started.</li>
+          <li><b>Fall risk is high</b> (Morse 70). He must not get up alone — bed rails up, call bell in reach, someone with him for the toilet.</li>
+          <li><b>Sugar charting continues.</b> Meals now matter more than in ICU; keep them diabetic-appropriate.</li>
+          <li><b>Sleep and orientation.</b> Quieter nights in the ward usually clear the remaining confusion faster.</li>
+          <li><b>Chase the three reports</b> — CT angio, MRI, Holter. Ward rounds are usually mid-morning.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-recovery" data-t="Recovery curve">
+    <div class="sec-h"><h2>Recovery curve</h2><div class="rule"></div><span class="note">Glasgow Coma Scale, 15 = fully alert</span></div>
+    <div class="card gcs">
+      <div>
+        <div class="big">11 → 15</div>
+        <div class="cap">Within the first evening</div>
+      </div>
+      <svg viewBox="0 0 400 64" preserveAspectRatio="none" aria-label="GCS rose from 11 to 15 and stayed there">
+        <line x1="0" y1="10" x2="400" y2="10" stroke="#e8eef4" stroke-width="1"/>
+        <line x1="0" y1="52" x2="400" y2="52" stroke="#e8eef4" stroke-width="1"/>
+        <path class="dash" d="M8 46 L60 38 L110 12 L400 12" fill="none" stroke="#0d7a72" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="8" cy="46" r="4" fill="#b03f38"/>
+        <circle cx="110" cy="12" r="4" fill="#0d7a72"/>
+        <circle cx="396" cy="12" r="4" fill="#0d7a72"/>
+      </svg>
+      <div style="font-size:12.5px;color:var(--muted);max-width:26ch">Arrived not speaking (GCS 11). Full score reached the same night and held every single shift through Day 3.</div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-report" data-t="Body report card">
+    <div class="sec-h"><h2>Body report card</h2><div class="rule"></div><span class="note">skim the dots</span></div>
+    <div class="legend">
+      <span><i class="pip st"></i>Normal</span><span><i class="pip wt"></i>Needs attention</span>
+      <span><i class="pip al"></i>Problem found</span><span><i class="pip aw"></i>Result awaited</span>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="srow"><i class="pip st"></i><div><div class="t">Brain function now</div><div class="d">Speaking, moving all limbs, fully awake. Mild confusion is easing — expected with this stroke and settles over days to weeks.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Heart structure (echo)</div><div class="d">Pumping normal at 55%. <b>No clot inside the heart.</b> Valves fine; only mild age/BP-related wall thickening.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Heart rhythm (ECG)</div><div class="d">Normal sinus rhythm on admission. The 24-hour Holter is double-checking for hidden irregular beats.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Kidneys, liver, thyroid, salts</div><div class="d">All normal. Vitamin B12 excellent at 868, Vitamin D good at 67.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Lungs (chest X-ray)</div><div class="d">Clear. He never needed oxygen support at any point.</div></div></div>
+      </div>
+      <div class="card">
+        <div class="srow"><i class="pip al"></i><div><div class="t">Diabetes — HbA1c 8.2%<span class="badge al">main risk driver</span></div><div class="d">Three-month sugar average is high (target under 7). This is the single biggest fixable cause of a future stroke. Galvus-Met restarted.</div></div></div>
+        <div class="srow"><i class="pip wt"></i><div><div class="t">Cholesterol — LDL 108</div><div class="d">After a stroke the target is under 70. High-dose Atorva 40 already started to bring it down.</div></div></div>
+        <div class="srow"><i class="pip wt"></i><div><div class="t">Urine infection + fungal skin rash</div><div class="d">Common with diabetes. Both identified and being treated — likely contributed to the brief confusion and the white-cell spike.</div></div></div>
+        <div class="srow"><i class="pip wt"></i><div><div class="t">Fatty liver (grade 1), enlarged prostate</div><div class="d">Very common at 70 and not urgent. Diet helps the liver; a urology review can wait until after discharge.</div></div></div>
+        <div class="srow"><i class="pip aw"></i><div><div class="t">Awaiting three reports</div><div class="d">CT angiography, MRI and Holter results. These answer <i>why</i> the clots formed and lock in long-term prevention.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-meds" data-t="Medicines">
+    <div class="sec-h"><h2>Medicines and what each does</h2><div class="rule"></div></div>
+    <div class="card">
+      <div class="tw"><table>
+        <thead><tr><th>Medicine</th><th>What it is</th><th>Why he is on it</th></tr></thead>
+        <tbody>
+        <tr><td><b>Ecosprin 75</b> + <b>Clopitab 75</b></td><td>Two blood thinners — aspirin and clopidogrel</td><td>Stop new clots forming. This is the core stroke protection. <b>Never skip or stop without the doctor.</b></td></tr>
+        <tr><td><b>Atorva 40</b></td><td>High-dose statin</td><td>Lowers LDL cholesterol and stabilises artery plaque.</td></tr>
+        <tr><td><b>Galvus-Met 50/500</b></td><td>Diabetes tablet</td><td>Brings blood sugar under control — the priority after discharge.</td></tr>
+        <tr><td><b>Cognistar</b> + <b>Tyvalzi</b></td><td>Brain-recovery support</td><td>Supports healing of brain tissue after a stroke.</td></tr>
+        <tr><td><b>Brivgard 50</b></td><td>Anti-seizure medicine</td><td>Protective cover after a stroke. The EEG guides how long it is needed.</td></tr>
+        <tr><td><b>Pantocid</b>, <b>Remylin</b>, <b>Mednovit</b></td><td>Stomach protection and vitamins</td><td>Protects the stomach from the blood thinners; general recovery support.</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">Exact doses and timings come from the discharge sheet — always follow that.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-do" data-t="What to do">
+    <div class="sec-h"><h2>What family can do</h2><div class="rule"></div></div>
+    <div class="g2">
+      <div class="box act">
+        <h3>Right now, in hospital</h3>
+        <ol>
+          <li>Keep a familiar face at the bedside. Gently mention the day, the place and why he is here — woven into conversation, not as a quiz.</li>
+          <li>Glasses and hearing aid on at all times. Lights and talk during the day, quiet at night.</li>
+          <li>Encourage protein — dal, paneer, eggs, milk. His protein reading is slightly low.</li>
+          <li>Every morning ask the team: <b>CT angio report? MRI report? Holter result?</b></li>
+          <li>When discharge planning starts, get sugar targets, physio plan and follow-up dates <b>in writing</b>.</li>
+        </ol>
+      </div>
+      <div class="box alert">
+        <h3>Call the doctor immediately if</h3>
+        <ul>
+          <li>New weakness or drooping of face, arm or leg — either side</li>
+          <li>Slurred speech or trouble understanding others</li>
+          <li>Sudden severe headache, vomiting, or a fit</li>
+          <li>Becomes very drowsy or hard to wake</li>
+          <li>Fever, burning urine, or confusion suddenly worse</li>
+          <li>Black stools or unusual bleeding — he is on two blood thinners</li>
+        </ul>
+        <a class="tel" href="tel:01202460000">Hospital: 0120-2460000</a> &nbsp;·&nbsp;
+        <a class="tel" href="tel:09582833333">09582833333</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">Compiled by family from hospital records dated 1–3 August 2026, with AI assistance. This is a plain-language summary to help the family follow the case — the hospital's own reports and discharge summary remain the official medical record.</div>
+</section>
+
+<!-- ======================= CLINICAL ======================= -->
+<section class="view" id="cl">
+
+  <div class="sec" id="cl-dx" data-t="Presentation">
+    <p class="lede"><b>70M, known T2DM</b>, presented 01/08/2026 11:38 with syncope, generalised weakness and left hemiparesis with disorientation. Imaging confirmed <b>acute right MCA territory infarct</b> — multiple small scattered DWI lesions on a background of chronic small-vessel disease. <b>Stepped down from ICU to ward room 1002A on 03/08 at 21:00</b>, GCS 15/15, power 5/5, room air.</p>
+    <div class="card" style="margin-top:16px">
+      <dl class="kv">
+        <dt>Presenting complaint</dt><dd>Syncope, generalised weakness, left hemiparesis, disorientation</dd>
+        <dt>Working diagnosis</dt><dd><b>Acute right MCA infarct</b> — multiple small emboli; embolic pattern on chronic microangiopathy</dd>
+        <dt>Neurological course</dt><dd>GCS on arrival E4V1M6 (11) at ~13:30 → E4V5M6 (15) same evening; <b>15/15 sustained every shift D1 night → D3</b>. Power 5/5 all limbs, pupils equal and reactive, room air throughout. Residual mild disorientation, improving.</dd>
+        <dt>Co-morbidities</dt><dd>Type 2 diabetes mellitus (HbA1c 8.2%). Grade I fatty liver, BPH ~50cc. Allergies: not known.</dd>
+        <dt>Disposition</dt><dd><b>Shifted ICU → ward room 1002A (semi-private) on 03/08 at 21:00.</b> Dermatology referral placed for gluteal/neck fungal infection.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="sec" id="cl-ix" data-t="Investigations">
+    <div class="sec-h"><h2>Investigations</h2><div class="rule"></div><span class="note">abnormals in red · pending in amber</span></div>
+    <div class="g2">
+      <div class="card">
+        <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Neuro imaging</h3>
+        <dl class="kv">
+          <dt>NCCT head 01/08</dt><dd>No haemorrhage or mass effect</dd>
+          <dt>MRI brain 01/08</dt><dd>Acute Rt MCA infarcts on DWI; chronic WM microangiopathic change. <span class="mid">Written report awaited</span></dd>
+          <dt>CTA brain + neck 02/08</dt><dd>3-D VR: cervical vessels grossly patent, no cut-off appreciated on films. <span class="mid">Written report awaited</span></dd>
+          <dt>EEG 03/08</dt><dd>Performed. <span class="mid">Report awaited</span></dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Cardiac</h3>
+        <dl class="kv">
+          <dt>ECG 01/08</dt><dd>Sinus rhythm, HR 60, QS in V1, QTc 394</dd>
+          <dt>2D Echo 01/08</dt><dd>EF 55%, mild concentric LVH, Gr-I diastolic dysfunction, trace MR/TR, LA 3.4 cm, normal PAH, <b>no intracardiac clot or vegetation</b>, no effusion</dd>
+          <dt>24-h Holter</dt><dd>Attached 03/08 12:11 — <span class="mid">result awaited</span> (occult PAF screen)</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Laboratory · trend 01 → 03/08</h3>
+        <dl class="kv">
+          <dt>HbA1c</dt><dd><span class="hi">8.2%</span></dd>
+          <dt>LDL / HDL / TG / TC</dt><dd><span class="hi">108</span> / <span class="mid">36</span> / 136 / 159</dd>
+          <dt>TLC</dt><dd>9,580 → <span class="mid">14,400 (N 86.5%)</span> → 8,580 · self-resolved</dd>
+          <dt>Hb / platelets</dt><dd>15.7 → 14.5 · 2.59 → 1.95 L (in range, monitor on DAPT)</dd>
+          <dt>Creatinine / Na / K</dt><dd>0.94–1.03 / 139–141 / 4.19–4.75 — normal</dd>
+          <dt>LFT / TSH</dt><dd>Normal / 2.15</dd>
+          <dt>B12 / Vit D / CRP</dt><dd>868 / 67.2 / &lt;0.10</dd>
+          <dt>ABG 01/08</dt><dd>pH 7.41, pCO₂ 40, lactate 1.5, glucose 146</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Other</h3>
+        <dl class="kv">
+          <dt>Urine R/M 02/08</dt><dd><span class="hi">Nitrite positive, bacteria present, budding yeast</span>; pus cells 1–2/HPF, LE nil — low-grade, consider culture</dd>
+          <dt>Skin</dt><dd><span class="mid">Fungal infection gluteal region and neck</span> — derma referral 03/08</dd>
+          <dt>CXR PA 01/08</dt><dd>Clear lung fields, normal cardiac silhouette</dd>
+          <dt>USG whole abdomen</dt><dd>Grade I fatty liver; prostatomegaly ~49–50cc with median lobe hypertrophy; kidneys, GB, pancreas, spleen normal; no free fluid</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec" id="cl-rx" data-t="Treatment">
+    <div class="sec-h"><h2>Treatment given</h2><div class="rule"></div><span class="note">from drug chart, commenced 01/08</span></div>
+    <div class="card">
+      <div class="tw"><table>
+        <thead><tr><th>Drug</th><th>Dose · route · frequency</th><th>Class / purpose</th></tr></thead>
+        <tbody>
+        <tr><td>Tab Ecosprin</td><td class="mono">75 mg PO OD (300 mg load D1)</td><td>Antiplatelet — DAPT</td></tr>
+        <tr><td>Tab Clopitab</td><td class="mono">75 mg PO HS</td><td>Antiplatelet — DAPT</td></tr>
+        <tr><td>Tab Atorva</td><td class="mono">40 mg PO HS</td><td>High-intensity statin</td></tr>
+        <tr><td>Inj Brivgard (brivaracetam)</td><td class="mono">50 mg IV q12h</td><td>ASM cover — EEG-guided review</td></tr>
+        <tr><td>Inj Cognistar (citicoline)</td><td class="mono">60 mg IV q8h</td><td>Neuroprotective</td></tr>
+        <tr><td>Inj Tyvalzi</td><td class="mono">4 ml IV · D0, D3, D6</td><td>Neuro-recovery adjunct</td></tr>
+        <tr><td>Cap Galvus-Met</td><td class="mono">50/500 PO</td><td>T2DM · RBS charting TDS + sliding scale</td></tr>
+        <tr><td>Inj Pantocid</td><td class="mono">40 mg IV OD</td><td>PPI cover on DAPT</td></tr>
+        <tr><td>Inj Emeset</td><td class="mono">4 mg IV q8h PRN</td><td>Antiemetic</td></tr>
+        <tr><td>Remylin PFS · Mednovit CD3 · Ubnol · Vil Power-M · L-Qunol</td><td class="mono">as charted</td><td>B12 / multivitamin / supportive</td></tr>
+        <tr><td>IVF normal saline</td><td class="mono">75 ml/hr × 3 days</td><td>Maintenance — stopped per plan</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="sec" id="cl-course" data-t="Course">
+    <div class="sec-h"><h2>Clinical course</h2><div class="rule"></div><span class="note">D1 – D3</span></div>
+    <div class="card">
+      <dl class="kv">
+        <dt>Vitals</dt><dd>HR 60–95 · NIBP ~100–145/60–85 · SpO₂ 93–99% on room air · afebrile 98.1–98.6 °F</dd>
+        <dt>Neuro observations</dt><dd>GCS 15/15 sustained · pupils N/N reactive · peripheral pulses +2 all limbs · power 5/5 bilaterally</dd>
+        <dt>Intake / output</dt><dd>D2 intake 2,750–3,190 ml · urine ~1,600 ml · Foley removed 02/08, voiding spontaneously · bowels not opened by D3</dd>
+        <dt>Nutrition &amp; mobility</dt><dd>Soft diet, oral intake ~900–1,000 ml/day · bed rest, mobilisation planned with ward transfer</dd>
+        <dt>Level of care</dt><dd>ICU D1–D3 → <b>ward room 1002A (semi-private) from 03/08 21:00</b>; no organ support at any point, room air throughout</dd>
+        <dt>Risk scoring</dt><dd>Morse fall score 70 (high) — precautions in place · DVT risk 3–4 · Braden 14–15</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="sec" id="cl-plan" data-t="Pending &amp; aetiology">
+    <div class="sec-h"><h2>Pending items &amp; working aetiology</h2><div class="rule"></div></div>
+    <div class="g2">
+      <div class="box await">
+        <h3>To complete</h3>
+        <ol>
+          <li><b>Formal CTA brain + neck report</b> — quantify stenosis. Carotid doppler only if CTA flags a ≥50% lesion, otherwise redundant.</li>
+          <li><b>Formal MRI report</b> — lesion map, acute versus chronic burden.</li>
+          <li><b>Holter analysis</b> after 24 h. If negative, consider extended monitoring given the scattered embolic pattern.</li>
+          <li><b>EEG report</b> — de-escalation decision for brivaracetam.</li>
+          <li>Post-transfer: physiotherapy/mobilisation referral, fall precautions (Morse 70), swallow safety check before unsupervised feeding.</li>
+          <li>Urine culture ± targeted therapy; topical antifungal per dermatology.</li>
+          <li>Diabetology input — OHA titration, target HbA1c &lt;7; LDL goal &lt;70, recheck lipids at 6–8 weeks.</li>
+          <li>Discharge: DAPT duration per protocol (typically 21 days dual → single agent), physio/rehab plan, urology OPD for BPH.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Working aetiology</h3>
+        <p style="font-size:14px">Multiple small acute infarcts in right MCA territory with a <b>clean echo</b> (no intracardiac source), <b>sinus rhythm</b> on admission ECG, and <b>grossly patent cervical vessels</b> on CTA films favours <b>embolic stroke of undetermined source versus intracranial atherothrombosis</b>. Occult paroxysmal AF remains the key rule-out, with Holter currently running.</p>
+        <p style="font-size:14px;margin-top:10px">Modifiable substrate is prominent: uncontrolled T2DM at 8.2%, LDL 108 with HDL 36, and grade I hepatic steatosis.</p>
+        <p style="font-size:13px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2)">All <b>75 source pages</b> — films, echo, ECG, labs, drug charts and ICU flowsheets — are in the <a href="#" onclick="go('rc');return false"><b>Records</b></a> tab.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">Compiled by the patient's family from bedside records, laboratory prints, drug charts, nursing flowsheets and photographs of films dated 1–3 August 2026, with AI assistance, to support hand-over and second opinions. Not an official hospital document — please verify against primary records. Contact: family attendant of Mr. M. K. Garg, Bed M-307.</div>
+</section>
+
+<!-- ======================= RECORDS ======================= -->
+<section class="view" id="rc">
+  <div class="sec" data-t="Record library">
+    <p class="lede">Every page below is a photograph of an original hospital record from <b>1–3 August 2026</b>. Click to enlarge, then use <span class="mono">← →</span> to move through the set, click the image to zoom, and <span class="mono">Esc</span> to close.</p>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="Search records — try &quot;HbA1c&quot;, &quot;Holter&quot;, &quot;MRI&quot;, &quot;flowsheet&quot;…" oninput="filt()">
+      <div class="chips">
+      <button class="chip active" data-f="all">All <em>75</em></button>
+      <button class="chip" data-f="neuro">Neuro imaging <em>9</em></button>
+      <button class="chip" data-f="cardiac">Cardiac <em>6</em></button>
+      <button class="chip" data-f="imaging">Other imaging <em>3</em></button>
+      <button class="chip" data-f="labs">Laboratory <em>19</em></button>
+      <button class="chip" data-f="charts">Drug charts <em>3</em></button>
+      <button class="chip" data-f="nursing">ICU / nursing <em>28</em></button>
+      <button class="chip" data-f="admin">Admission &amp; pharmacy <em>7</em></button>
+      </div>
+    </div>
+    <div class="gal" id="gal">
+      <figure class="shot" data-cat="neuro" data-i="0" data-src="reports/neuro-cta-3d-vr.jpg" data-label="CT Angiography 02/08 — 3D volume-rendered vessel reconstructions" data-search="ct angiography 02/08 — 3d volume-rendered vessel reconstructions neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-3d-vr.jpg" alt="CT Angiography 02/08 — 3D volume-rendered vessel reconstructions"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography 02/08 — 3D volume-rendered vessel reconstructions</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="1" data-src="reports/neuro-cta-neck-axial.jpg" data-label="CT Angiography Brain + Neck 02/08 — axial source images" data-search="ct angiography brain + neck 02/08 — axial source images neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-neck-axial.jpg" alt="CT Angiography Brain + Neck 02/08 — axial source images"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography Brain + Neck 02/08 — axial source images</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="2" data-src="reports/neuro-mri-flair.jpg" data-label="MRI Brain — FLAIR sequence sheet" data-search="mri brain — flair sequence sheet neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-flair.jpg" alt="MRI Brain — FLAIR sequence sheet"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — FLAIR sequence sheet</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="3" data-src="reports/neuro-mri-t2-a.jpg" data-label="MRI Brain — T2 sheet (2/2)" data-search="mri brain — t2 sheet (2/2) neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-t2-a.jpg" alt="MRI Brain — T2 sheet (2/2)"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — T2 sheet (2/2)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="4" data-src="reports/neuro-mri-t2-b.jpg" data-label="MRI Brain — T2 sheet (2/2, alt view)" data-search="mri brain — t2 sheet (2/2, alt view) neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-t2-b.jpg" alt="MRI Brain — T2 sheet (2/2, alt view)"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — T2 sheet (2/2, alt view)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="5" data-src="reports/neuro-mri-t2-c.jpg" data-label="MRI Brain — T2 sheet (2/2, alt view)" data-search="mri brain — t2 sheet (2/2, alt view) neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-t2-c.jpg" alt="MRI Brain — T2 sheet (2/2, alt view)"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — T2 sheet (2/2, alt view)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="6" data-src="reports/neuro-mri-t2-dwi-a.jpg" data-label="MRI Brain — T2 + DWI sheet (1/2)" data-search="mri brain — t2 + dwi sheet (1/2) neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-t2-dwi-a.jpg" alt="MRI Brain — T2 + DWI sheet (1/2)"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — T2 + DWI sheet (1/2)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="7" data-src="reports/neuro-mri-t2-dwi-b.jpg" data-label="MRI Brain — T2 + DWI sheet (1/2, alt view)" data-search="mri brain — t2 + dwi sheet (1/2, alt view) neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-t2-dwi-b.jpg" alt="MRI Brain — T2 + DWI sheet (1/2, alt view)"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — T2 + DWI sheet (1/2, alt view)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="8" data-src="reports/neuro-ncct-head.jpg" data-label="NCCT Head 01/08 — plain CT brain films" data-search="ncct head 01/08 — plain ct brain films neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-ncct-head.jpg" alt="NCCT Head 01/08 — plain CT brain films"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>NCCT Head 01/08 — plain CT brain films</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="9" data-src="reports/cardiac-ecg-12lead.jpg" data-label="12-lead ECG 01/08 — sinus rhythm, HR 60, QTc 394" data-search="12-lead ecg 01/08 — sinus rhythm, hr 60, qtc 394 cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-ecg-12lead.jpg" alt="12-lead ECG 01/08 — sinus rhythm, HR 60, QTc 394"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>12-lead ECG 01/08 — sinus rhythm, HR 60, QTc 394</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="10" data-src="reports/cardiac-ecg-abg.jpg" data-label="ECG strip + ABG panel 01/08 — pH 7.41, Glu 146, Lac 1.5" data-search="ecg strip + abg panel 01/08 — ph 7.41, glu 146, lac 1.5 cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-ecg-abg.jpg" alt="ECG strip + ABG panel 01/08 — pH 7.41, Glu 146, Lac 1.5"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>ECG strip + ABG panel 01/08 — pH 7.41, Glu 146, Lac 1.5</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="11" data-src="reports/cardiac-echo-p1-clean.jpg" data-label="2D Echo — page 1 (clean copy)" data-search="2d echo — page 1 (clean copy) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p1-clean.jpg" alt="2D Echo — page 1 (clean copy)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo — page 1 (clean copy)</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="12" data-src="reports/cardiac-echo-p1.jpg" data-label="2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)" data-search="2d echo &amp; colour doppler — page 1 (measurements, chambers, valves) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p1.jpg" alt="2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="13" data-src="reports/cardiac-echo-p2-clean.jpg" data-label="2D Echo — page 2 (clean copy, final impression)" data-search="2d echo — page 2 (clean copy, final impression) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p2-clean.jpg" alt="2D Echo — page 2 (clean copy, final impression)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo — page 2 (clean copy, final impression)</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="14" data-src="reports/cardiac-echo-p2.jpg" data-label="2D Echo — page 2 (Doppler + final impression)" data-search="2d echo — page 2 (doppler + final impression) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p2.jpg" alt="2D Echo — page 2 (Doppler + final impression)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo — page 2 (Doppler + final impression)</figcaption></figure>
+      <figure class="shot" data-cat="imaging" data-i="15" data-src="reports/imaging-cxr-a.jpg" data-label="Chest X-ray PA 01/08" data-search="chest x-ray pa 01/08 other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-cxr-a.jpg" alt="Chest X-ray PA 01/08"></div><figcaption><span class="tag tag-imaging">Other imaging</span>Chest X-ray PA 01/08</figcaption></figure>
+      <figure class="shot" data-cat="imaging" data-i="16" data-src="reports/imaging-cxr-b.jpg" data-label="Chest X-ray PA 01/08 — closer view" data-search="chest x-ray pa 01/08 — closer view other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-cxr-b.jpg" alt="Chest X-ray PA 01/08 — closer view"></div><figcaption><span class="tag tag-imaging">Other imaging</span>Chest X-ray PA 01/08 — closer view</figcaption></figure>
+      <figure class="shot" data-cat="imaging" data-i="17" data-src="reports/imaging-usg-abdomen.jpg" data-label="USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc" data-search="usg whole abdomen report — gr-i fatty liver, prostatomegaly ~50cc other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-usg-abdomen.jpg" alt="USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc"></div><figcaption><span class="tag tag-imaging">Other imaging</span>USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="18" data-src="reports/labs-biochem-0208.jpg" data-label="Biochemistry 02/08 — albumin, T3/T4/TSH, lipids + NCEP interpretation" data-search="biochemistry 02/08 — albumin, t3/t4/tsh, lipids + ncep interpretation laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-biochem-0208.jpg" alt="Biochemistry 02/08 — albumin, T3/T4/TSH, lipids + NCEP interpretation"></div><figcaption><span class="tag tag-labs">Laboratory</span>Biochemistry 02/08 — albumin, T3/T4/TSH, lipids + NCEP interpretation</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="19" data-src="reports/labs-biochem-cover.jpg" data-label="Biochemistry report cover page 02/08" data-search="biochemistry report cover page 02/08 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-biochem-cover.jpg" alt="Biochemistry report cover page 02/08"></div><figcaption><span class="tag tag-labs">Laboratory</span>Biochemistry report cover page 02/08</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="20" data-src="reports/labs-cbc-0102-b.jpg" data-label="CBC + ESR — 01/08 &amp; 02/08 (copy)" data-search="cbc + esr — 01/08 &amp; 02/08 (copy) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-cbc-0102-b.jpg" alt="CBC + ESR — 01/08 &amp; 02/08 (copy)"></div><figcaption><span class="tag tag-labs">Laboratory</span>CBC + ESR — 01/08 &amp; 02/08 (copy)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="21" data-src="reports/labs-cbc-0102.jpg" data-label="CBC + ESR — 01/08 &amp; 02/08 comparison" data-search="cbc + esr — 01/08 &amp; 02/08 comparison laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-cbc-0102.jpg" alt="CBC + ESR — 01/08 &amp; 02/08 comparison"></div><figcaption><span class="tag tag-labs">Laboratory</span>CBC + ESR — 01/08 &amp; 02/08 comparison</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="22" data-src="reports/labs-cbc-0108-b.jpg" data-label="CBC 01/08 (copy)" data-search="cbc 01/08 (copy) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-cbc-0108-b.jpg" alt="CBC 01/08 (copy)"></div><figcaption><span class="tag tag-labs">Laboratory</span>CBC 01/08 (copy)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="23" data-src="reports/labs-cbc-0108.jpg" data-label="CBC + Vitamin B12 assay 01/08 — B12 868" data-search="cbc + vitamin b12 assay 01/08 — b12 868 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-cbc-0108.jpg" alt="CBC + Vitamin B12 assay 01/08 — B12 868"></div><figcaption><span class="tag tag-labs">Laboratory</span>CBC + Vitamin B12 assay 01/08 — B12 868</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="24" data-src="reports/labs-cbc-030201.jpg" data-label="CBC trend — 03/08, 02/08, 01/08 (TLC 8,580 normalised)" data-search="cbc trend — 03/08, 02/08, 01/08 (tlc 8,580 normalised) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-cbc-030201.jpg" alt="CBC trend — 03/08, 02/08, 01/08 (TLC 8,580 normalised)"></div><figcaption><span class="tag tag-labs">Laboratory</span>CBC trend — 03/08, 02/08, 01/08 (TLC 8,580 normalised)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="25" data-src="reports/labs-crp-vitd-0108.jpg" data-label="CRP &lt;0.10 + Vitamin D3 67.2 — 01/08" data-search="crp &lt;0.10 + vitamin d3 67.2 — 01/08 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-crp-vitd-0108.jpg" alt="CRP &lt;0.10 + Vitamin D3 67.2 — 01/08"></div><figcaption><span class="tag tag-labs">Laboratory</span>CRP &lt;0.10 + Vitamin D3 67.2 — 01/08</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="26" data-src="reports/labs-haem-0208.jpg" data-label="Haematology + KFT panel 02/08 — TLC 14,400, N 86.5%" data-search="haematology + kft panel 02/08 — tlc 14,400, n 86.5% laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-haem-0208.jpg" alt="Haematology + KFT panel 02/08 — TLC 14,400, N 86.5%"></div><figcaption><span class="tag tag-labs">Laboratory</span>Haematology + KFT panel 02/08 — TLC 14,400, N 86.5%</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="27" data-src="reports/labs-hba1c-kft-0108.jpg" data-label="HbA1c 8.2% + KFT + LFT 01/08" data-search="hba1c 8.2% + kft + lft 01/08 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-hba1c-kft-0108.jpg" alt="HbA1c 8.2% + KFT + LFT 01/08"></div><figcaption><span class="tag tag-labs">Laboratory</span>HbA1c 8.2% + KFT + LFT 01/08</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="28" data-src="reports/labs-kft-lft-0102-b.jpg" data-label="KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08 (copy)" data-search="kft / lft / thyroid / vitd — 01/08 &amp; 02/08 (copy) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-kft-lft-0102-b.jpg" alt="KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08 (copy)"></div><figcaption><span class="tag tag-labs">Laboratory</span>KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08 (copy)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="29" data-src="reports/labs-kft-lft-0102.jpg" data-label="KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08" data-search="kft / lft / thyroid / vitd — 01/08 &amp; 02/08 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-kft-lft-0102.jpg" alt="KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08"></div><figcaption><span class="tag tag-labs">Laboratory</span>KFT / LFT / thyroid / VitD — 01/08 &amp; 02/08</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="30" data-src="reports/labs-kft-lft-0108-b.jpg" data-label="KFT / LFT / CRP / VitD 01/08 (copy)" data-search="kft / lft / crp / vitd 01/08 (copy) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-kft-lft-0108-b.jpg" alt="KFT / LFT / CRP / VitD 01/08 (copy)"></div><figcaption><span class="tag tag-labs">Laboratory</span>KFT / LFT / CRP / VitD 01/08 (copy)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="31" data-src="reports/labs-kft-lft-030201.jpg" data-label="KFT / LFT / thyroid / CRP / VitD — 03/08, 02/08, 01/08" data-search="kft / lft / thyroid / crp / vitd — 03/08, 02/08, 01/08 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-kft-lft-030201.jpg" alt="KFT / LFT / thyroid / CRP / VitD — 03/08, 02/08, 01/08"></div><figcaption><span class="tag tag-labs">Laboratory</span>KFT / LFT / thyroid / CRP / VitD — 03/08, 02/08, 01/08</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="32" data-src="reports/labs-lipid-0208-b.jpg" data-label="Lipid profile 02/08 (copy)" data-search="lipid profile 02/08 (copy) laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-lipid-0208-b.jpg" alt="Lipid profile 02/08 (copy)"></div><figcaption><span class="tag tag-labs">Laboratory</span>Lipid profile 02/08 (copy)</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="33" data-src="reports/labs-lipid-0208.jpg" data-label="Lipid profile 02/08 — LDL 108, HDL 36, TG 136" data-search="lipid profile 02/08 — ldl 108, hdl 36, tg 136 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-lipid-0208.jpg" alt="Lipid profile 02/08 — LDL 108, HDL 36, TG 136"></div><figcaption><span class="tag tag-labs">Laboratory</span>Lipid profile 02/08 — LDL 108, HDL 36, TG 136</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="34" data-src="reports/labs-lipid-030201.jpg" data-label="Lipid profile — 03/08, 02/08, 01/08 columns" data-search="lipid profile — 03/08, 02/08, 01/08 columns laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-lipid-030201.jpg" alt="Lipid profile — 03/08, 02/08, 01/08 columns"></div><figcaption><span class="tag tag-labs">Laboratory</span>Lipid profile — 03/08, 02/08, 01/08 columns</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="35" data-src="reports/labs-urine-rm-p1.jpg" data-label="Urine Routine/Microscopy 02/08 — nitrite +, bacteria, budding yeast" data-search="urine routine/microscopy 02/08 — nitrite +, bacteria, budding yeast laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-urine-rm-p1.jpg" alt="Urine Routine/Microscopy 02/08 — nitrite +, bacteria, budding yeast"></div><figcaption><span class="tag tag-labs">Laboratory</span>Urine Routine/Microscopy 02/08 — nitrite +, bacteria, budding yeast</figcaption></figure>
+      <figure class="shot" data-cat="labs" data-i="36" data-src="reports/labs-urine-rm-p2.jpg" data-label="Urine Routine/Microscopy 02/08 — page 2" data-search="urine routine/microscopy 02/08 — page 2 laboratory" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/labs-urine-rm-p2.jpg" alt="Urine Routine/Microscopy 02/08 — page 2"></div><figcaption><span class="tag tag-labs">Laboratory</span>Urine Routine/Microscopy 02/08 — page 2</figcaption></figure>
+      <figure class="shot" data-cat="charts" data-i="37" data-src="reports/charts-mar-p1.jpg" data-label="Medication Administration Record p1 — STAT Ecospirin 300, Atorva 40, Clopitab 75" data-search="medication administration record p1 — stat ecospirin 300, atorva 40, clopitab 75 drug charts" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/charts-mar-p1.jpg" alt="Medication Administration Record p1 — STAT Ecospirin 300, Atorva 40, Clopitab 75"></div><figcaption><span class="tag tag-charts">Drug charts</span>Medication Administration Record p1 — STAT Ecospirin 300, Atorva 40, Clopitab 75</figcaption></figure>
+      <figure class="shot" data-cat="charts" data-i="38" data-src="reports/charts-mar-p2.jpg" data-label="Drug chart p2 — Cognistar, Tyvalzi, Pan, Emeset, Ecosprin, Atorva, Clopitab" data-search="drug chart p2 — cognistar, tyvalzi, pan, emeset, ecosprin, atorva, clopitab drug charts" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/charts-mar-p2.jpg" alt="Drug chart p2 — Cognistar, Tyvalzi, Pan, Emeset, Ecosprin, Atorva, Clopitab"></div><figcaption><span class="tag tag-charts">Drug charts</span>Drug chart p2 — Cognistar, Tyvalzi, Pan, Emeset, Ecosprin, Atorva, Clopitab</figcaption></figure>
+      <figure class="shot" data-cat="charts" data-i="39" data-src="reports/charts-mar-p3.jpg" data-label="Drug chart p3 — Mednovit, Remylin, Ubnol, Vil Power-M, Brivgard" data-search="drug chart p3 — mednovit, remylin, ubnol, vil power-m, brivgard drug charts" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/charts-mar-p3.jpg" alt="Drug chart p3 — Mednovit, Remylin, Ubnol, Vil Power-M, Brivgard"></div><figcaption><span class="tag tag-charts">Drug charts</span>Drug chart p3 — Mednovit, Remylin, Ubnol, Vil Power-M, Brivgard</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="40" data-src="reports/nursing-ccf-d1-full.jpg" data-label="Critical Care Flowsheet 01/08 — full sheet with plan column" data-search="critical care flowsheet 01/08 — full sheet with plan column icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d1-full.jpg" alt="Critical Care Flowsheet 01/08 — full sheet with plan column"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 01/08 — full sheet with plan column</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="41" data-src="reports/nursing-ccf-d1-plan.jpg" data-label="Flowsheet 01/08 — plan: MRI, EEG, 24-h Holter, CT Angio 9pm" data-search="flowsheet 01/08 — plan: mri, eeg, 24-h holter, ct angio 9pm icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d1-plan.jpg" alt="Flowsheet 01/08 — plan: MRI, EEG, 24-h Holter, CT Angio 9pm"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Flowsheet 01/08 — plan: MRI, EEG, 24-h Holter, CT Angio 9pm</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="42" data-src="reports/nursing-ccf-d1.jpg" data-label="Critical Care Flowsheet 01/08 (D1) — vitals, GCS E4V1→V5M6, I/O" data-search="critical care flowsheet 01/08 (d1) — vitals, gcs e4v1→v5m6, i/o icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d1.jpg" alt="Critical Care Flowsheet 01/08 (D1) — vitals, GCS E4V1→V5M6, I/O"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 01/08 (D1) — vitals, GCS E4V1→V5M6, I/O</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="43" data-src="reports/nursing-ccf-d2-full.jpg" data-label="Critical Care Flowsheet 02/08 — full sheet" data-search="critical care flowsheet 02/08 — full sheet icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d2-full.jpg" alt="Critical Care Flowsheet 02/08 — full sheet"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 02/08 — full sheet</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="44" data-src="reports/nursing-ccf-d2-imaging.jpg" data-label="Flowsheet 02/08 — radiological imaging &amp; culture details" data-search="flowsheet 02/08 — radiological imaging &amp; culture details icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d2-imaging.jpg" alt="Flowsheet 02/08 — radiological imaging &amp; culture details"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Flowsheet 02/08 — radiological imaging &amp; culture details</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="45" data-src="reports/nursing-ccf-d2-io.jpg" data-label="Flowsheet 02/08 — intake/output, urine 1,600 ml, Foley removed" data-search="flowsheet 02/08 — intake/output, urine 1,600 ml, foley removed icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d2-io.jpg" alt="Flowsheet 02/08 — intake/output, urine 1,600 ml, Foley removed"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Flowsheet 02/08 — intake/output, urine 1,600 ml, Foley removed</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="46" data-src="reports/nursing-ccf-d2-plan.jpg" data-label="Flowsheet 02/08 — imaging plan, catheter log, insulin sliding scale" data-search="flowsheet 02/08 — imaging plan, catheter log, insulin sliding scale icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d2-plan.jpg" alt="Flowsheet 02/08 — imaging plan, catheter log, insulin sliding scale"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Flowsheet 02/08 — imaging plan, catheter log, insulin sliding scale</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="47" data-src="reports/nursing-ccf-d2.jpg" data-label="Critical Care Flowsheet 02/08 (D2) — GCS 15/15 sustained" data-search="critical care flowsheet 02/08 (d2) — gcs 15/15 sustained icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d2.jpg" alt="Critical Care Flowsheet 02/08 (D2) — GCS 15/15 sustained"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 02/08 (D2) — GCS 15/15 sustained</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="48" data-src="reports/nursing-ccf-d3-full.jpg" data-label="Critical Care Flowsheet 03/08 — full sheet, plan: shift to ward" data-search="critical care flowsheet 03/08 — full sheet, plan: shift to ward icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d3-full.jpg" alt="Critical Care Flowsheet 03/08 — full sheet, plan: shift to ward"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 03/08 — full sheet, plan: shift to ward</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="49" data-src="reports/nursing-ccf-d3-mca.jpg" data-label="Critical Care Flowsheet 03/08 — diagnosis: ACUTE (R) MCA INFARCT" data-search="critical care flowsheet 03/08 — diagnosis: acute (r) mca infarct icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d3-mca.jpg" alt="Critical Care Flowsheet 03/08 — diagnosis: ACUTE (R) MCA INFARCT"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Critical Care Flowsheet 03/08 — diagnosis: ACUTE (R) MCA INFARCT</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="50" data-src="reports/nursing-ccf-d3-plan.jpg" data-label="Flowsheet 03/08 — EEG done, Holter started 12:11pm, derma ref" data-search="flowsheet 03/08 — eeg done, holter started 12:11pm, derma ref icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ccf-d3-plan.jpg" alt="Flowsheet 03/08 — EEG done, Holter started 12:11pm, derma ref"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Flowsheet 03/08 — EEG done, Holter started 12:11pm, derma ref</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="51" data-src="reports/nursing-flowsheet-holter.jpg" data-label="Nursing flowsheet 03/08 — Holter attached, derma ref, shift to ward" data-search="nursing flowsheet 03/08 — holter attached, derma ref, shift to ward icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-flowsheet-holter.jpg" alt="Nursing flowsheet 03/08 — Holter attached, derma ref, shift to ward"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing flowsheet 03/08 — Holter attached, derma ref, shift to ward</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="52" data-src="reports/nursing-handover-form.jpg" data-label="Nursing handover form — syncope / T2DM / left hemiparesis" data-search="nursing handover form — syncope / t2dm / left hemiparesis icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-handover-form.jpg" alt="Nursing handover form — syncope / T2DM / left hemiparesis"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing handover form — syncope / T2DM / left hemiparesis</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="53" data-src="reports/nursing-handover-pain.jpg" data-label="Nursing handover (ISBAR) + pain assessment scales" data-search="nursing handover (isbar) + pain assessment scales icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-handover-pain.jpg" alt="Nursing handover (ISBAR) + pain assessment scales"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing handover (ISBAR) + pain assessment scales</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="54" data-src="reports/nursing-ncp-anxiety.jpg" data-label="Nursing care plan — anxiety related to disease condition" data-search="nursing care plan — anxiety related to disease condition icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ncp-anxiety.jpg" alt="Nursing care plan — anxiety related to disease condition"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing care plan — anxiety related to disease condition</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="55" data-src="reports/nursing-ncp-infection.jpg" data-label="Nursing care plan — risk of infection" data-search="nursing care plan — risk of infection icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ncp-infection.jpg" alt="Nursing care plan — risk of infection"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing care plan — risk of infection</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="56" data-src="reports/nursing-ncp-weakness-b.jpg" data-label="Nursing care plan — generalised weakness (page 2)" data-search="nursing care plan — generalised weakness (page 2) icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ncp-weakness-b.jpg" alt="Nursing care plan — generalised weakness (page 2)"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing care plan — generalised weakness (page 2)</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="57" data-src="reports/nursing-ncp-weakness.jpg" data-label="Nursing care plan — generalised weakness" data-search="nursing care plan — generalised weakness icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-ncp-weakness.jpg" alt="Nursing care plan — generalised weakness"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing care plan — generalised weakness</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="58" data-src="reports/nursing-note-holter.jpg" data-label="Nurses note — Holter attached 12:11pm, EEG done, plan for shifting" data-search="nurses note — holter attached 12:11pm, eeg done, plan for shifting icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-note-holter.jpg" alt="Nurses note — Holter attached 12:11pm, EEG done, plan for shifting"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nurses note — Holter attached 12:11pm, EEG done, plan for shifting</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="59" data-src="reports/nursing-shift-d2-a.jpg" data-label="Shift assessment + nursing care bundle 02/08" data-search="shift assessment + nursing care bundle 02/08 icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d2-a.jpg" alt="Shift assessment + nursing care bundle 02/08"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment + nursing care bundle 02/08</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="60" data-src="reports/nursing-shift-d2-b.jpg" data-label="Shift assessment / pain &amp; Braden scoring 02/08" data-search="shift assessment / pain &amp; braden scoring 02/08 icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d2-b.jpg" alt="Shift assessment / pain &amp; Braden scoring 02/08"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment / pain &amp; Braden scoring 02/08</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="61" data-src="reports/nursing-shift-d2-c.jpg" data-label="Shift assessment full sheet 02/08 with nurses notes" data-search="shift assessment full sheet 02/08 with nurses notes icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d2-c.jpg" alt="Shift assessment full sheet 02/08 with nurses notes"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment full sheet 02/08 with nurses notes</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="62" data-src="reports/nursing-shift-d3-a.jpg" data-label="Shift assessment 03/08 — alert, room air, power 5/5" data-search="shift assessment 03/08 — alert, room air, power 5/5 icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d3-a.jpg" alt="Shift assessment 03/08 — alert, room air, power 5/5"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment 03/08 — alert, room air, power 5/5</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="63" data-src="reports/nursing-shift-d3-b.jpg" data-label="Nursing care bundle 03/08" data-search="nursing care bundle 03/08 icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d3-b.jpg" alt="Nursing care bundle 03/08"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing care bundle 03/08</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="64" data-src="reports/nursing-shift-d3-c.jpg" data-label="Nurses notes 03/08 — EEG due, Holter due, CT-A &amp; MRI report due" data-search="nurses notes 03/08 — eeg due, holter due, ct-a &amp; mri report due icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-d3-c.jpg" alt="Nurses notes 03/08 — EEG due, Holter due, CT-A &amp; MRI report due"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nurses notes 03/08 — EEG due, Holter due, CT-A &amp; MRI report due</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="65" data-src="reports/nursing-shift-eve-0308.jpg" data-label="Shift assessment 03/08 evening" data-search="shift assessment 03/08 evening icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-eve-0308.jpg" alt="Shift assessment 03/08 evening"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment 03/08 evening</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="66" data-src="reports/nursing-shift-full-0208.jpg" data-label="Shift assessment full sheet 02/08 (wide view)" data-search="shift assessment full sheet 02/08 (wide view) icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-full-0208.jpg" alt="Shift assessment full sheet 02/08 (wide view)"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Shift assessment full sheet 02/08 (wide view)</figcaption></figure>
+      <figure class="shot" data-cat="nursing" data-i="67" data-src="reports/nursing-shift-full-0308.jpg" data-label="Nursing flowsheet 03/08 (wide view)" data-search="nursing flowsheet 03/08 (wide view) icu / nursing" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/nursing-shift-full-0308.jpg" alt="Nursing flowsheet 03/08 (wide view)"></div><figcaption><span class="tag tag-nursing">ICU / nursing</span>Nursing flowsheet 03/08 (wide view)</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="68" data-src="reports/admin-admission-form.jpg" data-label="Admission form 01/08 11:38 — Emergency, Neurology, remark: CVA" data-search="admission form 01/08 11:38 — emergency, neurology, remark: cva admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-admission-form.jpg" alt="Admission form 01/08 11:38 — Emergency, Neurology, remark: CVA"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Admission form 01/08 11:38 — Emergency, Neurology, remark: CVA</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="69" data-src="reports/admin-fin-clearance-cta.jpg" data-label="Financial clearance — CT Angiography Brain + Neck" data-search="financial clearance — ct angiography brain + neck admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-fin-clearance-cta.jpg" alt="Financial clearance — CT Angiography Brain + Neck"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Financial clearance — CT Angiography Brain + Neck</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="70" data-src="reports/admin-fin-clearance-mri.jpg" data-label="Financial clearance — MRI Brain, 2D Echo, USG W/A, 24-h Holter" data-search="financial clearance — mri brain, 2d echo, usg w/a, 24-h holter admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-fin-clearance-mri.jpg" alt="Financial clearance — MRI Brain, 2D Echo, USG W/A, 24-h Holter"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Financial clearance — MRI Brain, 2D Echo, USG W/A, 24-h Holter</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="71" data-src="reports/admin-pharmacy-bill-1.jpg" data-label="Pharmacy issue 01/08 — Cognistar, Emeset, Pantocid, Galvus-Met" data-search="pharmacy issue 01/08 — cognistar, emeset, pantocid, galvus-met admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-1.jpg" alt="Pharmacy issue 01/08 — Cognistar, Emeset, Pantocid, Galvus-Met"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue 01/08 — Cognistar, Emeset, Pantocid, Galvus-Met</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="72" data-src="reports/admin-pharmacy-bill-2.jpg" data-label="Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met" data-search="pharmacy issue — brivgard 50, remylin, l-qunol, galvus-met admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-2.jpg" alt="Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="73" data-src="reports/admin-pharmacy-bill-3.jpg" data-label="Pharmacy issue — Tyvalzi injection" data-search="pharmacy issue — tyvalzi injection admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-3.jpg" alt="Pharmacy issue — Tyvalzi injection"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Tyvalzi injection</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="74" data-src="reports/admin-pharmacy-bill-4.jpg" data-label="Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi" data-search="pharmacy issue — cognistar, atorlip, clopitab, ecosprin, tyvalzi admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-4.jpg" alt="Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi</figcaption></figure>
+    </div>
+    <div class="empty" id="empty">No records match that search.</div>
+  </div>
+  <div class="foot">Photographs of original hospital records, compressed for web viewing. For medico-legal or formal second-opinion use, request certified copies from the hospital records department.</div>
+</section>
+
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Record viewer">
+  <div class="lb-top">
+    <span class="c" id="lbC"></span><span class="l" id="lbL"></span>
+    <button onclick="lbX()" aria-label="Close">✕</button>
+  </div>
+  <div class="lb-stage" id="lbS"><img id="lbI" src="" alt="" onclick="this.classList.toggle('zoom')"></div>
+  <div class="lb-bot">
+    <button onclick="lbGo(-1)">← Prev</button>
+    <a class="pri" id="lbO" href="#" target="_blank" rel="noopener">Open full size</a>
+    <button onclick="lbGo(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+/* ---------- view switching + rail sections ---------- */
+var VIEWS=['ov','cl','rc'];
+function go(v){
+  VIEWS.forEach(function(x){
+    document.getElementById(x).classList.toggle('on',x===v);
+    document.getElementById('v-'+x).classList.toggle('on',x===v);
+  });
+  buildRail(v); window.scrollTo(0,0);
+}
+function buildRail(v){
+  var host=document.getElementById('railSec');
+  var secs=document.querySelectorAll('#'+v+' .sec[data-t]');
+  if(!secs.length){host.innerHTML='';return;}
+  var h='<div class="lbl">On this page</div>';
+  secs.forEach(function(s){h+='<a href="#'+s.id+'">'+s.dataset.t+'</a>';});
+  host.innerHTML=h;
+}
+buildRail('ov');
+
+/* ---------- scrollspy ---------- */
+var spy=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting)return;
+    document.querySelectorAll('#railSec a').forEach(function(a){
+      a.classList.toggle('here',a.getAttribute('href')==='#'+e.target.id);
+    });
+  });
+},{rootMargin:'-10% 0px -70% 0px'});
+document.querySelectorAll('.sec[data-t]').forEach(function(s){spy.observe(s);});
+
+/* ---------- records filter ---------- */
+var SHOTS=Array.prototype.slice.call(document.querySelectorAll('.shot'));
+var FILT='all';
+document.querySelectorAll('.chip').forEach(function(c){
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+    c.classList.add('active'); FILT=c.dataset.f; filt();
+  });
+});
+function filt(){
+  var q=(document.getElementById('q').value||'').trim().toLowerCase(), n=0;
+  SHOTS.forEach(function(s){
+    var ok=(FILT==='all'||s.dataset.cat===FILT)&&(!q||s.dataset.search.indexOf(q)>-1);
+    s.style.display=ok?'':'none'; if(ok)n++;
+  });
+  document.getElementById('empty').style.display=n?'none':'block';
+}
+
+/* ---------- lightbox ---------- */
+var L={a:[],i:0};
+function vis(){return SHOTS.filter(function(s){return s.style.display!=='none';});}
+SHOTS.forEach(function(s){
+  s.addEventListener('click',function(){open_(s);});
+  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open_(s);}});
+});
+function open_(s){L.a=vis();L.i=L.a.indexOf(s);draw();document.getElementById('lb').classList.add('on');document.body.style.overflow='hidden';}
+function draw(){
+  var s=L.a[L.i],img=document.getElementById('lbI');
+  img.classList.remove('zoom'); img.src=s.dataset.src; img.alt=s.dataset.label;
+  document.getElementById('lbL').textContent=s.dataset.label;
+  document.getElementById('lbC').textContent=(L.i+1)+' / '+L.a.length;
+  document.getElementById('lbO').href=s.dataset.src;
+}
+function lbGo(d){if(L.a.length){L.i=(L.i+d+L.a.length)%L.a.length;draw();}}
+function lbX(){document.getElementById('lb').classList.remove('on');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('lb').classList.contains('on'))return;
+  if(e.key==='Escape')lbX(); if(e.key==='ArrowRight')lbGo(1); if(e.key==='ArrowLeft')lbGo(-1);
+});
+(function(){var x=0,y=0,st=document.getElementById('lbS');
+ st.addEventListener('touchstart',function(e){x=e.touches[0].clientX;y=e.touches[0].clientY;},{passive:true});
+ st.addEventListener('touchend',function(e){
+   var dx=e.changedTouches[0].clientX-x,dy=e.changedTouches[0].clientY-y;
+   if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))lbGo(dx<0?1:-1);},{passive:true});
+})();
+</script>
+</body>
+</html>
