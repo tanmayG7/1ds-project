@@ -262,7 +262,7 @@ tbody tr:hover{background:#f7fafc}
   <nav class="views">
     <button id="v-ov" class="on" onclick="go('ov')">Overview</button>
     <button id="v-cl" onclick="go('cl')">Clinical</button>
-    <button id="v-rc" onclick="go('rc')">Records <span class="n">78</span></button>
+    <button id="v-rc" onclick="go('rc')">Records <span class="n">80</span></button>
   </nav>
   <div class="rail-sec" id="railSec"></div>
 </aside>
@@ -372,6 +372,7 @@ tbody tr:hover{background:#f7fafc}
         <div class="srow"><i class="pip wt"></i><div><div class="t">Urine infection + fungal skin rash</div><div class="d">Common with diabetes. Both identified and being treated — likely contributed to the brief confusion and the white-cell spike.</div></div></div>
         <div class="srow"><i class="pip wt"></i><div><div class="t">Fatty liver (grade 1), enlarged prostate</div><div class="d">Very common at 70 and not urgent. Diet helps the liver; a urology review can wait until after discharge.</div></div></div>
         <div class="srow"><i class="pip al"></i><div><div class="t">CT angiography — cause found<span class="badge al">key finding</span></div><div class="d">Right neck artery narrowed ~60-70% (plaque) — the likely source of the stroke. Left-side vessels also narrowed, needs its own treatment plan.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Brain electrical activity (EEG)</div><div class="d">No seizure activity at all. Slightly slow background rhythm — the expected signature of a recovering brain, matches the mild confusion, improves over weeks.</div></div></div>
         <div class="srow"><i class="pip aw"></i><div><div class="t">Still awaiting: MRI written report · Holter result</div><div class="d">MRI confirms the exact stroke map; Holter checks for a hidden irregular heartbeat as a second possible cause.</div></div></div>
       </div>
     </div>
@@ -465,7 +466,7 @@ tbody tr:hover{background:#f7fafc}
           <dt>MRI brain 01/08</dt><dd>Acute Rt MCA infarcts on DWI; chronic WM microangiopathic change. <span class="mid">Written report awaited</span></dd>
           <dt>CTA neck 02/08, rpt 04/08</dt><dd class="hi">Rt carotid bulb/proximal ICA: thick calcified plaque, moderate stenosis ~60-70%. Lt carotid bulb/ICA: calcified plaque, mild stenosis &lt;40-50%. Rest of cervical vessels + bilateral vertebrals: normal.</dd>
           <dt>CTA brain 02/08, rpt 04/08</dt><dd class="hi">Bilateral intracranial ICA mural calcification (atherosclerotic). Lt ICA (distal cavernous/clinoid): moderate-severe stenosis ~70-80%. Lt PCA (P1): moderate-severe stenosis ~80%. Bilateral ACA/MCA, basilar, Rt PCA: normal, no dilation/cut-off/AVM.</dd>
-          <dt>EEG 03/08</dt><dd>Performed. <span class="mid">Report awaited</span></dd>
+          <dt>EEG 03/08</dt><dd><b>No epileptiform discharge.</b> Background 7-8 Hz theta — mild diffuse slowing, consistent with post-stroke recovery phase. Impression: mild electrophysiological dysfunction.</dd>
         </dl>
       </div>
       <div class="card">
@@ -546,7 +547,7 @@ tbody tr:hover{background:#f7fafc}
           <li><b>CTA-confirmed carotid/intracranial stenosis</b> — vascular surgery / neuro-interventional opinion needed: does Rt carotid ~60-70% and Lt intracranial ~70-80%/~80% meet threshold for revascularisation (stenting/endarterectomy) vs. optimal medical therapy alone?</li>
           <li><b>Formal MRI report</b> — lesion map, acute versus chronic burden.</li>
           <li><b>Holter analysis</b> after 24 h. If negative, consider extended monitoring given the scattered embolic pattern.</li>
-          <li><b>EEG report</b> — de-escalation decision for brivaracetam.</li>
+          <li><b>EEG clean (no epileptiform activity)</b> — review need for continuing brivaracetam; candidate for taper/stop.</li>
           <li>Post-transfer: physiotherapy/mobilisation referral, fall precautions (Morse 70), swallow safety check before unsupervised feeding.</li>
           <li>Urine culture ± targeted therapy; topical antifungal per dermatology.</li>
           <li>Diabetology input — OHA titration, target HbA1c &lt;7; LDL goal &lt;70, recheck lipids at 6–8 weeks.</li>
@@ -573,8 +574,8 @@ tbody tr:hover{background:#f7fafc}
     <div class="tools">
       <input class="search" id="q" type="search" placeholder="Search records — try &quot;HbA1c&quot;, &quot;Holter&quot;, &quot;MRI&quot;, &quot;flowsheet&quot;…" oninput="filt()">
       <div class="chips">
-      <button class="chip active" data-f="all">All <em>78</em></button>
-      <button class="chip" data-f="neuro">Neuro imaging <em>12</em></button>
+      <button class="chip active" data-f="all">All <em>80</em></button>
+      <button class="chip" data-f="neuro">Neuro imaging <em>14</em></button>
       <button class="chip" data-f="cardiac">Cardiac <em>6</em></button>
       <button class="chip" data-f="imaging">Other imaging <em>3</em></button>
       <button class="chip" data-f="labs">Laboratory <em>19</em></button>
@@ -584,6 +585,8 @@ tbody tr:hover{background:#f7fafc}
       </div>
     </div>
     <div class="gal" id="gal">
+      <figure class="shot" data-cat="neuro" data-i="78" data-src="reports/neuro-eeg-report.jpg" data-label="EEG Report 03/08 — no epileptiform discharge; mild background slowing (7-8 Hz theta)" data-search="eeg report epileptiform theta slowing brivaracetam neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-eeg-report.jpg" alt="EEG report"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>EEG Report 03/08 — no epileptiform discharge; mild background slowing (7-8 Hz theta)</figcaption></figure>
+      <figure class="shot" data-cat="neuro" data-i="79" data-src="reports/neuro-eeg-strip.jpg" data-label="EEG trace strip 03/08 — sample recording page" data-search="eeg trace strip recording neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-eeg-strip.jpg" alt="EEG strip"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>EEG trace strip 03/08 — sample recording page</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="75" data-src="reports/neuro-cta-neck-report.jpg" data-label="CT Angiography of Neck — formal report 04/08: Rt carotid 60-70% stenosis, Lt carotid &lt;40-50%" data-search="ct angiography neck formal report carotid stenosis plaque 60-70 40-50 neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-neck-report.jpg" alt="CTA Neck formal report"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography of Neck — formal report 04/08: Rt carotid 60-70% stenosis, Lt carotid &lt;40-50%</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="76" data-src="reports/neuro-cta-brain-report-p1.jpg" data-label="CT Angiography of Brain — formal report 04/08 p1: Lt ICA 70-80% stenosis, Lt PCA (P1) ~80% stenosis" data-search="ct angiography brain formal report intracranial carotid pca stenosis atherosclerosis neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-brain-report-p1.jpg" alt="CTA Brain formal report page 1"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography of Brain — formal report 04/08 p1: Lt ICA 70-80% stenosis, Lt PCA (P1) ~80% stenosis</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="77" data-src="reports/neuro-cta-brain-report-p2.jpg" data-label="CT Angiography of Brain — formal report 04/08 p2: impression continued" data-search="ct angiography brain formal report page 2 impression neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-brain-report-p2.jpg" alt="CTA Brain formal report page 2"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography of Brain — formal report 04/08 p2: impression continued</figcaption></figure>
