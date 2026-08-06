@@ -88,6 +88,7 @@ a{color:var(--stable)}
 .card + .card{margin-top:12px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 
 /* ---- signature: monitor band ---- */
 .monitor{
@@ -127,8 +128,9 @@ a{color:var(--stable)}
 
 /* ---- timeline ---- */
 .tl{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.tl .day{padding:18px 20px;border-right:1px solid var(--line-2)}
-.tl .day:last-child{border-right:none}
+.tl .day{padding:18px 20px;border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.tl .day:nth-child(3n){border-right:none}
+.tl .day:nth-child(n+4){border-bottom:none}
 .tl .dnum{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--stable);letter-spacing:.08em}
 .tl .dt{font-family:'Archivo',sans-serif;font-size:15.5px;font-weight:700;margin:5px 0 7px}
 .tl .dd{font-size:13px;color:var(--muted);line-height:1.5}
@@ -221,6 +223,7 @@ tbody tr:hover{background:#f7fafc}
 .mbar{display:none}
 @media(max-width:1000px){
   .g3{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
   .gal{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:860px){
@@ -233,9 +236,11 @@ tbody tr:hover{background:#f7fafc}
   .rail-id{padding:0 16px 16px}
   .main{margin-left:0;padding:20px 16px 84px}
   .monitor{grid-template-columns:1fr 1fr}
-  .g2,.tl{grid-template-columns:1fr}
-  .tl .day{border-right:none;border-bottom:1px solid var(--line-2)}
-  .tl .day:last-child{border-bottom:none}
+  .g2,.g4{grid-template-columns:1fr}
+  .tl{grid-template-columns:repeat(2,1fr)}
+  .tl .day{border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .tl .day:nth-child(2n){border-right:none}
+  .tl .day:nth-child(n+5){border-bottom:none}
   .kv{grid-template-columns:1fr}
   .kv dt{padding-bottom:0;border-bottom:none;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
   .gal{grid-template-columns:repeat(2,1fr);gap:11px}
@@ -290,7 +295,7 @@ tbody tr:hover{background:#f7fafc}
 
   <div class="sec" id="ov-key" data-t="Key reports">
     <div class="sec-h"><h2>Key reports</h2><div class="rule"></div><span class="note">Start here — for second opinions</span></div>
-    <div class="g2" style="grid-template-columns:repeat(4,1fr)">
+    <div class="g4">
       <div class="card" style="cursor:pointer;padding:0;overflow:hidden" onclick="openKey('reports/neuro-cta-neck-report.jpg')">
         <div class="shot-img" style="height:150px"><img loading="lazy" src="reports/thumbs/neuro-cta-neck-report.jpg" alt="Carotid stenosis — CTA Neck report" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
         <div style="padding:16px 18px"><span class="tag tag-neuro">Carotid (neck)</span><b style="font-size:14.5px">Rt carotid 60-70%, Lt &lt;40-50%</b><p style="font-size:13px;color:var(--muted);margin-top:4px">CTA Neck formal report, 04/08 — probable source of this clot</p></div>
@@ -312,7 +317,7 @@ tbody tr:hover{background:#f7fafc}
 
   <div class="sec" id="ov-journey" data-t="Day by day">
     <div class="sec-h"><h2>Day by day</h2><div class="rule"></div><span class="note">1–6 Aug 2026</span></div>
-    <div class="tl" style="grid-template-columns:repeat(3,1fr)">
+    <div class="tl">
       <div class="day">
         <div class="dnum">DAY 1 · 1 AUG</div>
         <div class="dt">Collapse → ICU</div>
@@ -580,16 +585,12 @@ tbody tr:hover{background:#f7fafc}
     <div class="sec-h"><h2>Pending items &amp; working aetiology</h2><div class="rule"></div></div>
     <div class="g2">
       <div class="box await">
-        <h3>To complete</h3>
+        <h3>Still open</h3>
         <ol>
-          <li><b>CTA-confirmed carotid/intracranial stenosis</b> — vascular surgery / neuro-interventional opinion needed: does Rt carotid ~60-70% and Lt intracranial ~70-80%/~80% meet threshold for revascularisation (stenting/endarterectomy) vs. optimal medical therapy alone?</li>
-          <li><s><b>Formal MRI report</b></s> — received 04/08. Confirms diffuse atrophy, microangiopathic ischemic changes, chronic lacunar infarct, old encephalomalacia, and acute infarct (right posterior parietal). See <a href="#" onclick="openKey('reports/neuro-mri-brain-formal-report.jpg');return false">Key reports</a>.</li>
-          <li><s><b>Holter analysis</b></s> — received, no critical finding. 24-h monitor: avg HR 66bpm, 0 pauses &gt;2s, 0% AFib/AFlut — no occult PAF found. Full report in <a href="#" onclick="openKey('reports/cardiac-holter-report.jpg');return false">Records</a>.</li>
-          <li><b>EEG clean (no epileptiform activity)</b> — review need for continuing brivaracetam; candidate for taper/stop.</li>
-          <li>Post-transfer: physiotherapy/mobilisation referral, fall precautions (Morse 70), swallow safety check before unsupervised feeding.</li>
-          <li>Urine culture ± targeted therapy; topical antifungal per dermatology.</li>
-          <li>Diabetology input — OHA titration, target HbA1c &lt;7; LDL goal &lt;70, recheck lipids at 6–8 weeks.</li>
-          <li>Discharge: DAPT duration per protocol (typically 21 days dual → single agent), physio/rehab plan, urology OPD for BPH.</li>
+          <li><b>CTA-confirmed carotid/intracranial stenosis</b> — vascular surgery / neuro-interventional opinion needed: does Rt carotid ~60-70% and Lt intracranial ~70-80%/~80% meet threshold for revascularisation (stenting/endarterectomy) vs. optimal medical therapy alone? DSA was offered and deferred by the family at discharge.</li>
+          <li><b>Brivgard taper</b> — to be tapered at the Neurology OPD follow-up, not stopped on its own.</li>
+          <li><b>Diabetology input</b> — OHA titration, target HbA1c &lt;7; LDL goal &lt;70, recheck lipids at 6–8 weeks.</li>
+          <li><b>DAPT duration</b> per protocol (typically 21 days dual → single agent) — confirm at follow-up. Urology OPD for BPH still pending.</li>
         </ol>
       </div>
       <div class="card">
