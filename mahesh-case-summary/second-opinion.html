@@ -43,6 +43,15 @@
   th, td { border: 1px solid #ccc; padding: 5px 7px; text-align: left; vertical-align: top; }
   th { background: #eee; font-weight:700; width: 26%; }
   .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  .rpt-hdr { display:flex; flex-wrap:wrap; gap: 3px 24px; font-size: 11px; color:#333; border:1px solid #ccc; border-radius:5px; padding:8px 12px; margin-bottom:12px; background:#fafafa; }
+  .rpt-hdr b { color:#000; }
+  .rpt-title { text-align:center; font-weight:700; font-size:13.5px; text-decoration:underline; margin-bottom:12px; }
+  .rpt-sec { font-weight:700; font-size:12px; margin:12px 0 4px; }
+  .rpt p { text-align:left; }
+  .rpt ul { margin:4px 0 4px 20px; }
+  .rpt .sign { margin-top:26px; text-align:right; font-size:12px; }
+  .rpt .sign b { display:block; }
+  .rpt .src { margin-top:16px; font-size:10.5px; color:#777; border-top:1px dashed #ccc; padding-top:6px; }
   .foot { margin-top: 18px; font-size: 10.5px; color: #666; border-top: 1px solid #ccc; padding-top: 8px; }
   .nobreak { page-break-inside: avoid; }
   @media print {
@@ -85,25 +94,70 @@
     3. Any revision to antiplatelet/statin therapy or further work-up warranted given the recurrent event?
   </div>
 
-  <p style="margin-top:14px">The CT Angiography (neck + brain) and MRI Brain formal reports follow on the next pages. All other investigations from this admission are summarised as text on the final page(s); the underlying photographs of every original record are available on request.</p>
+  <p style="margin-top:14px">The CT Angiography (neck + brain) reports are transcribed verbatim as text on the next two pages, followed by the MRI Brain formal report as a scanned image. All other investigations from this admission are summarised as text on the final page(s); the underlying photographs of every original record are available on request.</p>
 
   <div class="foot">Family attendant contact: Tanmay Garg · tanmay@aipply.io · Full digital record library: tanmayg7.github.io/1ds-project/mahesh-case-summary/</div>
 </div>
 
-<!-- ============ KEY REPORT PAGES ============ -->
-<div class="page imgpage nobreak">
-  <div class="cap">CT Angiography of Neck — formal report, 04/08<span class="sm">Right carotid 60–70% stenosis · Left carotid &lt;40–50% stenosis</span></div>
-  <img src="reports/neuro-cta-neck-report.jpg" alt="CT Angiography of Neck report">
+<!-- ============ KEY REPORT PAGES — TRANSCRIBED VERBATIM ============ -->
+<div class="page rpt">
+  <div class="rpt-hdr">
+    <span><b>Patient:</b> Mr. Mahesh Kumar Garg</span>
+    <span><b>Age/Gender:</b> 70 Yrs./M</span>
+    <span><b>UHID:</b> 20140186</span>
+    <span><b>Referred by:</b> Neurology Team</span>
+    <span><b>Bill Date:</b> 02/08/2026 06:36:00</span>
+    <span><b>Result Date:</b> 04/08/2026 2:07PM</span>
+  </div>
+  <div class="rpt-title">CT ANGIOGRAPHY OF NECK</div>
+
+  <div class="rpt-sec">FINDINGS:</div>
+  <p>Thick crescentic partially calcified plaque is identified along posteromedial wall of right carotid bulb and proximal ICA, causing moderate luminal stenosis (maximum area stenosis is ~ 60-70%).</p>
+  <p>Thick calcified plaque is noted along posterior wall of left carotid bulb and adjacent ICA, causing mild luminal stenosis (&lt; 40-50%).</p>
+  <p>Rest of major neck arteries including bilateral common carotid, external carotid and internal carotid arteries reveal normal caliber, course and contrast opacification. Normal branches of external carotid arteries are identified showing normal contrast opacification.</p>
+  <p>Bilateral vertebral arteries appear normal in caliber, course and contrast opacification.</p>
+
+  <div class="rpt-sec">IMPRESSION:</div>
+  <ul>
+    <li>Thick crescentic partially calcified atherosclerotic plaque is identified along posteromedial wall of right carotid bulb and proximal ICA, causing moderate luminal stenosis (maximum area stenosis is ~ 60-70%).</li>
+    <li>Thick calcified atherosclerotic plaque along posterior wall of left carotid bulb and adjacent ICA, causing mild luminal stenosis (&lt; 40-50%).</li>
+  </ul>
+  <p>Please correlate clinically.</p>
+
+  <div class="sign"><b>Dr. Ravi Shekhar</b>MD (Radio-Diagnosis)</div>
+  <div class="src">Transcribed verbatim from the original formal report (Yatharth SSH, Dept. of Radiology). Original photograph available in the digital record library.</div>
 </div>
 
-<div class="page imgpage nobreak">
-  <div class="cap">CT Angiography of Brain — formal report, 04/08 (p1/2)<span class="sm">Left ICA (intracranial) ~70–80% stenosis · Left PCA (P1) ~80% stenosis</span></div>
-  <img src="reports/neuro-cta-brain-report-p1.jpg" alt="CT Angiography of Brain report page 1">
-</div>
+<div class="page rpt">
+  <div class="rpt-hdr">
+    <span><b>Patient:</b> Mr. Mahesh Kumar Garg</span>
+    <span><b>Age/Gender:</b> 70 Yrs./M</span>
+    <span><b>UHID:</b> 20140186</span>
+    <span><b>Referred by:</b> Neurology Team</span>
+    <span><b>Bill Date:</b> 02/08/2026 06:36:00</span>
+    <span><b>Result Date:</b> 04/08/2026 2:07PM</span>
+  </div>
+  <div class="rpt-title">CT ANGIOGRAPHY OF BRAIN</div>
 
-<div class="page imgpage nobreak">
-  <div class="cap">CT Angiography of Brain — formal report, 04/08 (p2/2)<span class="sm">Impression continued</span></div>
-  <img src="reports/neuro-cta-brain-report-p2.jpg" alt="CT Angiography of Brain report page 2">
+  <div class="rpt-sec">STUDY PROTOCOLS:</div>
+  <p>CT angiography of brain performed on a multislice CT scanner. Raw images were obtained and subsequently processed using maximum intensity projection technique. Processed images were rotated at desired small incremental angle in multiple planes.</p>
+
+  <div class="rpt-sec">FINDINGS:</div>
+  <p>Thick mural calcification of intracranial segments of bilateral internal carotid arteries is seen with moderate to severe short segment stenosis of distal cavernous and clinoid segments of left internal carotid artery (~70-80%).</p>
+  <p>Moderate to severe short segment stenosis of proximal P1 segment of left posterior cerebral artery is seen (~ 80%).</p>
+  <p>Rest of intracerebral segments of both internal carotid arteries reveal normal caliber, course and contrast opacification.</p>
+  <p>Division into both middle and anterior cerebral arteries is apparently normal on either side.</p>
+  <p>Visualized segments of bilateral anterior and middle cerebral arteries appear normal in course, caliber and contrast opacification. No evidence of any focal dilation, abrupt cut off or arterio-venous malformation is apparent.</p>
+  <p>Basilar and right posterior cerebral arteries appear normal in course and caliber.</p>
+
+  <div class="rpt-sec">IMPRESSION:</div>
+  <p>Thick mural calcification of intracranial segments of bilateral internal carotid arteries — suggesting atherosclerotic changes.</p>
+  <p>Moderate to severe short segment stenosis of distal cavernous and clinoid segments of left internal carotid artery (~70-80%).</p>
+  <p>Moderate to severe short segment stenosis of proximal P1 segment of left posterior cerebral artery (~ 80%).</p>
+  <p>Please correlate clinically.</p>
+
+  <div class="sign"><b>Dr. Ravi Shekhar</b>MD (Radio-Diagnosis)</div>
+  <div class="src">Transcribed verbatim from the original formal report, pages 1–2 (Yatharth SSH, Dept. of Radiology). Original photographs available in the digital record library.</div>
 </div>
 
 <div class="page imgpage nobreak">
