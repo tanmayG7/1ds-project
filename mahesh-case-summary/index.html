@@ -256,13 +256,14 @@ tbody tr:hover{background:#f7fafc}
     <div class="meta">
       <b>Yatharth SSH</b>, Sector-110 Noida<br>
       Admitted <b>1 Aug 2026</b> · Neurology<br>
-      UHID <b>20140186</b><br>Ward · room <b>1002A</b> (semi-private)<br><span style="color:#4fd1c0">Out of ICU 3 Aug, 21:00</span>
+      UHID <b>20140186</b><br>
+      Discharged <b>5 Aug 2026, 15:05</b> · condition: <b>Stable</b><br><span style="color:#4fd1c0">Home now · Neurology OPD review in 7 days</span>
     </div>
   </div>
   <nav class="views">
     <button id="v-ov" class="on" onclick="go('ov')">Overview</button>
     <button id="v-cl" onclick="go('cl')">Clinical</button>
-    <button id="v-rc" onclick="go('rc')">Records <span class="n">80</span></button>
+    <button id="v-rc" onclick="go('rc')">Records <span class="n">85</span></button>
   </nav>
   <div class="rail-sec" id="railSec"></div>
 </aside>
@@ -273,17 +274,39 @@ tbody tr:hover{background:#f7fafc}
 <section class="view on" id="ov">
 
   <div class="sec" id="ov-status" data-t="Status now">
-    <p class="lede">On <b>1 August 2026</b> Papa collapsed suddenly with weakness on his <b>left side</b> and confusion. Scans found <b>small clots blocking circulation in the right side of his brain</b> — a stroke. The clots were small and scattered rather than one large blockage, and within hours he was awake, talking and moving all four limbs.</p>
+    <p class="lede">On <b>1 August 2026</b> Papa collapsed suddenly with weakness on his <b>left side</b> and confusion. Scans found <b>small clots blocking circulation in the right side of his brain</b> — a stroke. The clots were small and scattered rather than one large blockage, and within hours he was awake, talking and moving all four limbs. He was discharged <b>stable on 5 August</b> and is now <b>home</b>, with a Neurology OPD review due in 7 days.</p>
 
     <div class="monitor" style="margin-top:18px">
       <div class="mcell st"><div class="ml">Speech &amp; movement</div><div class="mv">Recovered</div><div class="ms">Power 5/5, all four limbs</div>
         <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 20 L40 20 L52 6 L64 22 L76 14 L200 14"/></svg></div>
-      <div class="mcell st"><div class="ml">Level of care</div><div class="mv">Ward · 1002A</div><div class="ms">Left ICU 3 Aug, 21:00 · GCS 15/15</div>
+      <div class="mcell st"><div class="ml">Level of care</div><div class="mv">Home</div><div class="ms">Discharged 5 Aug, 15:05 · GCS 15/15</div>
         <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 22 L30 22 L44 8 L58 20 L72 12 L200 12"/></svg></div>
       <div class="mcell wt"><div class="ml">Diabetes control</div><div class="mv">HbA1c 8.2%</div><div class="ms">Target below 7 — needs work</div>
         <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 18 L60 18 L90 8 L130 16 L200 10"/></svg></div>
       <div class="mcell wt"><div class="ml">Cause of clots</div><div class="mv">Found: narrow arteries</div><div class="ms">Right neck artery 60-70% narrowed</div>
         <svg class="trace" viewBox="0 0 200 26" preserveAspectRatio="none"><path class="dash" d="M0 20 L60 20 L80 6 L100 20 L200 6"/></svg></div>
+    </div>
+  </div>
+
+  <div class="sec" id="ov-key" data-t="Key reports">
+    <div class="sec-h"><h2>Key reports</h2><div class="rule"></div><span class="note">Start here — for second opinions</span></div>
+    <div class="g2" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card" style="cursor:pointer;padding:0;overflow:hidden" onclick="openKey('reports/neuro-cta-neck-report.jpg')">
+        <div class="shot-img" style="height:150px"><img loading="lazy" src="reports/thumbs/neuro-cta-neck-report.jpg" alt="Carotid stenosis — CTA Neck report" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+        <div style="padding:16px 18px"><span class="tag tag-neuro">Carotid (neck)</span><b style="font-size:14.5px">Rt carotid 60-70%, Lt &lt;40-50%</b><p style="font-size:13px;color:var(--muted);margin-top:4px">CTA Neck formal report, 04/08 — probable source of this clot</p></div>
+      </div>
+      <div class="card" style="cursor:pointer;padding:0;overflow:hidden" onclick="openKey('reports/neuro-cta-brain-report-p1.jpg')">
+        <div class="shot-img" style="height:150px"><img loading="lazy" src="reports/thumbs/neuro-cta-brain-report-p1.jpg" alt="CTA Brain — intracranial + PCA report" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+        <div style="padding:16px 18px"><span class="tag tag-neuro">Intracranial (CTA brain)</span><b style="font-size:14.5px">Lt ICA 70-80%, Lt PCA(P1) ~80%</b><p style="font-size:13px;color:var(--muted);margin-top:4px">CTA Brain formal report, 04/08 — separate, same-disease finding</p></div>
+      </div>
+      <div class="card" style="cursor:pointer;padding:0;overflow:hidden" onclick="openKey('reports/neuro-mri-brain-formal-report.jpg')">
+        <div class="shot-img" style="height:150px"><img loading="lazy" src="reports/thumbs/neuro-mri-brain-formal-report.jpg" alt="MRI Brain formal report" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+        <div style="padding:16px 18px"><span class="tag tag-neuro">MRI Brain</span><b style="font-size:14.5px">Acute + old infarct, distinguished</b><p style="font-size:13px;color:var(--muted);margin-top:4px">Acute Rt posterior parietal infarct (new) + chronic lacunar infarct + old Lt frontal encephalomalacia (2004 CVA), 04/08</p></div>
+      </div>
+      <div class="card" style="cursor:pointer;padding:0;overflow:hidden" onclick="openKey('reports/admin-discharge-summary-p1.jpg')">
+        <div class="shot-img" style="height:150px"><img loading="lazy" src="reports/thumbs/admin-discharge-summary-p1.jpg" alt="Discharge summary" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+        <div style="padding:16px 18px"><span class="tag tag-admin">Discharge</span><b style="font-size:14.5px">Discharged 05/08, stable</b><p style="font-size:13px;color:var(--muted);margin-top:4px">Recurrent stroke, etiology LVAD vs ICAD; full meds + follow-up</p></div>
+      </div>
     </div>
   </div>
 
@@ -314,20 +337,19 @@ tbody tr:hover{background:#f7fafc}
   </div>
 
   <div class="sec" id="ov-ward" data-t="Now in ward">
-    <div class="sec-h"><h2>Now in the ward</h2><div class="rule"></div><span class="note">from 3 Aug, 9:00 pm</span></div>
+    <div class="sec-h"><h2>ICU → ward → home</h2><div class="rule"></div><span class="note">ICU 1–3 Aug, ward 3–5 Aug, home from 5 Aug 15:05</span></div>
     <div class="g2">
       <div class="card">
-        <p style="font-size:15px">Moving out of intensive care on <b>Day 3</b> is the clearest signal yet that the team considers him stable. It means continuous monitoring is no longer needed, he is breathing on his own, eating, passing urine normally and holding a full consciousness score.</p>
-        <p style="font-size:15px;margin-top:10px">A semi-private room also makes recovery easier — family can stay longer, sleep is less broken, and there is space to start moving him about with the physio.</p>
+        <p style="font-size:15px">Moving out of intensive care on <b>Day 3</b> was the first clear signal the team considered him stable — no organ support needed, breathing, eating and passing urine on his own, full consciousness score. Two days later, on <b>5 August</b>, he was discharged home in <b>stable</b> condition.</p>
+        <p style="font-size:15px;margin-top:10px">The team explained the option of a carotid stenting procedure (DSA ± stenting) for the ~60-70% right carotid narrowing, but the family <b>chose to defer that decision</b> rather than proceed immediately — it remains open for discussion at the OPD follow-up.</p>
       </div>
       <div class="box act">
-        <h3>What changes now</h3>
+        <h3>Carried over from the ward</h3>
         <ul>
-          <li><b>Mobilisation begins.</b> Sitting up, then standing with support, then short walks. Ask about a physiotherapy referral if it has not started.</li>
-          <li><b>Fall risk is high</b> (Morse 70). He must not get up alone — bed rails up, call bell in reach, someone with him for the toilet.</li>
-          <li><b>Sugar charting continues.</b> Meals now matter more than in ICU; keep them diabetic-appropriate.</li>
-          <li><b>Sleep and orientation.</b> Quieter nights in the ward usually clear the remaining confusion faster.</li>
-          <li><b>Chase the three reports</b> — CT angio, MRI, Holter. Ward rounds are usually mid-morning.</li>
+          <li><b>Fall risk stays high</b> (Morse 70 in hospital). Same precautions apply at home — someone with him when moving about, clear walking paths, no rushing to the toilet alone.</li>
+          <li><b>Mobilisation continues.</b> Physiotherapy and speech therapy were advised on discharge — keep it going at home.</li>
+          <li><b>Sugar charting continues.</b> Diabetic-appropriate meals matter as much at home as in hospital.</li>
+          <li><b>All key reports are in</b> — CT angio, MRI, EEG and Holter. See the <a href="#" onclick="go('ov');setTimeout(function(){document.getElementById('ov-key').scrollIntoView({behavior:'smooth'});},50);return false">Key reports</a> section.</li>
         </ul>
       </div>
     </div>
@@ -362,7 +384,7 @@ tbody tr:hover{background:#f7fafc}
       <div class="card">
         <div class="srow"><i class="pip st"></i><div><div class="t">Brain function now</div><div class="d">Speaking, moving all limbs, fully awake. Mild confusion is easing — expected with this stroke and settles over days to weeks.</div></div></div>
         <div class="srow"><i class="pip st"></i><div><div class="t">Heart structure (echo)</div><div class="d">Pumping normal at 55%. <b>No clot inside the heart.</b> Valves fine; only mild age/BP-related wall thickening.</div></div></div>
-        <div class="srow"><i class="pip st"></i><div><div class="t">Heart rhythm (ECG)</div><div class="d">Normal sinus rhythm on admission. The 24-hour Holter is double-checking for hidden irregular beats.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">Heart rhythm (ECG)</div><div class="d">Normal sinus rhythm on admission. 24-hour Holter confirmed — no AFib/AFlut, no hidden irregular beats.</div></div></div>
         <div class="srow"><i class="pip st"></i><div><div class="t">Kidneys, liver, thyroid, salts</div><div class="d">All normal. Vitamin B12 excellent at 868, Vitamin D good at 67.</div></div></div>
         <div class="srow"><i class="pip st"></i><div><div class="t">Lungs (chest X-ray)</div><div class="d">Clear. He never needed oxygen support at any point.</div></div></div>
       </div>
@@ -373,38 +395,43 @@ tbody tr:hover{background:#f7fafc}
         <div class="srow"><i class="pip wt"></i><div><div class="t">Fatty liver (grade 1), enlarged prostate</div><div class="d">Very common at 70 and not urgent. Diet helps the liver; a urology review can wait until after discharge.</div></div></div>
         <div class="srow"><i class="pip al"></i><div><div class="t">CT angiography — cause found<span class="badge al">key finding</span></div><div class="d">Right neck artery narrowed ~60-70% (plaque) — the likely source of the stroke. Left-side vessels also narrowed, needs its own treatment plan.</div></div></div>
         <div class="srow"><i class="pip st"></i><div><div class="t">Brain electrical activity (EEG)</div><div class="d">No seizure activity at all. Slightly slow background rhythm — the expected signature of a recovering brain, matches the mild confusion, improves over weeks.</div></div></div>
-        <div class="srow"><i class="pip aw"></i><div><div class="t">Still awaiting: MRI written report · Holter result</div><div class="d">MRI confirms the exact stroke map; Holter checks for a hidden irregular heartbeat as a second possible cause.</div></div></div>
+        <div class="srow"><i class="pip st"></i><div><div class="t">MRI written report — received</div><div class="d">Confirms diffuse atrophy, chronic + acute infarct detail matching the clinical picture. See <a href="#" onclick="openKey('reports/neuro-mri-brain-formal-report.jpg');return false">Key reports</a>.</div></div></div>
       </div>
     </div>
   </div>
 
   <div class="sec" id="ov-cause" data-t="Why the clots formed">
-    <div class="sec-h"><h2>Why the clots formed — answer found</h2><div class="rule"></div><span class="note">CT angiography, reported 4 Aug</span></div>
+    <div class="sec-h"><h2>Why the clots formed</h2><div class="rule"></div><span class="note">CT angiography 4 Aug + MRI 4 Aug + discharge summary 5 Aug</span></div>
     <div class="card">
-      <p style="font-size:15px">The CT angiography report explains what caused the stroke. The <b>artery in his neck that carries blood to the right side of the brain (the right carotid artery) has narrowed to about 60-70%</b> because of a calcified fatty deposit (plaque) on its wall — the same disease process as a blocked artery in the heart, just in the neck. A small piece likely broke off from that narrowing and travelled up into the brain, blocking the small blood vessels — this is exactly what caused the stroke on the right side.</p>
-      <p style="font-size:15px;margin-top:10px">The scan also found narrowing in a few other vessels — the artery deeper in the skull on the left side and a vessel supplying the back of the brain — but these did not cause this particular stroke. They are flagged because the same underlying disease (hardened, narrowed arteries) is present on both sides and needs treatment either way.</p>
+      <p style="font-size:15px"><b>This is a recurrent stroke, not a first event</b> — the discharge summary records an <b>old CVA in 2004</b>, and the MRI found <b>encephalomalacia with gliosis in the left anterior frontal region, read as an old parenchymal insult</b> — almost certainly the imaging signature of that earlier stroke. The official discharge diagnosis lists the cause as <b>"LVAD vs ICAD"</b> (large-vessel atherosclerotic disease vs. intracranial atherosclerotic disease) — i.e. not fully settled between two related mechanisms, both driven by the same narrowed-artery disease.</p>
+      <p style="font-size:15px;margin-top:10px">The <b>right carotid artery (neck) is narrowed ~60-70%</b> by calcified plaque — a classic source for artery-to-artery embolism into the right MCA territory. CT angiography of the brain separately found <b>intracranial disease on both sides</b>: <b>left internal carotid artery (distal cavernous/clinoid segment) ~70-80% stenosis</b>, and <b>left posterior cerebral artery (PCA, P1 segment) ~80% stenosis</b> — thick mural calcification throughout, described as bilateral atherosclerotic change. These left-sided findings did not cause this particular right-sided event, but they are same-disease, and matter for future risk.</p>
+      <p style="font-size:15px;margin-top:10px">The MRI distinguishes <b>old vs. new</b> damage: a <b>chronic lacunar infarct in the right anterior limb of the internal capsule</b> (pre-existing small-vessel disease, not new), plus a <b>new acute infarct in the right posterior parietal region</b> (restricted on DW images — this is the current event), on a background of <b>diffuse cerebral atrophy</b> and patchy microangiopathic ischemic change throughout.</p>
       <div class="box act" style="margin-top:14px">
-        <h3>Why this is good news, in a way</h3>
-        <p style="font-size:13.8px">Unlike a hidden heart-rhythm problem, <b>narrowed arteries are something doctors know exactly how to treat</b> — with stronger medicines, and in some cases a procedure to open the artery. Having a clear cause means the prevention plan going forward can be much more targeted.</p>
+        <h3>Open question for the next opinion</h3>
+        <p style="font-size:13.8px">DSA ± right carotid stenting was discussed at discharge but <b>deferred by the family</b> — this is unresolved. Worth asking any second opinion specifically: (1) does the ~60-70% right carotid stenosis meet the threshold for stenting/endarterectomy given this is a recurrent event, and (2) how should the separate left ICA (~70-80%) and left PCA (~80%) intracranial stenoses be managed going forward.</p>
       </div>
     </div>
   </div>
 
   <div class="sec" id="ov-meds" data-t="Medicines">
-    <div class="sec-h"><h2>Medicines and what each does</h2><div class="rule"></div></div>
+    <div class="sec-h"><h2>Medicines and what each does</h2><div class="rule"></div><span class="note">discharge list, 05/08 — supersedes in-hospital chart</span></div>
     <div class="card">
       <div class="tw"><table>
         <thead><tr><th>Medicine</th><th>What it is</th><th>Why he is on it</th></tr></thead>
         <tbody>
-        <tr><td><b>Ecosprin 75</b> + <b>Clopitab 75</b></td><td>Two blood thinners — aspirin and clopidogrel</td><td>Stop new clots forming. This is the core stroke protection. <b>Never skip or stop without the doctor.</b></td></tr>
-        <tr><td><b>Atorva 40</b></td><td>High-dose statin</td><td>Lowers LDL cholesterol and stabilises artery plaque.</td></tr>
-        <tr><td><b>Galvus-Met 50/500</b></td><td>Diabetes tablet</td><td>Brings blood sugar under control — the priority after discharge.</td></tr>
-        <tr><td><b>Cognistar</b> + <b>Tyvalzi</b></td><td>Brain-recovery support</td><td>Supports healing of brain tissue after a stroke.</td></tr>
-        <tr><td><b>Brivgard 50</b></td><td>Anti-seizure medicine</td><td>Protective cover after a stroke. The EEG guides how long it is needed.</td></tr>
-        <tr><td><b>Pantocid</b>, <b>Remylin</b>, <b>Mednovit</b></td><td>Stomach protection and vitamins</td><td>Protects the stomach from the blood thinners; general recovery support.</td></tr>
+        <tr><td><b>Ecosprin 75</b> + <b>Clopitab 75</b></td><td>Two blood thinners — aspirin and clopidogrel</td><td>Stop new clots forming. This is the core stroke protection. <b>Never skip or stop without the doctor.</b> Once daily, 10pm.</td></tr>
+        <tr><td><b>Atorva 80</b></td><td>High-dose statin (raised from 40 in hospital)</td><td>Lowers LDL cholesterol and stabilises artery plaque. Once daily, 10pm.</td></tr>
+        <tr><td><b>Vilpower M 500</b></td><td>Diabetes tablet</td><td>Brings blood sugar under control — the priority after discharge. 12-hourly, 9am–9pm.</td></tr>
+        <tr><td><b>Neurocetam Plus</b></td><td>Brain-recovery support</td><td>Supports healing of brain tissue after a stroke. Twice daily.</td></tr>
+        <tr><td><b>Inj. Tyvalzi 4ml IV</b></td><td>Brain-recovery support (injectable)</td><td>Continuing 8-hourly (9am-1pm-9pm) through 07/08, then reviewed at follow-up.</td></tr>
+        <tr><td><b>Brivgard 50</b></td><td>Anti-seizure medicine</td><td>Protective cover after a stroke. 12-hourly (10am–10pm) — <b>to be tapered at the follow-up visit</b>, not stopped on its own.</td></tr>
+        <tr><td><b>Topxime CV 625</b></td><td>Antibiotic</td><td>Twice daily for 3 days only, then stop — short course, do not continue past that.</td></tr>
+        <tr><td><b>Pan 40</b></td><td>Stomach protection</td><td>Protects the stomach from the blood thinners. Once daily, 7pm.</td></tr>
+        <tr><td><b>Mednovit CD3</b></td><td>Vitamins</td><td>General recovery support. Once daily.</td></tr>
+        <tr><td><b>Syp. Looz 30ml</b></td><td>Laxative</td><td>Bedtime (10pm), as needed for regular bowel movement.</td></tr>
         </tbody>
       </table></div>
-      <p style="font-size:12px;color:var(--muted);margin-top:12px">Exact doses and timings come from the discharge sheet — always follow that.</p>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">This is the discharge medication list (05/08) — always follow the physical discharge sheet for exact doses/timings, and never change or stop any of these without the doctor's advice.</p>
     </div>
   </div>
 
@@ -412,23 +439,24 @@ tbody tr:hover{background:#f7fafc}
     <div class="sec-h"><h2>What family can do</h2><div class="rule"></div></div>
     <div class="g2">
       <div class="box act">
-        <h3>Right now, in hospital</h3>
+        <h3>Now, at home</h3>
         <ol>
-          <li>Keep a familiar face at the bedside. Gently mention the day, the place and why he is here — woven into conversation, not as a quiz.</li>
-          <li>Glasses and hearing aid on at all times. Lights and talk during the day, quiet at night.</li>
-          <li>Encourage protein — dal, paneer, eggs, milk. His protein reading is slightly low.</li>
-          <li>Every morning ask the team: <b>CT angio report? MRI report? Holter result?</b></li>
-          <li>When discharge planning starts, get sugar targets, physio plan and follow-up dates <b>in writing</b>.</li>
+          <li><b>Neurology OPD review in 7 days</b> (by ~12 Aug) — call ahead for a prior appointment, and take the discharge summary + all films/reports with you.</li>
+          <li><b>Do not change or stop any medicine</b> without the doctor — especially the two blood thinners and Brivgard, which needs a supervised taper, not a sudden stop.</li>
+          <li>Physiotherapy and speech therapy as advised — start/continue at home; ask the OPD team to confirm a schedule.</li>
+          <li>Keep sugar charting going and meals diabetic-appropriate; Atorva dose has gone up to 80mg so watch for any new muscle pain and mention it at follow-up.</li>
+          <li>The right carotid stenting/DSA decision was deliberately deferred by the family — this is still open and worth raising proactively at the OPD visit, not waiting for it to come up.</li>
         </ol>
       </div>
       <div class="box alert">
-        <h3>Call the doctor immediately if</h3>
+        <h3>Seek urgent care if</h3>
         <ul>
           <li>New weakness or drooping of face, arm or leg — either side</li>
           <li>Slurred speech or trouble understanding others</li>
           <li>Sudden severe headache, vomiting, or a fit</li>
           <li>Becomes very drowsy or hard to wake</li>
-          <li>Fever, burning urine, or confusion suddenly worse</li>
+          <li>High-grade fever</li>
+          <li>Bleeding, vomiting, loose motion, severe pain, or swelling/redness anywhere</li>
           <li>Black stools or unusual bleeding — he is on two blood thinners</li>
         </ul>
         <a class="tel" href="tel:01202460000">Hospital: 0120-2460000</a> &nbsp;·&nbsp;
@@ -437,7 +465,7 @@ tbody tr:hover{background:#f7fafc}
     </div>
   </div>
 
-  <div class="foot">Compiled by family from hospital records dated 1–3 August 2026, with AI assistance. This is a plain-language summary to help the family follow the case — the hospital's own reports and discharge summary remain the official medical record.</div>
+  <div class="foot">Compiled by family from hospital records dated 1–5 August 2026, with AI assistance. This is a plain-language summary to help the family follow the case — the hospital's own reports and discharge summary remain the official medical record.</div>
 </section>
 
 <!-- ======================= CLINICAL ======================= -->
@@ -545,8 +573,8 @@ tbody tr:hover{background:#f7fafc}
         <h3>To complete</h3>
         <ol>
           <li><b>CTA-confirmed carotid/intracranial stenosis</b> — vascular surgery / neuro-interventional opinion needed: does Rt carotid ~60-70% and Lt intracranial ~70-80%/~80% meet threshold for revascularisation (stenting/endarterectomy) vs. optimal medical therapy alone?</li>
-          <li><b>Formal MRI report</b> — lesion map, acute versus chronic burden.</li>
-          <li><b>Holter analysis</b> after 24 h. If negative, consider extended monitoring given the scattered embolic pattern.</li>
+          <li><s><b>Formal MRI report</b></s> — received 04/08. Confirms diffuse atrophy, microangiopathic ischemic changes, chronic lacunar infarct, old encephalomalacia, and acute infarct (right posterior parietal). See <a href="#" onclick="openKey('reports/neuro-mri-brain-formal-report.jpg');return false">Key reports</a>.</li>
+          <li><s><b>Holter analysis</b></s> — received, no critical finding. 24-h monitor: avg HR 66bpm, 0 pauses &gt;2s, 0% AFib/AFlut — no occult PAF found. Full report in <a href="#" onclick="openKey('reports/cardiac-holter-report.jpg');return false">Records</a>.</li>
           <li><b>EEG clean (no epileptiform activity)</b> — review need for continuing brivaracetam; candidate for taper/stop.</li>
           <li>Post-transfer: physiotherapy/mobilisation referral, fall precautions (Morse 70), swallow safety check before unsupervised feeding.</li>
           <li>Urine culture ± targeted therapy; topical antifungal per dermatology.</li>
@@ -556,35 +584,37 @@ tbody tr:hover{background:#f7fafc}
       </div>
       <div class="card">
         <h3 style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Working aetiology</h3>
-        <p style="font-size:14px"><b>Aetiology confirmed on CTA (04/08): large-artery atherosclerosis.</b> Right carotid bulb/proximal ICA plaque causing ~60-70% stenosis is the most probable embolic source for the right MCA infarct (artery-to-artery embolism). Clean echo (no intracardiac source) and sinus rhythm on admission ECG make a cardioembolic source less likely, though Holter is still pending to exclude occult PAF as a contributing/second mechanism.</p>
-        <p style="font-size:14px;margin-top:10px">Additional, separate burden noted: Lt intracranial ICA stenosis ~70-80% and Lt PCA (P1) stenosis ~80% — asymptomatic at present but relevant to overall stroke-recurrence risk and future vascular planning.</p>
+        <p style="font-size:14px"><b>Discharge diagnosis: recurrent ischemic stroke, right MCA infarct, etiology LVAD vs ICAD</b> (large-vessel atherosclerotic disease vs. intracranial atherosclerotic disease) — the hospital's own summary leaves this undetermined between the two, not a single confirmed mechanism. Right carotid bulb/proximal ICA plaque causing ~60-70% stenosis is the leading candidate (artery-to-artery embolism); clean echo (no intracardiac source), sinus rhythm on admission ECG, and 0% AFib/AFlut on 24-h Holter make a cardioembolic source unlikely.</p>
+        <p style="font-size:14px;margin-top:10px"><b>Recurrent event:</b> patient has a documented old CVA (2004). MRI shows left anterior frontal encephalomalacia with gliosis (old parenchymal insult, consistent with that prior event) plus a separate chronic lacunar infarct (right internal capsule) — distinct from this admission's acute infarct in the right posterior parietal region.</p>
+        <p style="font-size:14px;margin-top:10px">Additional, separate burden noted: Lt intracranial ICA stenosis ~70-80% and Lt PCA (P1) stenosis ~80% — asymptomatic at present but relevant to overall stroke-recurrence risk and future vascular planning. DSA ± right carotid stenting was offered and <b>deferred by the family</b> at discharge — open decision.</p>
         <p style="font-size:14px;margin-top:10px">Modifiable substrate remains prominent: uncontrolled T2DM at 8.2%, LDL 108 with HDL 36, grade I hepatic steatosis.</p>
-        <p style="font-size:13px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2)">All <b>75 source pages</b> — films, echo, ECG, labs, drug charts and ICU flowsheets — are in the <a href="#" onclick="go('rc');return false"><b>Records</b></a> tab.</p>
+        <p style="font-size:13px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2)">All <b>85 source pages</b> — films, echo, ECG, labs, drug charts and ICU flowsheets — are in the <a href="#" onclick="go('rc');return false"><b>Records</b></a> tab.</p>
       </div>
     </div>
   </div>
 
-  <div class="foot">Compiled by the patient's family from bedside records, laboratory prints, drug charts, nursing flowsheets and photographs of films dated 1–3 August 2026, with AI assistance, to support hand-over and second opinions. Not an official hospital document — please verify against primary records. Contact: family attendant of Mr. M. K. Garg, Bed M-307.</div>
+  <div class="foot">Compiled by the patient's family from bedside records, laboratory prints, drug charts, nursing flowsheets and photographs of films dated 1–5 August 2026, with AI assistance, to support hand-over and second opinions. Not an official hospital document — please verify against primary records. Contact: family attendant of Mr. M. K. Garg, Bed M-307.</div>
 </section>
 
 <!-- ======================= RECORDS ======================= -->
 <section class="view" id="rc">
   <div class="sec" data-t="Record library">
-    <p class="lede">Every page below is a photograph of an original hospital record from <b>1–3 August 2026</b>. Click to enlarge, then use <span class="mono">← →</span> to move through the set, click the image to zoom, and <span class="mono">Esc</span> to close.</p>
+    <p class="lede">Every page below is a photograph of an original hospital record from <b>1–5 August 2026</b>. Click to enlarge, then use <span class="mono">← →</span> to move through the set, click the image to zoom, and <span class="mono">Esc</span> to close.</p>
     <div class="tools">
       <input class="search" id="q" type="search" placeholder="Search records — try &quot;HbA1c&quot;, &quot;Holter&quot;, &quot;MRI&quot;, &quot;flowsheet&quot;…" oninput="filt()">
       <div class="chips">
-      <button class="chip active" data-f="all">All <em>80</em></button>
-      <button class="chip" data-f="neuro">Neuro imaging <em>14</em></button>
-      <button class="chip" data-f="cardiac">Cardiac <em>6</em></button>
+      <button class="chip active" data-f="all">All <em>85</em></button>
+      <button class="chip" data-f="neuro">Neuro imaging <em>15</em></button>
+      <button class="chip" data-f="cardiac">Cardiac <em>7</em></button>
       <button class="chip" data-f="imaging">Other imaging <em>3</em></button>
       <button class="chip" data-f="labs">Laboratory <em>19</em></button>
       <button class="chip" data-f="charts">Drug charts <em>3</em></button>
       <button class="chip" data-f="nursing">ICU / nursing <em>28</em></button>
-      <button class="chip" data-f="admin">Admission &amp; pharmacy <em>7</em></button>
+      <button class="chip" data-f="admin">Admission &amp; pharmacy <em>10</em></button>
       </div>
     </div>
     <div class="gal" id="gal">
+      <figure class="shot" data-cat="neuro" data-i="80" data-src="reports/neuro-mri-brain-formal-report.jpg" data-label="MRI Brain — formal report 04/08: diffuse cerebral atrophy, microangiopathic ischemic changes, chronic lacunar infarct, old encephalomalacia, acute infarct right posterior parietal" data-search="mri brain formal report atrophy ischemic lacunar infarct encephalomalacia acute infarct neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-mri-brain-formal-report.jpg" alt="MRI Brain formal report"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>MRI Brain — formal report 04/08: diffuse cerebral atrophy, microangiopathic ischemic changes, chronic lacunar infarct, old encephalomalacia, acute infarct right posterior parietal</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="78" data-src="reports/neuro-eeg-report.jpg" data-label="EEG Report 03/08 — no epileptiform discharge; mild background slowing (7-8 Hz theta)" data-search="eeg report epileptiform theta slowing brivaracetam neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-eeg-report.jpg" alt="EEG report"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>EEG Report 03/08 — no epileptiform discharge; mild background slowing (7-8 Hz theta)</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="79" data-src="reports/neuro-eeg-strip.jpg" data-label="EEG trace strip 03/08 — sample recording page" data-search="eeg trace strip recording neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-eeg-strip.jpg" alt="EEG strip"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>EEG trace strip 03/08 — sample recording page</figcaption></figure>
       <figure class="shot" data-cat="neuro" data-i="75" data-src="reports/neuro-cta-neck-report.jpg" data-label="CT Angiography of Neck — formal report 04/08: Rt carotid 60-70% stenosis, Lt carotid &lt;40-50%" data-search="ct angiography neck formal report carotid stenosis plaque 60-70 40-50 neuro imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/neuro-cta-neck-report.jpg" alt="CTA Neck formal report"></div><figcaption><span class="tag tag-neuro">Neuro imaging</span>CT Angiography of Neck — formal report 04/08: Rt carotid 60-70% stenosis, Lt carotid &lt;40-50%</figcaption></figure>
@@ -605,6 +635,7 @@ tbody tr:hover{background:#f7fafc}
       <figure class="shot" data-cat="cardiac" data-i="12" data-src="reports/cardiac-echo-p1.jpg" data-label="2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)" data-search="2d echo &amp; colour doppler — page 1 (measurements, chambers, valves) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p1.jpg" alt="2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo &amp; Colour Doppler — page 1 (measurements, chambers, valves)</figcaption></figure>
       <figure class="shot" data-cat="cardiac" data-i="13" data-src="reports/cardiac-echo-p2-clean.jpg" data-label="2D Echo — page 2 (clean copy, final impression)" data-search="2d echo — page 2 (clean copy, final impression) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p2-clean.jpg" alt="2D Echo — page 2 (clean copy, final impression)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo — page 2 (clean copy, final impression)</figcaption></figure>
       <figure class="shot" data-cat="cardiac" data-i="14" data-src="reports/cardiac-echo-p2.jpg" data-label="2D Echo — page 2 (Doppler + final impression)" data-search="2d echo — page 2 (doppler + final impression) cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-echo-p2.jpg" alt="2D Echo — page 2 (Doppler + final impression)"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>2D Echo — page 2 (Doppler + final impression)</figcaption></figure>
+      <figure class="shot" data-cat="cardiac" data-i="81" data-src="reports/cardiac-holter-report.jpg" data-label="24-h Holter report — Yatharth Hospitals, avg HR 66bpm, 0 pauses &gt;2s, 0% AFib/AFlut" data-search="holter report 24 hour monitor heart rate afib aflutter yatharth cardiac" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/cardiac-holter-report.jpg" alt="24-h Holter report"></div><figcaption><span class="tag tag-cardiac">Cardiac</span>24-h Holter report — Yatharth Hospitals, avg HR 66bpm, 0 pauses &gt;2s, 0% AFib/AFlut</figcaption></figure>
       <figure class="shot" data-cat="imaging" data-i="15" data-src="reports/imaging-cxr-a.jpg" data-label="Chest X-ray PA 01/08" data-search="chest x-ray pa 01/08 other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-cxr-a.jpg" alt="Chest X-ray PA 01/08"></div><figcaption><span class="tag tag-imaging">Other imaging</span>Chest X-ray PA 01/08</figcaption></figure>
       <figure class="shot" data-cat="imaging" data-i="16" data-src="reports/imaging-cxr-b.jpg" data-label="Chest X-ray PA 01/08 — closer view" data-search="chest x-ray pa 01/08 — closer view other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-cxr-b.jpg" alt="Chest X-ray PA 01/08 — closer view"></div><figcaption><span class="tag tag-imaging">Other imaging</span>Chest X-ray PA 01/08 — closer view</figcaption></figure>
       <figure class="shot" data-cat="imaging" data-i="17" data-src="reports/imaging-usg-abdomen.jpg" data-label="USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc" data-search="usg whole abdomen report — gr-i fatty liver, prostatomegaly ~50cc other imaging" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/imaging-usg-abdomen.jpg" alt="USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc"></div><figcaption><span class="tag tag-imaging">Other imaging</span>USG Whole Abdomen report — Gr-I fatty liver, prostatomegaly ~50cc</figcaption></figure>
@@ -665,6 +696,9 @@ tbody tr:hover{background:#f7fafc}
       <figure class="shot" data-cat="admin" data-i="72" data-src="reports/admin-pharmacy-bill-2.jpg" data-label="Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met" data-search="pharmacy issue — brivgard 50, remylin, l-qunol, galvus-met admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-2.jpg" alt="Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Brivgard 50, Remylin, L-Qunol, Galvus-Met</figcaption></figure>
       <figure class="shot" data-cat="admin" data-i="73" data-src="reports/admin-pharmacy-bill-3.jpg" data-label="Pharmacy issue — Tyvalzi injection" data-search="pharmacy issue — tyvalzi injection admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-3.jpg" alt="Pharmacy issue — Tyvalzi injection"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Tyvalzi injection</figcaption></figure>
       <figure class="shot" data-cat="admin" data-i="74" data-src="reports/admin-pharmacy-bill-4.jpg" data-label="Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi" data-search="pharmacy issue — cognistar, atorlip, clopitab, ecosprin, tyvalzi admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-pharmacy-bill-4.jpg" alt="Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Pharmacy issue — Cognistar, Atorlip, Clopitab, Ecosprin, Tyvalzi</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="82" data-src="reports/admin-discharge-summary-p1.jpg" data-label="Discharge summary p1/3 — final diagnosis, presenting findings, hospital course" data-search="discharge summary final diagnosis recurrent ischemic stroke mca infarct condition stable admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-discharge-summary-p1.jpg" alt="Discharge summary page 1"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Discharge summary p1/3 — final diagnosis, presenting findings, hospital course</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="83" data-src="reports/admin-discharge-summary-p2.jpg" data-label="Discharge summary p2/3 — investigation results, condition on discharge: stable, medication list" data-search="discharge summary investigation results condition stable medication advice admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-discharge-summary-p2.jpg" alt="Discharge summary page 2"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Discharge summary p2/3 — investigation results, condition on discharge: stable, medication list</figcaption></figure>
+      <figure class="shot" data-cat="admin" data-i="84" data-src="reports/admin-discharge-summary-p3.jpg" data-label="Discharge summary p3/3 — follow-up advice, Neurology OPD in 7 days, warning signs" data-search="discharge summary follow up advice neurology opd warning signs admission & pharmacy" tabindex="0"><div class="shot-img"><img loading="lazy" src="reports/thumbs/admin-discharge-summary-p3.jpg" alt="Discharge summary page 3"></div><figcaption><span class="tag tag-admin">Admission &amp; pharmacy</span>Discharge summary p3/3 — follow-up advice, Neurology OPD in 7 days, warning signs</figcaption></figure>
     </div>
     <div class="empty" id="empty">No records match that search.</div>
   </div>
@@ -743,6 +777,13 @@ SHOTS.forEach(function(s){
   s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open_(s);}});
 });
 function open_(s){L.a=vis();L.i=L.a.indexOf(s);draw();document.getElementById('lb').classList.add('on');document.body.style.overflow='hidden';}
+function openKey(src){
+  go('rc');
+  document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('.chip[data-f="all"]').classList.add('active'); FILT='all'; filt();
+  var el=SHOTS.filter(function(s){return s.dataset.src===src;})[0];
+  if(el) open_(el);
+}
 function draw(){
   var s=L.a[L.i],img=document.getElementById('lbI');
   img.classList.remove('zoom'); img.src=s.dataset.src; img.alt=s.dataset.label;
