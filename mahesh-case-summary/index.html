@@ -784,17 +784,11 @@ function filt(){
 var L={a:[],i:0};
 function vis(){return SHOTS.filter(function(s){return s.style.display!=='none';});}
 SHOTS.forEach(function(s){
-  s.addEventListener('click',function(){open_(s);});
-  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open_(s);}});
+  s.addEventListener('click',function(){window.open(s.dataset.src,'_blank');});
+  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();window.open(s.dataset.src,'_blank');}});
 });
 function open_(s){L.a=vis();L.i=L.a.indexOf(s);draw();document.getElementById('lb').classList.add('on');document.body.style.overflow='hidden';}
-function openKey(src){
-  go('rc');
-  document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});
-  document.querySelector('.chip[data-f="all"]').classList.add('active'); FILT='all'; filt();
-  var el=SHOTS.filter(function(s){return s.dataset.src===src;})[0];
-  if(el) open_(el);
-}
+function openKey(src){window.open(src,'_blank');}
 function draw(){
   var s=L.a[L.i],img=document.getElementById('lbI');
   img.classList.remove('zoom'); img.src=s.dataset.src; img.alt=s.dataset.label;
