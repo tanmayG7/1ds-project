@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CT Angiography (Brain + Neck) — DICOM Viewer — Mahesh Kumar Garg</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dwv@0.34.1/dist/dwv.css">
+<style>
+  :root{
+    --ink:#0f1a2b; --bg:#eef2f6; --surface:#ffffff; --line:#d9e1ea; --muted:#5f7186; --stable:#0d7a72;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--ink);color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  header{padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.12);background:#0c1522}
+  header h1{font-size:15px;font-weight:700}
+  header .sub{font-size:11.5px;color:#8fa5bb}
+  header a{color:#5fb8b0;font-size:12px;text-decoration:none;margin-left:auto}
+  .toolbar{padding:8px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#0c1522;border-bottom:1px solid rgba(255,255,255,.12)}
+  select,button{
+    font-family:inherit;font-size:12.5px;padding:7px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.2);
+    background:#182739;color:#fff;cursor:pointer;
+  }
+  select:hover,button:hover{background:#22354b}
+  button.on{background:var(--stable);border-color:var(--stable)}
+  .hint{font-size:11px;color:#8fa5bb;margin-left:auto}
+  main{flex:1;position:relative;overflow:hidden;background:#000}
+  #layerGroup0{width:100%;height:100%;position:relative}
+  #loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8fa5bb;font-size:13px}
+  .spin{width:28px;height:28px;border:3px solid #2a3d54;border-top-color:#5fb8b0;border-radius:50%;animation:sp 0.8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  #err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#f0a0a0;font-size:13px;padding:30px;text-align:center;background:#0a0a0a}
+  .slicebar{padding:8px 16px;background:#0c1522;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
+  .slicebar input[type=range]{flex:1}
+  .slicebar span{font-size:11.5px;color:#8fa5bb;min-width:70px;text-align:right;font-family:'IBM Plex Mono',monospace}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CT Angiography (Brain + Neck) — DICOM Viewer</h1>
+  <div class="sub">Mahesh Kumar Garg · 70M · CTA dated 02/08/2026 · "ARCH To COW" (arch to circle of Willis)</div>
+  <a href="../index.html">&larr; Back to case file</a>
+</header>
+
+<div class="toolbar">
+  <select id="seriesSel"><option>Loading series list…</option></select>
+  <button id="toolScroll" class="on">Scroll slices</button>
+  <button id="toolWL">Window / Level</button>
+  <button id="toolZoom">Zoom / Pan</button>
+  <button id="btnReset">Reset view</button>
+  <span class="hint">Mouse wheel or slider = change slice · drag = active tool</span>
+</div>
+
+<main>
+  <div id="layerGroup0" class="layerGroup"></div>
+  <div id="loading"><div class="spin"></div><div id="loadingText">Loading series…</div></div>
+  <div id="err">Could not load this series in-browser. Your hospital disc's own viewer, or a desktop app like MicroDicom, will always work as a fallback — the original files are unchanged in the <code>DICOM/</code> folder alongside this page.</div>
+</main>
+
+<div class="slicebar">
+  <input type="range" id="sliceRange" min="0" max="0" value="0">
+  <span id="sliceLabel">– / –</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/dwv@0.34.1/dist/dwv.min.js"></script>
+<script>
+var app = null;
+var manifest = [];
+var currentSeries = null;
+
+function setLoading(on, text) {
+  document.getElementById('loading').style.display = on ? 'flex' : 'none';
+  if (text) document.getElementById('loadingText').textContent = text;
+}
+function setErr(on) {
+  document.getElementById('err').style.display = on ? 'flex' : 'none';
+}
+
+function initApp() {
+  app = new dwv.App();
+  app.init({
+    dataViewConfigs: {'*': [{divId: 'layerGroup0'}]},
+    tools: {
+      Scroll: {},
+      WindowLevel: {},
+      ZoomAndPan: {}
+    }
+  });
+  app.addEventListener('loadstart', function () { setErr(false); setLoading(true, 'Loading series…'); });
+  app.addEventListener('loadprogress', function (e) {
+    if (e.lengthComputable) setLoading(true, 'Loading series… ' + Math.round(e.loaded * 100 / e.total) + '%');
+  });
+  app.addEventListener('loadend', function () {
+    setLoading(false);
+    app.setTool('Scroll');
+    updateSliceRange();
+  });
+  app.addEventListener('loaderror', function (e) {
+    console.error('dwv load error', e);
+    setLoading(false);
+    setErr(true);
+  });
+  app.addEventListener('error', function (e) {
+    console.error('dwv error', e);
+    setLoading(false);
+    setErr(true);
+  });
+
+  document.getElementById('toolScroll').addEventListener('click', function(){setTool('Scroll', this);});
+  document.getElementById('toolWL').addEventListener('click', function(){setTool('WindowLevel', this);});
+  document.getElementById('toolZoom').addEventListener('click', function(){setTool('ZoomAndPan', this);});
+  document.getElementById('btnReset').addEventListener('click', function(){ if (app) app.resetDisplay(); });
+  document.getElementById('sliceRange').addEventListener('input', function(e){
+    var vc = getViewController();
+    if (!vc) return;
+    var target = parseInt(e.target.value, 10);
+    var cur = vc.getCurrentScrollIndexValue();
+    var diff = target - cur;
+    for (var i = 0; i < Math.abs(diff); i++) {
+      if (diff > 0) vc.incrementScrollIndex(); else vc.decrementScrollIndex();
+    }
+  });
+  app.addEventListener('positionchange', function(){
+    var vc = getViewController();
+    if (vc) setSliceIndex(vc.getCurrentScrollIndexValue());
+  });
+}
+
+function getViewController() {
+  if (!app) return null;
+  var lg = app.getLayerGroupByDivId('layerGroup0');
+  if (!lg) return null;
+  var vl = lg.getActiveViewLayer();
+  if (!vl) return null;
+  return vl.getViewController();
+}
+
+function setTool(name, btn) {
+  document.querySelectorAll('.toolbar button').forEach(function(b){b.classList.remove('on');});
+  if (btn) btn.classList.add('on');
+  if (app) app.setTool(name);
+}
+
+function setSliceIndex(i) {
+  var range = document.getElementById('sliceRange');
+  var label = document.getElementById('sliceLabel');
+  range.value = i;
+  label.textContent = (i + 1) + ' / ' + (parseInt(range.max, 10) + 1);
+}
+
+function updateSliceRange() {
+  if (currentSeries) {
+    var n = currentSeries.count;
+    var range = document.getElementById('sliceRange');
+    range.max = n - 1;
+    range.value = 0;
+    setSliceIndex(0);
+  }
+}
+
+function loadSeries(se) {
+  currentSeries = manifest.find(function(s){return s.series === se;});
+  if (!currentSeries) return;
+  if (app) {
+    app.reset();
+  }
+  setLoading(true, 'Loading ' + currentSeries.description + '…');
+  app.loadURLs(currentSeries.files);
+}
+
+fetch('manifest.json').then(function(r){return r.json();}).then(function(data){
+  manifest = data;
+  var sel = document.getElementById('seriesSel');
+  sel.innerHTML = '';
+  manifest.forEach(function(s){
+    var opt = document.createElement('option');
+    opt.value = s.series;
+    opt.textContent = s.description + ' (' + s.count + ' images)';
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', function(){ loadSeries(sel.value); });
+  initApp();
+  sel.value = manifest[0].series;
+  loadSeries(manifest[0].series);
+}).catch(function(e){
+  console.error('manifest load failed', e);
+  setLoading(false);
+  setErr(true);
+});
+</script>
+</body>
+</html>
