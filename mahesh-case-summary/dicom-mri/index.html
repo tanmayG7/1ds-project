@@ -28,7 +28,7 @@
   #loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#8fa5bb;font-size:13px}
   .spin{width:28px;height:28px;border:3px solid #2a3d54;border-top-color:#5fb8b0;border-radius:50%;animation:sp 0.8s linear infinite}
   @keyframes sp{to{transform:rotate(360deg)}}
-  #err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#f0a0a0;font-size:13px;padding:30px;text-align:center}
+  #err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#f0a0a0;font-size:13px;padding:30px;text-align:center;background:#0a0a0a}
   .slicebar{padding:8px 16px;background:#0c1522;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
   .slicebar input[type=range]{flex:1}
   .slicebar span{font-size:11.5px;color:#8fa5bb;min-width:70px;text-align:right;font-family:'IBM Plex Mono',monospace}
@@ -177,12 +177,21 @@ fetch('manifest.json').then(function(r){return r.json();}).then(function(data){
   manifest = data;
   var sel = document.getElementById('seriesSel');
   sel.innerHTML = '';
+  var localizerShown = false;
   manifest.forEach(function(s){
+    var isLocalizer = /^3-pl/i.test(s.description);
+    if (isLocalizer) {
+      if (localizerShown) return;
+      localizerShown = true;
+      var lopt = document.createElement('option');
+      lopt.disabled = true;
+      lopt.textContent = '3-pl T2* FGRE-XL — localizer scan, not viewable here (mixes 3 scan planes)';
+      sel.appendChild(lopt);
+      return;
+    }
     var opt = document.createElement('option');
     opt.value = s.series;
-    var label = s.description + ' (' + s.count + ' images)';
-    if (/^3-pl/i.test(s.description)) label += ' — localizer, mixed planes, may not render';
-    opt.textContent = label;
+    opt.textContent = s.description + ' (' + s.count + ' images)';
     sel.appendChild(opt);
   });
   sel.addEventListener('change', function(){ loadSeries(sel.value); });
