@@ -274,18 +274,35 @@ function emailCard(r) {
 
 // ── DPDP campaign section ──────────────────────────────────────────────────────
 
+// A contact only counts toward "planned" if we'd actually send to them:
+// not bounced, valid/catch-all email, and personalization complete. Rows
+// still missing owner/score/CTA (not yet prepped) or already excluded
+// (bounced, invalid) don't belong in the denominator - they were never
+// going to be sent regardless of what day it is.
+function dpdpPlanned(rows) {
+  return rows.filter(r => {
+    if ((r.status || "").toLowerCase() === "bounced") return false;
+    const verif = (r.email_verification || "").toLowerCase();
+    if (verif !== "valid" && verif !== "catch-all") return false;
+    if (!(r.owner || "").trim()) return false;
+    if (!(r.dpdp_score || "").trim()) return false;
+    if (!(r.cta_url || "").trim()) return false;
+    return true;
+  });
+}
+
 function dpdpStats(rows, name) {
-  const total     = rows.length;
-  const sent      = rows.filter(r => (r.sent_at || "").trim() !== "");
-  const bounced   = rows.filter(r => (r.status || "").toLowerCase() === "bounced");
-  const opened    = rows.filter(r => (r.opened || "").toLowerCase() === "yes");
-  const clicked   = rows.filter(r => (r.clicked || "").toLowerCase() === "yes");
-  const booked    = rows.filter(r => (r.booking_cta_clicked || "").toLowerCase() === "yes");
-  const replied   = rows.filter(r => (r.replied || "").toLowerCase() === "yes");
+  const planned   = dpdpPlanned(rows);
+  const total     = planned.length;
+  const sent      = planned.filter(r => (r.sent_at || "").trim() !== "");
+  const opened    = planned.filter(r => (r.opened || "").toLowerCase() === "yes");
+  const clicked   = planned.filter(r => (r.clicked || "").toLowerCase() === "yes");
+  const booked    = planned.filter(r => (r.booking_cta_clicked || "").toLowerCase() === "yes");
+  const replied   = planned.filter(r => (r.replied || "").toLowerCase() === "yes");
   const openRate  = sent.length ? (opened.length  / sent.length * 100) : 0;
   const clickRate = sent.length ? (clicked.length / sent.length * 100) : 0;
   const replyRate = sent.length ? (replied.length / sent.length * 100) : 0;
-  return { name, total, bounced: bounced.length, sent: sent.length,
+  return { name, total, sent: sent.length,
            opened: opened.length, openRate, clicked: clicked.length, clickRate,
            booked: booked.length, replied: replied.length, replyRate };
 }
@@ -298,7 +315,6 @@ function dpdpCard(r) {
     <div class="bar-bg"><div class="bar-fill" style="background:#3d1472;width:${pct.toFixed(0)}%"></div></div>
     <p class="pct-label">${r.sent} of ${r.total} sent (${pct.toFixed(0)}%)</p>
     <table>
-      <tr><td style="color:#6b7280">Bounced</td><td style="text-align:right;color:#da1c4b">${r.bounced}</td></tr>
       <tr><td style="color:#6b7280">Opened</td><td style="text-align:right;color:#5a2ba0">${r.opened} (${r.openRate.toFixed(0)}%)</td></tr>
       <tr><td style="color:#6b7280">Clicked report</td><td style="text-align:right;color:#0a66c2">${r.clicked} (${r.clickRate.toFixed(0)}%)</td></tr>
       <tr><td style="color:#6b7280">Clicked "Get on a call"</td><td style="text-align:right;color:#b91c1c;font-weight:600">${r.booked}</td></tr>
@@ -631,7 +647,8 @@ function showToast(msg) {
 
 // ── DPDP per-account stats ────────────────────────────────────────────────────
 
-function dpdpAccountCards(rows) {
+function dpdpAccountCards(allRows) {
+  const rows = dpdpPlanned(allRows);
   if (!rows.length) return '<p style="color:#9ca3af">No data yet.</p>';
 
   // Group by assigned_account
