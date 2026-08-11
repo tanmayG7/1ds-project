@@ -295,6 +295,10 @@ function dpdpStats(rows, name) {
   const planned   = dpdpPlanned(rows);
   const total     = planned.length;
   const sent      = planned.filter(r => (r.sent_at || "").trim() !== "");
+  // followup_stage is set when email2 (followup1) / email3 (followup2)
+  // actually goes out - not the same as "due", so this reflects real sends.
+  const email2    = planned.filter(r => ["followup1", "followup2"].includes((r.followup_stage || "").toLowerCase()));
+  const email3    = planned.filter(r => (r.followup_stage || "").toLowerCase() === "followup2");
   const opened    = planned.filter(r => (r.opened || "").toLowerCase() === "yes");
   const clicked   = planned.filter(r => (r.clicked || "").toLowerCase() === "yes");
   const booked    = planned.filter(r => (r.booking_cta_clicked || "").toLowerCase() === "yes");
@@ -302,7 +306,7 @@ function dpdpStats(rows, name) {
   const openRate  = sent.length ? (opened.length  / sent.length * 100) : 0;
   const clickRate = sent.length ? (clicked.length / sent.length * 100) : 0;
   const replyRate = sent.length ? (replied.length / sent.length * 100) : 0;
-  return { name, total, sent: sent.length,
+  return { name, total, sent: sent.length, email2: email2.length, email3: email3.length,
            opened: opened.length, openRate, clicked: clicked.length, clickRate,
            booked: booked.length, replied: replied.length, replyRate };
 }
@@ -315,6 +319,9 @@ function dpdpCard(r) {
     <div class="bar-bg"><div class="bar-fill" style="background:#3d1472;width:${pct.toFixed(0)}%"></div></div>
     <p class="pct-label">${r.sent} of ${r.total} sent (${pct.toFixed(0)}%)</p>
     <table>
+      <tr><td style="color:#6b7280">Email 1 sent</td><td style="text-align:right">${r.sent}</td></tr>
+      <tr><td style="color:#6b7280">Email 2 sent</td><td style="text-align:right">${r.email2}</td></tr>
+      <tr><td style="color:#6b7280">Email 3 sent</td><td style="text-align:right">${r.email3}</td></tr>
       <tr><td style="color:#6b7280">Opened</td><td style="text-align:right;color:#5a2ba0">${r.opened} (${r.openRate.toFixed(0)}%)</td></tr>
       <tr><td style="color:#6b7280">Clicked report</td><td style="text-align:right;color:#0a66c2">${r.clicked} (${r.clickRate.toFixed(0)}%)</td></tr>
       <tr><td style="color:#6b7280">Clicked "Get on a call"</td><td style="text-align:right;color:#b91c1c;font-weight:600">${r.booked}</td></tr>
