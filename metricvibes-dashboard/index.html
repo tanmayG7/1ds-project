@@ -302,7 +302,13 @@ function dpdpStats(rows, name) {
   const opened    = planned.filter(r => (r.opened || "").toLowerCase() === "yes");
   const clicked   = planned.filter(r => (r.clicked || "").toLowerCase() === "yes");
   const booked    = planned.filter(r => (r.booking_cta_clicked || "").toLowerCase() === "yes");
-  const replied   = planned.filter(r => (r.replied || "").toLowerCase() === "yes");
+  // replied=Yes also gets set on teammates at a company where someone else
+  // replied (so they don't keep getting follow-ups) and on auto-replies/
+  // bounces (OOO, "no longer here", mailbox full) - none of those are a
+  // real person actually engaging, so exclude_from_reply_count keeps them
+  // out of the metric while still respecting the follow-up exclusion.
+  const replied   = planned.filter(r => (r.replied || "").toLowerCase() === "yes"
+                                      && (r.exclude_from_reply_count || "").toLowerCase() !== "yes");
   const openRate  = sent.length ? (opened.length  / sent.length * 100) : 0;
   const clickRate = sent.length ? (clicked.length / sent.length * 100) : 0;
   const replyRate = sent.length ? (replied.length / sent.length * 100) : 0;
