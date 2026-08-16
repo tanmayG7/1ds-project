@@ -29,6 +29,21 @@
   .search-field input { padding:7px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; width:180px; outline:none; }
   .search-field input:focus { border-color:#3d1472; }
 
+  .loc-field { position:relative; }
+  .loc-box { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:220px; max-width:320px; padding:4px 6px; border:1px solid #d1d5db; border-radius:7px; background:#fff; }
+  .loc-box:focus-within { border-color:#3d1472; }
+  .loc-chip-list { display:contents; }
+  .loc-chip { display:inline-flex; align-items:center; gap:4px; background:#ede9fe; color:#5b21b6; font-size:11px; font-weight:600; padding:3px 6px 3px 8px; border-radius:20px; white-space:nowrap; }
+  .loc-chip button { border:none; background:none; color:#5b21b6; cursor:pointer; font-size:13px; line-height:1; padding:0; opacity:.6; }
+  .loc-chip button:hover { opacity:1; }
+  #locationInput { flex:1; min-width:80px; border:none; outline:none; font-size:13px; padding:3px 2px; }
+  .loc-suggestions { display:none; position:absolute; top:100%; left:0; margin-top:4px; width:100%; max-height:220px; overflow-y:auto; background:#fff; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.1); z-index:50; }
+  .loc-suggestions.open { display:block; }
+  .loc-suggestion { display:flex; justify-content:space-between; gap:8px; padding:7px 12px; font-size:12.5px; color:#191919; cursor:pointer; }
+  .loc-count { color:#9ca3af; font-size:11px; font-weight:600; }
+  .loc-suggestion:hover, .loc-suggestion.active { background:#faf9ff; }
+  .loc-suggestion-empty { padding:7px 12px; font-size:12px; color:#9ca3af; }
+
   .filter-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
   .filter-label { font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-right:2px; }
   .filter-pill { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid #d1d5db; background:#fff; color:#6b7280; transition:all .15s; white-space:nowrap; }
@@ -49,7 +64,7 @@
   tbody tr:last-child td { border-bottom:none; }
   .name-cell { font-weight:600; color:#191919; }
   .sub-cell { color:#6b7280; }
-  td.desig { max-width:260px; }
+  td.desig { min-width:340px; max-width:460px; white-space:normal; line-height:1.4; }
   a.li-link { color:#3d1472; text-decoration:none; font-size:11px; font-weight:600; }
   a.li-link:hover { text-decoration:underline; }
 
@@ -58,6 +73,20 @@
   .status-Warm     { background-color:#fef3c7; color:#92400e; }
   .status-Cold     { background-color:#dbeafe; color:#1e40af; }
   .status-          { background-color:#f3f4f6; color:#6b7280; }
+  .dept-Founder    { background-color:#ede9fe; color:#5b21b6; }
+  .dept-Sales      { background-color:#dcfce7; color:#14532d; }
+  .dept-Marketing  { background-color:#ffe4e6; color:#9f1239; }
+  .dept-HR         { background-color:#fef9c3; color:#854d0e; }
+  .dept-Developer  { background-color:#e0e7ff; color:#3730a3; }
+  .dept-Product    { background-color:#cffafe; color:#155e75; }
+  .dept-Operations { background-color:#fae8ff; color:#86198f; }
+  .dept-Student    { background-color:#f1f5f9; color:#334155; }
+  .dept-Data\/Analytics { background-color:#d1fae5; color:#065f46; }
+  .dept-Content    { background-color:#fce7f3; color:#9d174d; }
+  .dept-Design     { background-color:#fef3c7; color:#92400e; }
+  .dept-Finance    { background-color:#e2e8f0; color:#1e293b; }
+  .dept-Legal      { background-color:#fee2e2; color:#7f1d1d; }
+  .dept-none       { background-color:#f3f4f6; color:#6b7280; }
 
   .notes-input { width:130px; font-size:12px; padding:4px 6px; border:1px solid transparent; border-radius:5px; outline:none; background:transparent; }
   .notes-input:hover, .notes-input:focus { border-color:#d1d5db; background:#fff; }
@@ -104,6 +133,14 @@
       <label>Designation</label>
       <input type="text" id="designationSearch" placeholder="e.g. Marketing, VP...">
     </div>
+    <div class="search-field loc-field">
+      <label>Location</label>
+      <div class="loc-box" id="locBox">
+        <div class="loc-chip-list" id="locChipList"></div>
+        <input type="text" id="locationInput" placeholder="type to add..." autocomplete="off">
+        <div class="loc-suggestions" id="locSuggestions"></div>
+      </div>
+    </div>
     <div class="filter-group">
       <span class="filter-label">Status</span>
       <div class="filter-pill active" data-status="all">All</div>
@@ -111,6 +148,24 @@
       <div class="filter-pill warm" data-status="Warm">Warm</div>
       <div class="filter-pill cold" data-status="Cold">Cold</div>
       <div class="filter-pill" data-status="">Unmarked</div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Department</span>
+      <div class="filter-pill active" data-dept="all">All</div>
+      <div class="filter-pill" data-dept="Founder">Founder</div>
+      <div class="filter-pill" data-dept="Sales">Sales</div>
+      <div class="filter-pill" data-dept="Marketing">Marketing</div>
+      <div class="filter-pill" data-dept="HR">HR</div>
+      <div class="filter-pill" data-dept="Developer">Developer</div>
+      <div class="filter-pill" data-dept="Product">Product</div>
+      <div class="filter-pill" data-dept="Operations">Operations</div>
+      <div class="filter-pill" data-dept="Data/Analytics">Data/Analytics</div>
+      <div class="filter-pill" data-dept="Content">Content</div>
+      <div class="filter-pill" data-dept="Design">Design</div>
+      <div class="filter-pill" data-dept="Finance">Finance</div>
+      <div class="filter-pill" data-dept="Legal">Legal</div>
+      <div class="filter-pill" data-dept="Student">Student</div>
+      <div class="filter-pill" data-dept="">Unclassified</div>
     </div>
     <div class="filter-group">
       <span class="filter-label">Only filled</span>
@@ -148,7 +203,57 @@ const STATUSES = ["", "Hot", "Warm", "Cold"];
 let _all = [];
 let _filtered = [];
 let _page = 1;
-const _filters = { status: "all", company: "", designation: "", filled: new Set() };
+let _locationOptions = [];
+let _locationCounts = new Map();
+const _filters = { status: "all", department: "all", company: "", designation: "", filled: new Set(), locations: new Set() };
+const DEPARTMENTS = ["", "Founder", "Sales", "Marketing", "HR", "Developer", "Product", "Operations", "Data/Analytics", "Content", "Design", "Finance", "Legal", "Student"];
+
+// Location clustering for the filter only — raw location text in the table is untouched.
+// Major hubs first (most specific wins), then a country-level fallback, then the raw
+// string itself for the long tail of one-off places we won't force into a bucket.
+const LOCATION_HUBS = [
+  ["Delhi NCR", /delhi|ncr|gurugram|gurgaon|noida|ghaziabad|faridabad/i],
+  ["Bengaluru", /bengaluru|bangalore/i],
+  ["Mumbai", /mumbai/i],
+  ["Pune", /pune/i],
+  ["Hyderabad", /hyderabad/i],
+  ["Chennai", /chennai/i],
+  ["Kolkata", /kolkata/i],
+  ["Ahmedabad", /ahmedabad/i],
+  ["Jaipur", /jaipur/i],
+  ["Indore", /indore/i],
+  ["Lucknow", /lucknow/i],
+  ["Chandigarh", /chandigarh/i],
+  ["Surat", /surat/i],
+  ["San Francisco Bay Area", /san francisco|bay area/i],
+  ["New York", /new york/i],
+  ["London", /london/i],
+  ["Singapore", /singapore/i],
+  ["Dubai / UAE", /dubai|united arab emirates|\buae\b/i],
+  ["Paris", /paris/i],
+  ["Berlin", /berlin/i],
+  ["Toronto", /toronto/i],
+  ["Sydney", /sydney/i],
+  ["Melbourne", /melbourne/i],
+];
+const LOCATION_COUNTRY_FALLBACK = [
+  ["India", /\bindia\b/i],
+  ["United States", /united states|\busa\b/i],
+  ["United Kingdom", /united kingdom|\buk\b/i],
+  ["Germany", /germany/i],
+  ["France", /france/i],
+  ["Israel", /israel/i],
+  ["Canada", /canada/i],
+  ["Australia", /australia/i],
+  ["Netherlands", /netherlands/i],
+];
+function clusterLocation(raw) {
+  const loc = (raw || "").trim();
+  if (!loc) return "";
+  for (const [name, rgx] of LOCATION_HUBS) if (rgx.test(loc)) return name;
+  for (const [name, rgx] of LOCATION_COUNTRY_FALLBACK) if (rgx.test(loc)) return name;
+  return loc;
+}
 
 function valuesUrl(tab) {
   return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
@@ -169,6 +274,14 @@ async function loadData() {
     });
     document.getElementById("updated").textContent =
       `${_all.length.toLocaleString()} connections · loaded ${new Date().toLocaleString()}`;
+    const locCounts = new Map();
+    _all.forEach(r => {
+      const cluster = clusterLocation(r.location);
+      if (cluster) locCounts.set(cluster, (locCounts.get(cluster) || 0) + 1);
+    });
+    // Sort by size so major hubs surface first in the dropdown, not buried alphabetically.
+    _locationCounts = locCounts;
+    _locationOptions = [...locCounts.entries()].sort((a, b) => b[1] - a[1]).map(([name]) => name);
     applyFilters();
   } catch (e) {
     console.error(e);
@@ -208,8 +321,11 @@ function applyFilters() {
   _filtered = _all.filter(r => {
     if (_filters.status === "all") { /* no-op */ }
     else if ((r.status || "") !== _filters.status) return false;
+    if (_filters.department === "all") { /* no-op */ }
+    else if ((r.department || "") !== _filters.department) return false;
     if (company && !(r.company || "").toLowerCase().includes(company)) return false;
     if (designation && !(r.designation || "").toLowerCase().includes(designation)) return false;
+    if (_filters.locations.size && !_filters.locations.has(clusterLocation(r.location))) return false;
     for (const field of _filters.filled) {
       if (!(r[field] || "").trim()) return false;
     }
@@ -229,6 +345,10 @@ function statusOptionsHtml(current) {
   return STATUSES.map(s => `<option value="${s}" ${s === current ? "selected" : ""}>${s || "—"}</option>`).join("");
 }
 
+function deptOptionsHtml(current) {
+  return DEPARTMENTS.map(d => `<option value="${d}" ${d === (current || "") ? "selected" : ""}>${d || "—"}</option>`).join("");
+}
+
 function renderTable() {
   const count = _filtered.length;
   document.getElementById("resultCount").textContent =
@@ -245,6 +365,7 @@ function renderTable() {
     <tr data-id="${r.id}">
       <td class="name-cell">${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</td>
       <td class="desig">${escapeHtml(r.designation)}</td>
+      <td><select class="status-select dept-${r.department || "none"}" onchange="updateDept('${r.id}', this)">${deptOptionsHtml(r.department)}</select></td>
       <td>${escapeHtml(r.company)}</td>
       <td class="sub-cell">${escapeHtml(r.location)}</td>
       <td class="sub-cell">${escapeHtml(r.email)}</td>
@@ -265,7 +386,7 @@ function renderTable() {
   document.getElementById("tableWrap").innerHTML = `
     <table>
       <thead><tr>
-        <th>Name</th><th>Designation</th><th>Company</th><th>Location</th>
+        <th>Name</th><th>Designation</th><th>Department</th><th>Company</th><th>Location</th>
         <th>Email</th><th>Phone</th><th>LinkedIn</th><th>Connected</th><th>Status</th>
         <th>Notes</th><th>Career Site</th><th>Who to Refer</th><th>Next Steps</th>
       </tr></thead>
@@ -347,6 +468,14 @@ async function updateStatus(id, selectEl) {
   await callApi({ action: "update", id, status });
 }
 
+async function updateDept(id, selectEl) {
+  const department = selectEl.value;
+  selectEl.className = "status-select dept-" + (department || "none");
+  const row = _all.find(r => r.id === id);
+  if (row) row.department = department;
+  await callApi({ action: "update", id, department });
+}
+
 async function updateField(id, field, inputEl) {
   const value = inputEl.value;
   const row = _all.find(r => r.id === id);
@@ -377,11 +506,20 @@ function showToast(msg) {
   _toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-document.querySelectorAll(".filter-pill").forEach(pill => {
+document.querySelectorAll(".filter-pill[data-status]").forEach(pill => {
   pill.addEventListener("click", () => {
-    document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".filter-pill[data-status]").forEach(p => p.classList.remove("active"));
     pill.classList.add("active");
     _filters.status = pill.dataset.status;
+    applyFilters();
+  });
+});
+
+document.querySelectorAll(".filter-pill[data-dept]").forEach(pill => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll(".filter-pill[data-dept]").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    _filters.department = pill.dataset.dept;
     applyFilters();
   });
 });
@@ -393,6 +531,53 @@ document.querySelectorAll(".filled-check input").forEach(cb => {
     applyFilters();
   });
 });
+
+// --- Location multiselect (type to search, click to add, chips to remove) ---
+const locInput = document.getElementById("locationInput");
+const locSuggestions = document.getElementById("locSuggestions");
+const locChipList = document.getElementById("locChipList");
+
+function renderLocChips() {
+  locChipList.innerHTML = [..._filters.locations].map(loc =>
+    `<span class="loc-chip">${escapeHtml(loc)}<button type="button" data-loc="${escapeAttr(loc)}">&times;</button></span>`
+  ).join("");
+  locChipList.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      _filters.locations.delete(btn.dataset.loc);
+      renderLocChips();
+      applyFilters();
+    });
+  });
+}
+
+function renderLocSuggestions() {
+  const q = locInput.value.toLowerCase().trim();
+  const matches = _locationOptions
+    .filter(loc => !_filters.locations.has(loc) && (!q || loc.toLowerCase().includes(q)))
+    .slice(0, 30);
+  if (!matches.length) {
+    locSuggestions.innerHTML = `<div class="loc-suggestion-empty">${q ? "No matching locations" : "No locations left"}</div>`;
+  } else {
+    locSuggestions.innerHTML = matches.map(loc =>
+      `<div class="loc-suggestion" data-loc="${escapeAttr(loc)}">${escapeHtml(loc)} <span class="loc-count">${_locationCounts.get(loc) || 0}</span></div>`
+    ).join("");
+    locSuggestions.querySelectorAll(".loc-suggestion").forEach(el => {
+      el.addEventListener("mousedown", e => {
+        e.preventDefault(); // keep focus so blur doesn't close before click registers
+        _filters.locations.add(el.dataset.loc);
+        locInput.value = "";
+        renderLocChips();
+        renderLocSuggestions();
+        applyFilters();
+      });
+    });
+  }
+  locSuggestions.classList.add("open");
+}
+
+locInput.addEventListener("focus", renderLocSuggestions);
+locInput.addEventListener("input", renderLocSuggestions);
+locInput.addEventListener("blur", () => { locSuggestions.classList.remove("open"); });
 
 let _debounce;
 function debounceFilter() {
