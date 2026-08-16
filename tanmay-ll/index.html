@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanmay's Connections</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin:0; padding:32px; background:#f0eff5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
+  .wrap { max-width:1420px; margin:0 auto; }
+  h1 { font-size:22px; color:#191919; margin-bottom:4px; }
+  .updated { font-size:13px; color:#6b7280; margin-bottom:24px; }
+
+  .setup-banner { background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:12px 16px; font-size:12px; color:#856404; margin-bottom:14px; }
+  .setup-banner code { background:rgba(0,0,0,.06); padding:1px 5px; border-radius:4px; }
+
+  .summary { display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+  .summary-card { flex:1; min-width:120px; border-radius:10px; padding:16px 18px; color:#fff; background:#3d1472; }
+  .summary-card.hot   { background:#dc2626; }
+  .summary-card.warm  { background:#d97706; }
+  .summary-card.cold  { background:#2563eb; }
+  .summary-card.unmarked { background:#6b7280; }
+  .summary-card p:first-child { margin:0 0 4px; font-size:11px; opacity:0.8; text-transform:uppercase; letter-spacing:.03em; }
+  .summary-card p:last-child { margin:0; font-size:22px; font-weight:700; }
+
+  .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-bottom:16px; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:14px 18px; }
+  .search-field { display:flex; flex-direction:column; gap:4px; }
+  .search-field label { font-size:10px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; }
+  .search-field input { padding:7px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; width:180px; outline:none; }
+  .search-field input:focus { border-color:#3d1472; }
+
+  .filter-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+  .filter-label { font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-right:2px; }
+  .filter-pill { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid #d1d5db; background:#fff; color:#6b7280; transition:all .15s; white-space:nowrap; }
+  .filter-pill.active { background:#3d1472; border-color:#3d1472; color:#fff; }
+  .filter-pill.active.hot  { background:#dc2626; border-color:#dc2626; }
+  .filter-pill.active.warm { background:#d97706; border-color:#d97706; }
+  .filter-pill.active.cold { background:#2563eb; border-color:#2563eb; }
+
+  .filled-check { display:flex; align-items:center; gap:4px; font-size:12px; color:#374151; cursor:pointer; }
+  .filled-check input { accent-color:#3d1472; cursor:pointer; }
+
+  .result-count { font-size:12px; color:#6b7280; margin-bottom:10px; }
+
+  table { width:100%; border-collapse:collapse; background:#fff; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden; font-size:12.5px; }
+  thead th { text-align:left; background:#faf9ff; color:#6b7280; font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; padding:9px 10px; border-bottom:1px solid #e5e7eb; white-space:nowrap; }
+  tbody td { padding:8px 10px; border-bottom:1px solid #f3f4f6; vertical-align:top; }
+  tbody tr:hover { background:#faf9ff; }
+  tbody tr:last-child td { border-bottom:none; }
+  .name-cell { font-weight:600; color:#191919; }
+  .sub-cell { color:#6b7280; }
+  td.desig { max-width:260px; }
+  a.li-link { color:#3d1472; text-decoration:none; font-size:11px; font-weight:600; }
+  a.li-link:hover { text-decoration:underline; }
+
+  .status-select { font-size:11px; font-weight:600; border-radius:20px; padding:3px 22px 3px 10px; border:none; cursor:pointer; -webkit-appearance:none; appearance:none; background-repeat:no-repeat; background-position:right 8px center; background-size:8px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23374151'/%3E%3C/svg%3E"); }
+  .status-Hot      { background-color:#fee2e2; color:#991b1b; }
+  .status-Warm     { background-color:#fef3c7; color:#92400e; }
+  .status-Cold     { background-color:#dbeafe; color:#1e40af; }
+  .status-          { background-color:#f3f4f6; color:#6b7280; }
+
+  .notes-input { width:130px; font-size:12px; padding:4px 6px; border:1px solid transparent; border-radius:5px; outline:none; background:transparent; }
+  .notes-input:hover, .notes-input:focus { border-color:#d1d5db; background:#fff; }
+
+  .tags-cell { min-width:150px; }
+  .tag-list { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:4px; }
+  .tag-chip { display:inline-flex; align-items:center; gap:4px; background:#ede9fe; color:#5b21b6; font-size:11px; font-weight:600; padding:2px 6px 2px 8px; border-radius:20px; white-space:nowrap; }
+  .tag-chip button { border:none; background:none; color:#5b21b6; cursor:pointer; font-size:13px; line-height:1; padding:0; opacity:.6; }
+  .tag-chip button:hover { opacity:1; }
+  .tag-input { width:130px; font-size:12px; padding:4px 6px; border:1px solid transparent; border-radius:5px; outline:none; background:transparent; }
+  .tag-input:hover, .tag-input:focus { border-color:#d1d5db; background:#fff; }
+
+  .pagination { display:flex; align-items:center; justify-content:center; gap:10px; margin:18px 0; }
+  .pagination button { padding:6px 14px; border:1px solid #d1d5db; background:#fff; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; color:#374151; }
+  .pagination button:disabled { opacity:.4; cursor:not-allowed; }
+  .pagination span { font-size:12px; color:#6b7280; }
+
+  .empty-state, .loading { padding:40px 18px; text-align:center; color:#9ca3af; font-size:13px; }
+
+  .toast { position:fixed; bottom:24px; right:24px; background:#191919; color:#fff; padding:10px 18px; border-radius:8px; font-size:13px; opacity:0; transition:opacity .2s; pointer-events:none; z-index:2000; }
+  .toast.show { opacity:1; }
+
+  @media (max-width:900px) {
+    body { padding:16px; }
+    table { display:block; overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tanmay's Connections</h1>
+  <p class="updated" id="updated">Loading live data...</p>
+
+  <div id="setupBanner"></div>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="toolbar">
+    <div class="search-field">
+      <label>Company</label>
+      <input type="text" id="companySearch" placeholder="e.g. HCL, Google...">
+    </div>
+    <div class="search-field">
+      <label>Designation</label>
+      <input type="text" id="designationSearch" placeholder="e.g. Marketing, VP...">
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status</span>
+      <div class="filter-pill active" data-status="all">All</div>
+      <div class="filter-pill hot" data-status="Hot">Hot</div>
+      <div class="filter-pill warm" data-status="Warm">Warm</div>
+      <div class="filter-pill cold" data-status="Cold">Cold</div>
+      <div class="filter-pill" data-status="">Unmarked</div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Only filled</span>
+      <label class="filled-check"><input type="checkbox" data-field="email"> Email</label>
+      <label class="filled-check"><input type="checkbox" data-field="phone"> Phone</label>
+      <label class="filled-check"><input type="checkbox" data-field="company"> Company</label>
+      <label class="filled-check"><input type="checkbox" data-field="designation"> Designation</label>
+    </div>
+  </div>
+
+  <p class="result-count" id="resultCount"></p>
+
+  <div id="tableWrap"><div class="loading">Loading connections...</div></div>
+
+  <div class="pagination" id="pagination" style="display:none;">
+    <button id="prevPage">&larr; Prev</button>
+    <span id="pageLabel"></span>
+    <button id="nextPage">Next &rarr;</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEET_ID = "1cPrwxQ4-wuwh1WLd3yLlTkFTWNGfAvBPih-yqT00iJg";
+const API_KEY  = "AIzaSyDYOWAsEZ-KAicm3j_OT0S43Q1-rv3I-PA";
+const TAB      = "Sheet1";
+
+// Paste the Apps Script /exec URL here after deploying connections_api.gs.
+const CONNECTIONS_API_URL = "https://script.google.com/macros/s/AKfycbxAojO5qFLEpe-rh7gUFlalLlQBCrx952QxBQSnfAl-RG6yDjlVkuSAQ7jEwx3wx2MA/exec";
+
+const PAGE_SIZE = 50;
+const STATUSES = ["", "Hot", "Warm", "Cold"];
+
+let _all = [];
+let _filtered = [];
+let _page = 1;
+const _filters = { status: "all", company: "", designation: "", filled: new Set() };
+
+function valuesUrl(tab) {
+  return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(tab)}?key=${API_KEY}`;
+}
+
+async function loadData() {
+  try {
+    const resp = await fetch(valuesUrl(TAB));
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    const data = await resp.json();
+    const values = data.values || [];
+    if (!values.length) { renderEmpty("No data found in the sheet yet."); return; }
+    const headers = values[0].map(h => (h || "").toLowerCase().trim());
+    _all = values.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] || "").toString().trim());
+      return obj;
+    });
+    document.getElementById("updated").textContent =
+      `${_all.length.toLocaleString()} connections · loaded ${new Date().toLocaleString()}`;
+    applyFilters();
+  } catch (e) {
+    console.error(e);
+    renderEmpty("Couldn't load the sheet. Make sure it's shared as “Anyone with the link – Viewer”.");
+  }
+}
+
+function renderSetupBanner() {
+  document.getElementById("setupBanner").innerHTML = !CONNECTIONS_API_URL
+    ? `<div class="setup-banner">Status/notes editing needs the Apps Script backend deployed once.
+       Deploy <code>connections_api.gs</code> as a web app, then paste the /exec URL into
+       <code>CONNECTIONS_API_URL</code> in this file and push to GitHub.</div>`
+    : "";
+}
+
+function renderSummary() {
+  const counts = { Hot: 0, Warm: 0, Cold: 0, unmarked: 0 };
+  _all.forEach(r => {
+    const s = r.status || "";
+    if (s === "Hot") counts.Hot++;
+    else if (s === "Warm") counts.Warm++;
+    else if (s === "Cold") counts.Cold++;
+    else counts.unmarked++;
+  });
+  document.getElementById("summary").innerHTML = `
+    <div class="summary-card"><p>Total</p><p>${_all.length.toLocaleString()}</p></div>
+    <div class="summary-card hot"><p>Hot</p><p>${counts.Hot}</p></div>
+    <div class="summary-card warm"><p>Warm</p><p>${counts.Warm}</p></div>
+    <div class="summary-card cold"><p>Cold</p><p>${counts.Cold}</p></div>
+    <div class="summary-card unmarked"><p>Unmarked</p><p>${counts.unmarked}</p></div>
+  `;
+}
+
+function applyFilters() {
+  const company = _filters.company.toLowerCase().trim();
+  const designation = _filters.designation.toLowerCase().trim();
+  _filtered = _all.filter(r => {
+    if (_filters.status === "all") { /* no-op */ }
+    else if ((r.status || "") !== _filters.status) return false;
+    if (company && !(r.company || "").toLowerCase().includes(company)) return false;
+    if (designation && !(r.designation || "").toLowerCase().includes(designation)) return false;
+    for (const field of _filters.filled) {
+      if (!(r[field] || "").trim()) return false;
+    }
+    return true;
+  });
+  _page = 1;
+  renderSummary();
+  renderTable();
+}
+
+function renderEmpty(msg) {
+  document.getElementById("tableWrap").innerHTML = `<div class="empty-state">${msg}</div>`;
+  document.getElementById("pagination").style.display = "none";
+}
+
+function statusOptionsHtml(current) {
+  return STATUSES.map(s => `<option value="${s}" ${s === current ? "selected" : ""}>${s || "—"}</option>`).join("");
+}
+
+function renderTable() {
+  const count = _filtered.length;
+  document.getElementById("resultCount").textContent =
+    `${count.toLocaleString()} of ${_all.length.toLocaleString()} connections`;
+
+  if (!count) { renderEmpty("No connections match these filters."); return; }
+
+  const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+  if (_page > totalPages) _page = totalPages;
+  const start = (_page - 1) * PAGE_SIZE;
+  const pageRows = _filtered.slice(start, start + PAGE_SIZE);
+
+  const rowsHtml = pageRows.map(r => `
+    <tr data-id="${r.id}">
+      <td class="name-cell">${escapeHtml(r.first_name)} ${escapeHtml(r.last_name)}</td>
+      <td class="desig">${escapeHtml(r.designation)}</td>
+      <td>${escapeHtml(r.company)}</td>
+      <td class="sub-cell">${escapeHtml(r.location)}</td>
+      <td class="sub-cell">${escapeHtml(r.email)}</td>
+      <td class="sub-cell">${escapeHtml(r.phone)}</td>
+      <td>${r.linkedin_url ? `<a class="li-link" href="${escapeAttr(r.linkedin_url)}" target="_blank" rel="noopener">Profile</a>` : ""}</td>
+      <td class="sub-cell">${escapeHtml(r.connected_on)}</td>
+      <td><select class="status-select status-${r.status}" onchange="updateStatus('${r.id}', this)">${statusOptionsHtml(r.status)}</select></td>
+      <td><input class="notes-input" value="${escapeAttr(r.notes)}" placeholder="note..." onblur="updateField('${r.id}', 'notes', this)"></td>
+      <td><input class="notes-input" value="${escapeAttr(r.career_site)}" placeholder="url..." onblur="updateField('${r.id}', 'career_site', this)"></td>
+      <td class="tags-cell">
+        <div class="tag-list" data-id="${r.id}">${tagsHtml(r.who_to_refer)}</div>
+        <input class="tag-input" data-id="${r.id}" placeholder="+ add name, Enter">
+      </td>
+      <td><input class="notes-input" value="${escapeAttr(r.next_steps)}" placeholder="next step..." onblur="updateField('${r.id}', 'next_steps', this)"></td>
+    </tr>
+  `).join("");
+
+  document.getElementById("tableWrap").innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Name</th><th>Designation</th><th>Company</th><th>Location</th>
+        <th>Email</th><th>Phone</th><th>LinkedIn</th><th>Connected</th><th>Status</th>
+        <th>Notes</th><th>Career Site</th><th>Who to Refer</th><th>Next Steps</th>
+      </tr></thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>
+  `;
+  wireTagCells();
+
+  const pagEl = document.getElementById("pagination");
+  pagEl.style.display = totalPages > 1 ? "flex" : "none";
+  document.getElementById("pageLabel").textContent = `Page ${_page} of ${totalPages}`;
+  document.getElementById("prevPage").disabled = _page <= 1;
+  document.getElementById("nextPage").disabled = _page >= totalPages;
+}
+
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+function splitTags(value) {
+  return (value || "").split(",").map(t => t.trim()).filter(Boolean);
+}
+
+function tagsHtml(value) {
+  return splitTags(value).map(t => `<span class="tag-chip">${escapeHtml(t)}<button type="button" class="tag-remove" data-tag="${escapeAttr(t)}">&times;</button></span>`).join("");
+}
+
+// Attaches listeners after each render instead of inline handlers, since tag
+// text (names) can contain quotes/apostrophes that would break inline attrs.
+function wireTagCells() {
+  document.querySelectorAll(".tag-input").forEach(inp => {
+    inp.addEventListener("keydown", e => {
+      if (e.key !== "Enter" && e.key !== ",") return;
+      e.preventDefault();
+      const val = inp.value.trim().replace(/,$/, "");
+      if (!val) return;
+      addTag(inp.dataset.id, val);
+      inp.value = "";
+    });
+  });
+  document.querySelectorAll(".tag-remove").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const list = btn.closest(".tag-list");
+      removeTag(list.dataset.id, btn.dataset.tag);
+    });
+  });
+}
+
+function saveTags(id, tags) {
+  const list = document.querySelector(`.tag-list[data-id="${id}"]`);
+  const joined = tags.join(", ");
+  if (list) list.innerHTML = tagsHtml(joined);
+  wireTagCells();
+  const row = _all.find(r => r.id === id);
+  if (row) row.who_to_refer = joined;
+  callApi({ action: "update", id, who_to_refer: joined });
+}
+
+function addTag(id, tag) {
+  const row = _all.find(r => r.id === id);
+  const tags = splitTags(row ? row.who_to_refer : "");
+  if (!tags.includes(tag)) tags.push(tag);
+  saveTags(id, tags);
+}
+
+function removeTag(id, tag) {
+  const row = _all.find(r => r.id === id);
+  const tags = splitTags(row ? row.who_to_refer : "").filter(t => t !== tag);
+  saveTags(id, tags);
+}
+
+async function updateStatus(id, selectEl) {
+  const status = selectEl.value;
+  selectEl.className = "status-select status-" + status;
+  const row = _all.find(r => r.id === id);
+  if (row) row.status = status;
+  renderSummary();
+  await callApi({ action: "update", id, status });
+}
+
+async function updateField(id, field, inputEl) {
+  const value = inputEl.value;
+  const row = _all.find(r => r.id === id);
+  if (row) row[field] = value;
+  await callApi({ action: "update", id, [field]: value });
+}
+
+async function callApi(params) {
+  if (!CONNECTIONS_API_URL) { showToast("Backend not deployed yet — change not saved"); return; }
+  try {
+    const qs = new URLSearchParams(params).toString();
+    const resp = await fetch(`${CONNECTIONS_API_URL}?${qs}`);
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || "Save failed");
+    showToast("Saved");
+  } catch (e) {
+    console.error(e);
+    showToast("Save failed — " + e.message);
+  }
+}
+
+let _toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+document.querySelectorAll(".filter-pill").forEach(pill => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    _filters.status = pill.dataset.status;
+    applyFilters();
+  });
+});
+
+document.querySelectorAll(".filled-check input").forEach(cb => {
+  cb.addEventListener("change", () => {
+    if (cb.checked) _filters.filled.add(cb.dataset.field);
+    else _filters.filled.delete(cb.dataset.field);
+    applyFilters();
+  });
+});
+
+let _debounce;
+function debounceFilter() {
+  clearTimeout(_debounce);
+  _debounce = setTimeout(applyFilters, 200);
+}
+document.getElementById("companySearch").addEventListener("input", e => { _filters.company = e.target.value; debounceFilter(); });
+document.getElementById("designationSearch").addEventListener("input", e => { _filters.designation = e.target.value; debounceFilter(); });
+
+document.getElementById("prevPage").addEventListener("click", () => { _page--; renderTable(); window.scrollTo({top:0, behavior:"smooth"}); });
+document.getElementById("nextPage").addEventListener("click", () => { _page++; renderTable(); window.scrollTo({top:0, behavior:"smooth"}); });
+
+renderSetupBanner();
+loadData();
+</script>
+</body>
+</html>
