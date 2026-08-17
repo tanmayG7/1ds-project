@@ -29,20 +29,20 @@
   .search-field input { padding:7px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:13px; width:180px; outline:none; }
   .search-field input:focus { border-color:#3d1472; }
 
-  .loc-field { position:relative; }
-  .loc-box { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:220px; max-width:320px; padding:4px 6px; border:1px solid #d1d5db; border-radius:7px; background:#fff; }
-  .loc-box:focus-within { border-color:#3d1472; }
-  .loc-chip-list { display:contents; }
-  .loc-chip { display:inline-flex; align-items:center; gap:4px; background:#ede9fe; color:#5b21b6; font-size:11px; font-weight:600; padding:3px 6px 3px 8px; border-radius:20px; white-space:nowrap; }
-  .loc-chip button { border:none; background:none; color:#5b21b6; cursor:pointer; font-size:13px; line-height:1; padding:0; opacity:.6; }
-  .loc-chip button:hover { opacity:1; }
-  #locationInput { flex:1; min-width:80px; border:none; outline:none; font-size:13px; padding:3px 2px; }
-  .loc-suggestions { display:none; position:absolute; top:100%; left:0; margin-top:4px; width:100%; max-height:220px; overflow-y:auto; background:#fff; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.1); z-index:50; }
-  .loc-suggestions.open { display:block; }
-  .loc-suggestion { display:flex; justify-content:space-between; gap:8px; padding:7px 12px; font-size:12.5px; color:#191919; cursor:pointer; }
-  .loc-count { color:#9ca3af; font-size:11px; font-weight:600; }
-  .loc-suggestion:hover, .loc-suggestion.active { background:#faf9ff; }
-  .loc-suggestion-empty { padding:7px 12px; font-size:12px; color:#9ca3af; }
+  .ms-field { position:relative; }
+  .ms-box { display:flex; flex-wrap:wrap; align-items:center; gap:4px; min-width:200px; max-width:300px; padding:4px 6px; border:1px solid #d1d5db; border-radius:7px; background:#fff; }
+  .ms-box:focus-within { border-color:#3d1472; }
+  .ms-chip-list { display:contents; }
+  .ms-chip { display:inline-flex; align-items:center; gap:4px; background:#ede9fe; color:#5b21b6; font-size:11px; font-weight:600; padding:3px 6px 3px 8px; border-radius:20px; white-space:nowrap; }
+  .ms-chip button { border:none; background:none; color:#5b21b6; cursor:pointer; font-size:13px; line-height:1; padding:0; opacity:.6; }
+  .ms-chip button:hover { opacity:1; }
+  .ms-input { flex:1; min-width:80px; border:none; outline:none; font-size:13px; padding:3px 2px; }
+  .ms-suggestions { display:none; position:absolute; top:100%; left:0; margin-top:4px; width:100%; max-height:220px; overflow-y:auto; background:#fff; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.1); z-index:50; }
+  .ms-suggestions.open { display:block; }
+  .ms-suggestion { display:flex; justify-content:space-between; gap:8px; padding:7px 12px; font-size:12.5px; color:#191919; cursor:pointer; }
+  .ms-count { color:#9ca3af; font-size:11px; font-weight:600; }
+  .ms-suggestion:hover, .ms-suggestion.active { background:#faf9ff; }
+  .ms-suggestion-empty { padding:7px 12px; font-size:12px; color:#9ca3af; }
 
   .filter-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
   .filter-label { font-size:11px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:.04em; margin-right:2px; }
@@ -133,12 +133,20 @@
       <label>Designation</label>
       <input type="text" id="designationSearch" placeholder="e.g. Marketing, VP...">
     </div>
-    <div class="search-field loc-field">
+    <div class="search-field ms-field">
       <label>Location</label>
-      <div class="loc-box" id="locBox">
-        <div class="loc-chip-list" id="locChipList"></div>
-        <input type="text" id="locationInput" placeholder="type to add..." autocomplete="off">
-        <div class="loc-suggestions" id="locSuggestions"></div>
+      <div class="ms-box" id="locBox">
+        <div class="ms-chip-list" id="locChipList"></div>
+        <input type="text" id="locationInput" class="ms-input" placeholder="type to add..." autocomplete="off">
+        <div class="ms-suggestions" id="locSuggestions"></div>
+      </div>
+    </div>
+    <div class="search-field ms-field">
+      <label>Who to Refer</label>
+      <div class="ms-box" id="whoBox">
+        <div class="ms-chip-list" id="whoChipList"></div>
+        <input type="text" id="whoRefInput" class="ms-input" placeholder="type to add..." autocomplete="off">
+        <div class="ms-suggestions" id="whoRefSuggestions"></div>
       </div>
     </div>
     <div class="filter-group">
@@ -205,7 +213,9 @@ let _filtered = [];
 let _page = 1;
 let _locationOptions = [];
 let _locationCounts = new Map();
-const _filters = { status: "all", department: "all", company: "", designation: "", filled: new Set(), locations: new Set() };
+let _whoToReferOptions = [];
+let _whoToReferCounts = new Map();
+const _filters = { status: "all", department: "all", company: "", designation: "", filled: new Set(), locations: new Set(), whoToRefer: new Set() };
 const DEPARTMENTS = ["", "Founder", "Sales", "Marketing", "HR", "Developer", "Product", "Operations", "Data/Analytics", "Content", "Design", "Finance", "Legal", "Student"];
 
 // Location clustering for the filter only — raw location text in the table is untouched.
@@ -282,6 +292,14 @@ async function loadData() {
     // Sort by size so major hubs surface first in the dropdown, not buried alphabetically.
     _locationCounts = locCounts;
     _locationOptions = [...locCounts.entries()].sort((a, b) => b[1] - a[1]).map(([name]) => name);
+
+    const whoCounts = new Map();
+    _all.forEach(r => {
+      splitTags(r.who_to_refer).forEach(name => whoCounts.set(name, (whoCounts.get(name) || 0) + 1));
+    });
+    _whoToReferCounts = whoCounts;
+    _whoToReferOptions = [...whoCounts.entries()].sort((a, b) => b[1] - a[1]).map(([name]) => name);
+
     applyFilters();
   } catch (e) {
     console.error(e);
@@ -326,6 +344,10 @@ function applyFilters() {
     if (company && !(r.company || "").toLowerCase().includes(company)) return false;
     if (designation && !(r.designation || "").toLowerCase().includes(designation)) return false;
     if (_filters.locations.size && !_filters.locations.has(clusterLocation(r.location))) return false;
+    if (_filters.whoToRefer.size) {
+      const tags = splitTags(r.who_to_refer);
+      if (![..._filters.whoToRefer].some(t => tags.includes(t))) return false;
+    }
     for (const field of _filters.filled) {
       if (!(r[field] || "").trim()) return false;
     }
@@ -532,52 +554,67 @@ document.querySelectorAll(".filled-check input").forEach(cb => {
   });
 });
 
-// --- Location multiselect (type to search, click to add, chips to remove) ---
-const locInput = document.getElementById("locationInput");
-const locSuggestions = document.getElementById("locSuggestions");
-const locChipList = document.getElementById("locChipList");
+// --- Generic multiselect (type to search, click to add, chips to remove) ---
+// Shared by Location and Who to Refer — each just supplies its own ids, filter Set,
+// and live options/counts getters (since those are computed after the sheet loads).
+function initMultiselect({ inputId, chipListId, suggestionsId, filterSet, getOptions, getCounts }) {
+  const input = document.getElementById(inputId);
+  const suggestions = document.getElementById(suggestionsId);
+  const chipList = document.getElementById(chipListId);
 
-function renderLocChips() {
-  locChipList.innerHTML = [..._filters.locations].map(loc =>
-    `<span class="loc-chip">${escapeHtml(loc)}<button type="button" data-loc="${escapeAttr(loc)}">&times;</button></span>`
-  ).join("");
-  locChipList.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      _filters.locations.delete(btn.dataset.loc);
-      renderLocChips();
-      applyFilters();
-    });
-  });
-}
-
-function renderLocSuggestions() {
-  const q = locInput.value.toLowerCase().trim();
-  const matches = _locationOptions
-    .filter(loc => !_filters.locations.has(loc) && (!q || loc.toLowerCase().includes(q)))
-    .slice(0, 30);
-  if (!matches.length) {
-    locSuggestions.innerHTML = `<div class="loc-suggestion-empty">${q ? "No matching locations" : "No locations left"}</div>`;
-  } else {
-    locSuggestions.innerHTML = matches.map(loc =>
-      `<div class="loc-suggestion" data-loc="${escapeAttr(loc)}">${escapeHtml(loc)} <span class="loc-count">${_locationCounts.get(loc) || 0}</span></div>`
+  function renderChips() {
+    chipList.innerHTML = [...filterSet].map(v =>
+      `<span class="ms-chip">${escapeHtml(v)}<button type="button" data-val="${escapeAttr(v)}">&times;</button></span>`
     ).join("");
-    locSuggestions.querySelectorAll(".loc-suggestion").forEach(el => {
-      el.addEventListener("mousedown", e => {
-        e.preventDefault(); // keep focus so blur doesn't close before click registers
-        _filters.locations.add(el.dataset.loc);
-        locInput.value = "";
-        renderLocChips();
-        renderLocSuggestions();
+    chipList.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterSet.delete(btn.dataset.val);
+        renderChips();
         applyFilters();
       });
     });
   }
-  locSuggestions.classList.add("open");
+
+  function renderSuggestions() {
+    const q = input.value.toLowerCase().trim();
+    const options = getOptions();
+    const counts = getCounts();
+    const matches = options
+      .filter(v => !filterSet.has(v) && (!q || v.toLowerCase().includes(q)))
+      .slice(0, 30);
+    if (!matches.length) {
+      suggestions.innerHTML = `<div class="ms-suggestion-empty">${q ? "No matches" : "No options left"}</div>`;
+    } else {
+      suggestions.innerHTML = matches.map(v =>
+        `<div class="ms-suggestion" data-val="${escapeAttr(v)}">${escapeHtml(v)} <span class="ms-count">${counts.get(v) || 0}</span></div>`
+      ).join("");
+      suggestions.querySelectorAll(".ms-suggestion").forEach(el => {
+        el.addEventListener("mousedown", e => {
+          e.preventDefault(); // keep focus so blur doesn't close before click registers
+          filterSet.add(el.dataset.val);
+          input.value = "";
+          renderChips();
+          renderSuggestions();
+          applyFilters();
+        });
+      });
+    }
+    suggestions.classList.add("open");
+  }
+
+  input.addEventListener("focus", renderSuggestions);
+  input.addEventListener("input", renderSuggestions);
+  input.addEventListener("blur", () => { suggestions.classList.remove("open"); });
 }
 
-locInput.addEventListener("focus", renderLocSuggestions);
-locInput.addEventListener("input", renderLocSuggestions);
-locInput.addEventListener("blur", () => { locSuggestions.classList.remove("open"); });
+initMultiselect({
+  inputId: "locationInput", chipListId: "locChipList", suggestionsId: "locSuggestions",
+  filterSet: _filters.locations, getOptions: () => _locationOptions, getCounts: () => _locationCounts,
+});
+initMultiselect({
+  inputId: "whoRefInput", chipListId: "whoChipList", suggestionsId: "whoRefSuggestions",
+  filterSet: _filters.whoToRefer, getOptions: () => _whoToReferOptions, getCounts: () => _whoToReferCounts,
+});
 
 let _debounce;
 function debounceFilter() {
