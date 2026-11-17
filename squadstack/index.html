@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A context-specific 90-day LinkedIn ABM air-cover pilot for SquadStack.ai.">
+  <title>SquadStack.ai × Ad Momenta | 90-day ABM air-cover pilot</title>
+  <style>
+    @font-face{font-family:Albert;src:url('assets/albert-400.woff2')}@font-face{font-family:Albert;src:url('assets/albert-600.woff2');font-weight:600}@font-face{font-family:Albert;src:url('assets/albert-700.woff2');font-weight:700}
+    :root{--ink:#17102d;--purple:#6f39f5;--purple2:#9b78ff;--lav:#f2edff;--soft:#f7f6fa;--line:#ded9e9;--muted:#686178;--white:#fff;--orange:#ea2903;--green:#16a37a;--shadow:0 18px 55px rgba(23,16,45,.12)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Albert,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;overflow-x:hidden}a{color:inherit}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(222,217,233,.85)}.topbar .wrap{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand-pair{display:flex;align-items:center;gap:16px;min-width:0}.brand-pair>img{width:171px;max-width:100%}.divider{width:1px;height:28px;background:var(--line);flex:0 0 auto}.am-brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px}.am-brand img{width:25px;height:25px}.nav{display:flex;align-items:center;gap:18px;font-size:14px;color:var(--muted)}.nav a{text-decoration:none}.nav .pill{color:#fff;background:var(--purple);padding:10px 15px;border-radius:999px;font-weight:600}
+    .hero{min-height:760px;position:relative;overflow:hidden;background:linear-gradient(135deg,#fff 0 58%,#f1ebff 58% 100%)}.hero:before{content:"";position:absolute;width:680px;height:680px;border-radius:50%;right:-250px;top:20px;background:radial-gradient(circle,rgba(111,57,245,.34),rgba(111,57,245,0) 68%)}.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:70px;padding:98px 0 84px;align-items:center;position:relative}.hero-grid>*{min-width:0}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:13px;font-weight:700;color:var(--purple);margin-bottom:18px}.hero h1{font-size:68px;line-height:1.01;letter-spacing:-3.2px;margin:0;font-weight:600;max-width:720px}.hero h1 span{color:var(--purple)}.hero .lead{font-size:23px;line-height:1.45;color:var(--muted);max-width:700px;margin:26px 0 32px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 19px;border-radius:12px;text-decoration:none;font-weight:600;border:1px solid var(--line);background:#fff}.btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}.hero-note{font-size:13px;color:var(--muted);margin-top:22px}.hero-card{border-radius:28px;background:var(--ink);color:#fff;padding:34px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-card:after{content:"";position:absolute;width:330px;height:330px;border-radius:50%;right:-130px;bottom:-150px;background:radial-gradient(circle,rgba(111,57,245,.9),rgba(111,57,245,0) 68%)}.hero-card h2{font-size:30px;line-height:1.15;margin:8px 0 26px;position:relative;z-index:1}.pilot-stat{display:grid;grid-template-columns:86px 1fr;gap:16px;align-items:center;padding:20px 0;border-top:1px solid rgba(255,255,255,.15);position:relative;z-index:1}.pilot-stat strong{font-size:36px;color:#c7b7ff}.pilot-stat span{font-size:18px;line-height:1.25}.pilot-caption{font-size:14px;color:rgba(255,255,255,.65);position:relative;z-index:1;margin-top:18px}
+    section{padding:92px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:40px}.section-head h2{font-size:48px;line-height:1.07;letter-spacing:-1.8px;margin:0;max-width:820px}.section-head p{color:var(--muted);font-size:18px;max-width:420px;margin:0}.dark{background:var(--ink);color:#fff}.dark .section-head p{color:rgba(255,255,255,.68)}
+    .heard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.heard{border:1px solid var(--line);border-radius:20px;padding:25px;background:#fff;min-height:210px}.heard b{font-size:38px;color:var(--purple);display:block;line-height:1}.heard strong{display:block;font-size:19px;margin:18px 0 7px}.heard span{color:var(--muted);font-size:15px}.decision-strip{margin-top:22px;background:var(--lav);border-radius:18px;padding:22px 25px;display:flex;align-items:center;gap:18px}.decision-strip b{color:var(--purple);font-size:16px;white-space:nowrap}.decision-strip span{font-size:20px}
+    .recommend-grid{display:grid;grid-template-columns:360px 1fr;gap:40px}.recommend-card{background:#fff;color:var(--ink);padding:30px;border-radius:24px}.recommend-card .big{font-size:76px;line-height:.9;color:var(--purple);font-weight:700}.recommend-card h3{font-size:28px;line-height:1.15;margin:18px 0 12px}.recommend-card p{color:var(--muted);font-size:17px}.system{display:grid;gap:12px}.system-row{display:grid;grid-template-columns:58px 190px 1fr;gap:18px;align-items:center;padding:18px 20px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05)}.system-row b{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--purple);font-size:15px}.system-row strong{font-size:19px}.system-row span{color:rgba(255,255,255,.7);font-size:16px}
+    .tabs{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff}.tab-buttons{display:grid;grid-template-columns:repeat(4,1fr);background:var(--soft);border-bottom:1px solid var(--line)}.tab-buttons button{padding:17px 12px;border:0;background:transparent;font:600 15px Albert;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}.tab-buttons button.active{color:var(--purple);border-color:var(--purple);background:#fff}.tab-panel{display:none;padding:34px}.tab-panel.active{display:grid;grid-template-columns:1fr .9fr;gap:34px;align-items:center}.message-box{background:var(--ink);color:#fff;border-radius:20px;padding:28px}.message-box small{text-transform:uppercase;letter-spacing:1.4px;color:#c9b8ff;font-weight:700}.message-box h3{font-size:31px;line-height:1.18;margin:12px 0 14px}.message-box p{color:rgba(255,255,255,.7);margin:0}.message-details{display:grid;gap:13px}.detail{padding:16px 0;border-bottom:1px solid var(--line)}.detail:last-child{border:0}.detail b{display:block;color:var(--purple);font-size:13px;text-transform:uppercase;letter-spacing:1px}.detail span{font-size:17px;display:block;margin-top:4px}
+    .journey{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.touch{min-height:240px;padding:22px 18px;border-radius:18px;background:var(--lav);border-top:4px solid var(--purple);display:flex;flex-direction:column}.touch b{color:var(--purple);font-size:14px}.touch strong{font-size:19px;line-height:1.18;margin:22px 0 9px}.touch span{font-size:15px;color:var(--muted)}.touch em{font-style:normal;font-weight:600;font-size:14px;margin-top:auto;color:var(--ink)}
+    .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.phase{padding:28px;border-radius:22px;background:#fff;border:1px solid var(--line);position:relative;min-height:330px}.phase:nth-child(2){background:var(--lav)}.phase-no{font-size:14px;color:var(--purple);font-weight:700;text-transform:uppercase;letter-spacing:1.4px}.phase h3{font-size:29px;margin:12px 0 8px}.phase .week{color:var(--muted);font-size:15px}.phase ul{padding-left:19px;margin:24px 0}.phase li{margin:10px 0;color:var(--muted)}.phase .out{position:absolute;left:28px;right:28px;bottom:24px;padding-top:14px;border-top:1px solid var(--line);font-weight:600;color:var(--purple)}
+    .measure{display:grid;grid-template-columns:1fr 1fr;gap:22px}.scorecard{border-radius:24px;background:var(--ink);color:#fff;padding:30px}.scorecard h3{font-size:28px;margin:0 0 22px}.metric{display:grid;grid-template-columns:1fr auto;align-items:center;padding:15px 0;border-top:1px solid rgba(255,255,255,.16)}.metric span{color:rgba(255,255,255,.72)}.metric b{color:#c5b3ff}.test{border:1px solid var(--line);border-radius:24px;padding:30px}.test h3{font-size:28px;margin:0 0 12px}.test p{color:var(--muted)}.cohorts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.cohort{border-radius:15px;padding:18px;background:var(--soft)}.cohort b{display:block;color:var(--purple);margin-bottom:8px}.cohort span{font-size:15px;color:var(--muted)}
+    .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.proof{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:.2s}.proof:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.proof-logo{height:150px;background:linear-gradient(145deg,#fff 15%,var(--soft));display:grid;place-items:center;border-bottom:1px solid var(--line);padding:30px}.proof-logo .client-logo{display:block;max-width:190px;max-height:82px;width:auto;height:auto;object-fit:contain}.proof-logo .logo-ht{max-height:90px}.proof-logo .logo-broomees,.proof-logo .logo-neuro{width:220px;height:86px;max-width:220px;max-height:86px;object-fit:cover;object-position:center}.proof-body{padding:22px;display:flex;flex-direction:column;flex:1}.proof-tag{text-transform:uppercase;letter-spacing:1.3px;color:var(--purple);font-size:12px;font-weight:700}.proof h3{font-size:21px;line-height:1.2;margin:10px 0}.numbers{display:flex;gap:14px;margin:10px 0 18px;flex-wrap:wrap}.numbers b{font-size:24px;color:var(--purple)}.numbers span{font-size:12px;color:var(--muted);display:block}.proof p{font-size:14px;color:var(--muted);margin:0 0 20px}.proof a{margin-top:auto;text-decoration:none;color:var(--purple);font-weight:600}.proof.more{background:var(--ink);color:#fff;border-color:var(--ink);padding:26px}.proof.more h3{font-size:28px}.proof.more p{color:rgba(255,255,255,.7)}.proof.more a{display:block;color:#d3c7ff;padding:9px 0;border-top:1px solid rgba(255,255,255,.15)}
+    .reference{display:grid;grid-template-columns:1fr 1fr;gap:28px}.ad-ref,.concepts{border-radius:24px;padding:30px;border:1px solid var(--line)}.ad-ref{background:var(--soft)}.ad-ref .sponsored{font-size:12px;color:var(--muted)}.ad-ref blockquote{font-size:25px;line-height:1.28;margin:20px 0;color:var(--ink)}.ad-ref p{color:var(--muted)}.ad-ref a{font-weight:600;color:var(--purple)}.concept{padding:18px 0;border-top:1px solid var(--line)}.concept:first-of-type{border-top:0}.concept small{color:var(--purple);text-transform:uppercase;letter-spacing:1px;font-weight:700}.concept strong{display:block;font-size:20px;line-height:1.28;margin-top:7px}.mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}.li-mock{border:1px solid #d5d7db;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 16px 50px rgba(23,16,45,.09)}.li-head{display:flex;gap:12px;align-items:center;padding:18px 20px}.li-avatar{width:48px;height:48px;border-radius:8px;background:var(--ink);display:grid;place-items:center;color:#fff;font-weight:700;font-size:11px}.li-head strong{display:block}.li-head span{font-size:12px;color:var(--muted)}.li-copy{padding:0 20px 18px;font-size:17px;line-height:1.45}.li-creative{min-height:245px;padding:28px;background:linear-gradient(135deg,var(--ink),#3c247c);color:#fff;display:flex;flex-direction:column;justify-content:space-between}.li-creative.light{background:linear-gradient(145deg,#f1ecff,#fff);color:var(--ink)}.li-creative small{text-transform:uppercase;letter-spacing:1.5px;color:#cbbdff;font-weight:700}.li-creative.light small{color:var(--purple)}.li-creative h3{font-size:31px;line-height:1.08;margin:16px 0}.li-proof{display:flex;gap:9px;flex-wrap:wrap}.li-proof span{font-size:12px;border:1px solid rgba(255,255,255,.26);border-radius:999px;padding:7px 10px}.li-creative.light .li-proof span{border-color:var(--line);background:#fff}.li-cta{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;font-size:13px;color:var(--muted)}.li-cta b{color:var(--purple)}
+    .logo-proof{text-align:center}.logo-proof .eyebrow{margin-bottom:10px}.logo-proof h2{font-size:42px;line-height:1.1;margin:0}.logo-proof p{color:var(--muted);font-size:17px;max-width:700px;margin:14px auto 30px}.logo-wall{display:block;width:100%;max-width:1000px;margin:0 auto;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 14px 45px rgba(23,16,45,.08)}.proof-footnote{font-size:12px!important;margin-top:16px!important}.next{background:linear-gradient(135deg,var(--ink),#2a1859);color:#fff;border-radius:30px;padding:48px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}.next h2{font-size:42px;line-height:1.08;margin:0}.next p{color:rgba(255,255,255,.72);font-size:18px;max-width:720px}.next .btn{border-color:#fff}.footer{padding:32px 0 46px;color:var(--muted);font-size:13px}.footer .wrap{display:flex;justify-content:space-between;gap:20px}.mobile-only{display:none}
+    @media(max-width:900px){.nav a:not(.pill){display:none}.hero-grid,.recommend-grid,.tab-panel.active,.measure,.reference,.mock-grid,.next{grid-template-columns:1fr}.hero{min-height:auto}.hero h1{font-size:48px}.hero-grid{padding:70px 0}.heard-grid,.proof-grid{grid-template-columns:1fr 1fr}.journey{grid-template-columns:1fr}.touch{min-height:auto}.timeline{grid-template-columns:1fr}.phase .out{position:static;margin-top:28px}.system-row{grid-template-columns:50px 1fr}.system-row span{grid-column:2}.tab-buttons{grid-template-columns:1fr 1fr}.next .btn{justify-self:start}}
+    @media(max-width:600px){.wrap{width:min(calc(100% - 26px),1180px)}.topbar .wrap{height:64px}.brand-pair{gap:10px}.brand-pair>img{width:146px}.am-brand span,.divider,.nav{display:none}.hero-grid{padding:56px 0 64px}.hero h1{font-size:40px;letter-spacing:-1.8px}.hero .lead{font-size:19px}.eyebrow{font-size:11px;letter-spacing:1.5px}.heard-grid,.proof-grid{grid-template-columns:1fr}.section-head{display:block}.section-head h2{font-size:36px}.section-head p{margin-top:15px}.tab-panel{padding:20px}.next{padding:30px}.next h2{font-size:34px}.footer .wrap{display:block}.footer span{display:block;margin-top:7px}}
+    @media print{.topbar{position:static}.nav,.hero-actions{display:none}section{padding:45px 0}.hero{min-height:auto}.hero-grid{padding:55px 0}.proof{break-inside:avoid}.tab-panel{display:grid!important;grid-template-columns:1fr .9fr;page-break-inside:avoid}.tab-buttons{display:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand-pair"><img src="assets/squadstack-logo.svg" alt="SquadStack.ai"><span class="divider"></span><span class="am-brand"><img src="assets/admomenta-logo.svg" alt=""><span>Ad Momenta</span></span></div>
+      <nav class="nav"><a href="#pilot">Pilot</a><a href="#messages">Messaging</a><a href="#proof">Proof</a><a class="pill" href="#next">20-minute working session</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Context-specific proposal · November 2026</div>
+          <h1>Air cover for the <span>250 accounts</span> that matter</h1>
+          <p class="lead">A 90-day LinkedIn advertising framework designed to make SquadStack’s named-account outreach warmer, its complex product easier to understand and its active deals easier to progress.</p>
+          <div class="hero-actions"><a class="btn primary" href="#pilot">View the pilot</a><a class="btn" href="#proof">Review case studies</a></div>
+          <div class="hero-note">Prepared for Siddhant Jindal and Shreya Srivastava following the ABM and paid-media discussion.</div>
+        </div>
+        <aside class="hero-card">
+          <div class="eyebrow" style="color:#c8b8ff">Recommended starting point</div>
+          <h2>Own the LinkedIn air-cover framework while SquadStack retains ABM strategy and sales orchestration.</h2>
+          <div class="pilot-stat"><strong>1</strong><span>priority market and named-account universe</span></div>
+          <div class="pilot-stat"><strong>3</strong><span>audience layers based on account stage</span></div>
+          <div class="pilot-stat"><strong>90</strong><span>days to validate account momentum</span></div>
+          <div class="pilot-caption">India first. Built so the operating model can later be adapted for Indonesia, Singapore and other priority markets.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="context">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">What we heard</div><h2>The ABM engine works. Advertising must make it more effective.</h2></div><p>This proposal starts from the team’s actual constraints rather than replacing systems SquadStack has already built.</p></div>
+        <div class="heard-grid">
+          <div class="heard"><b>250</b><strong>enterprise accounts</strong><span>The TAM has been narrowed from roughly 1,300 to the accounts where Voice AI can prove meaningful ROI.</span></div>
+          <div class="heard"><b>5</b><strong>ABM team members</strong><span>Outreach already runs across LinkedIn, email, calling, WhatsApp and events.</span></div>
+          <div class="heard"><b>20K</b><strong>approximate BFSI audience</strong><span>The LinkedIn audience is deliberately small, so stage, role and frequency matter more than reach.</span></div>
+          <div class="heard"><b>1 IC</b><strong>owning paid expansion</strong><span>LinkedIn and Meta planning sits with Shreya, alongside broader responsibilities and without a dedicated team.</span></div>
+        </div>
+        <div class="decision-strip"><b>The commercial problem</b><span>Some enterprise deals stall because prospects consider building internally. Air cover must reinforce proof, widen the buying committee and help sales move conversations forward.</span></div>
+      </div>
+    </section>
+
+    <section class="dark" id="pilot">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow" style="color:#c8b8ff">Our recommendation</div><h2>A 90-day LinkedIn operating layer, not another lead-generation campaign</h2></div><p>SquadStack owns account priorities and sales follow-up. Ad Momenta owns the paid framework, creative system, testing and account-stage progression.</p></div>
+        <div class="recommend-grid">
+          <div class="recommend-card"><div class="big">90</div><h3>days to validate the operating model</h3><p>One account universe, separate BFSI and non-BFSI message systems, and a shared scorecard built around sales effectiveness.</p><p><b>Success question:</b> Do warmed accounts reply, meet and progress faster than business-as-usual accounts?</p></div>
+          <div class="system">
+            <div class="system-row"><b>01</b><strong>Account presence</strong><span>Ensure priority contacts see SquadStack before and during outbound.</span></div>
+            <div class="system-row"><b>02</b><strong>Business relevance</strong><span>Translate the product into one workflow, one outcome and one persona-specific reason to care.</span></div>
+            <div class="system-row"><b>03</b><strong>Proof distribution</strong><span>Use approved case studies, real outcomes and product demonstrations to build conviction.</span></div>
+            <div class="system-row"><b>04</b><strong>Deal progression</strong><span>Change stakeholders and messages as accounts move from cold to active or stalled.</span></div>
+            <div class="system-row"><b>05</b><strong>Sales signals</strong><span>Feed meaningful engagement back to ABM so outreach timing improves.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="messages">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">How we simplify the product</div><h2>Same platform. Different reason to care.</h2></div><p>Illustrative messaging hypotheses for discussion. Final claims and audiences depend on product, compliance and campaign approvals.</p></div>
+        <div class="tabs">
+          <div class="tab-buttons" role="tablist"><button class="active" data-tab="revenue">Revenue</button><button data-tab="product">Product</button><button data-tab="it">IT and security</button><button data-tab="operations">Operations</button></div>
+          <div class="tab-panel active" id="revenue"><div class="message-box"><small>Revenue leader</small><h3>Every lead already cost money. The last mile should prove ROI.</h3><p>Lead with conversion outcomes, acquisition efficiency and the ability to recover dropped demand.</p></div><div class="message-details"><div class="detail"><b>Hero proof</b><span>Higher conversion and lower cost per confirmed outcome</span></div><div class="detail"><b>Best asset</b><span>BFSI customer story with a comparable workflow</span></div><div class="detail"><b>Next action</b><span>Compare an existing campaign against a defined AI-led workflow</span></div></div></div>
+          <div class="tab-panel" id="product"><div class="message-box"><small>Product leader</small><h3>Voice AI should fit the workflow, not force the workflow to fit the bot.</h3><p>Explain the hero workflow, integration points and how the operating model learns from real interactions.</p></div><div class="message-details"><div class="detail"><b>Hero proof</b><span>A production workflow with measurable customer outcomes</span></div><div class="detail"><b>Best asset</b><span>One-page workflow map and approved product demonstration</span></div><div class="detail"><b>Next action</b><span>Review the workflow and integration requirements with product</span></div></div></div>
+          <div class="tab-panel" id="it"><div class="message-box"><small>IT and security</small><h3>Enterprise scale needs governance, integration and a clear path to human intervention.</h3><p>Bring technical stakeholders into active deals with architecture, controls and implementation evidence.</p></div><div class="message-details"><div class="detail"><b>Hero proof</b><span>Approved security, deployment and integration documentation</span></div><div class="detail"><b>Best asset</b><span>Technical evaluation guide</span></div><div class="detail"><b>Next action</b><span>Technical validation session for an active opportunity</span></div></div></div>
+          <div class="tab-panel" id="operations"><div class="message-box"><small>Operations leader</small><h3>Consistent conversations at scale, with measurable outcomes.</h3><p>Show how one defined workflow improves call coverage, qualification quality and operational efficiency.</p></div><div class="message-details"><div class="detail"><b>Hero proof</b><span>Call volume, outcome accuracy and handling-time evidence</span></div><div class="detail"><b>Best asset</b><span>Real call clips and before-and-after workflow metrics</span></div><div class="detail"><b>Next action</b><span>Identify one operational flow suitable for a controlled pilot</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:var(--soft)">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Five-touch air-cover journey</div><h2>Marketing creates context. Sales starts the conversation.</h2></div><p>The journey changes with account stage and observed interaction. It is not a fixed nurture sequence.</p></div>
+        <div class="journey">
+          <div class="touch"><b>01 · Familiarity</b><strong>Category point of view</strong><span>Founder or expert content that frames the business problem.</span><em>Thought Leader Ad</em></div>
+          <div class="touch"><b>02 · Relevance</b><strong>One workflow, one role</strong><span>Persona-specific problem and outcome for BFSI or a named non-BFSI cohort.</span><em>Single image or video</em></div>
+          <div class="touch"><b>03 · Proof</b><strong>Comparable customer outcome</strong><span>Case-study evidence recut for the account’s use case.</span><em>Document Ad</em></div>
+          <div class="touch"><b>04 · Evaluation</b><strong>Product made tangible</strong><span>Real calls, workflow demonstrations and objection-handling content.</span><em>Retargeting</em></div>
+          <div class="touch"><b>05 · Progression</b><strong>Bring in the next stakeholder</strong><span>IT, security or operations content for active and stalled opportunities.</span><em>Deal-stage audience</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">90-day execution</div><h2>Build once. Learn quickly. Leave a reusable system.</h2></div><p>The first pilot focuses on India and uses the existing account universe. Expansion markets can reuse the framework with localized proof.</p></div>
+        <div class="timeline">
+          <div class="phase"><div class="phase-no">Days 1–30</div><h3>Build</h3><div class="week">Foundation and baseline</div><ul><li>Segment accounts by industry and deal stage</li><li>Audit audience match and reporting limits</li><li>Define persona and proof matrix</li><li>Build creative and measurement infrastructure</li></ul><div class="out">Output: launch-ready framework</div></div>
+          <div class="phase"><div class="phase-no">Days 31–60</div><h3>Activate</h3><div class="week">Campaign and sales alignment</div><ul><li>Launch BFSI and non-BFSI journeys</li><li>Test Thought Leader, single-image, document and Spotlight ads</li><li>Run stage-based retargeting</li><li>Share account signals with ABM</li></ul><div class="out">Output: live air cover</div></div>
+          <div class="phase"><div class="phase-no">Days 61–90</div><h3>Prove</h3><div class="week">Incrementality and next decision</div><ul><li>Compare assisted and baseline cohorts</li><li>Identify winning persona and proof combinations</li><li>Review reply, meeting and stage progression</li><li>Decide what to scale, refine or stop</li></ul><div class="out">Output: scale decision</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:var(--lav)">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Measurement</div><h2>Prove sales effectiveness, not advertising activity</h2></div><p>Platform metrics diagnose delivery. Business metrics decide whether the pilot deserves investment.</p></div>
+        <div class="measure">
+          <div class="scorecard"><h3>Shared scorecard</h3><div class="metric"><span>Priority-account coverage</span><b>Leading</b></div><div class="metric"><span>Relevant stakeholder reach</span><b>Leading</b></div><div class="metric"><span>Positive outbound reply rate</span><b>Commercial</b></div><div class="metric"><span>Account-to-meeting rate</span><b>Commercial</b></div><div class="metric"><span>Time to first meeting</span><b>Commercial</b></div><div class="metric"><span>Opportunity progression and cycle time</span><b>Primary</b></div></div>
+          <div class="test"><h3>Incrementality design</h3><p>Where account volume permits, compare accounts receiving the pilot air cover with similar business-as-usual accounts. When strict holdouts are impractical, use pre-pilot baselines and stage-level comparisons.</p><div class="cohorts"><div class="cohort"><b>Assisted cohort</b><span>Existing ABM outreach plus stage-based LinkedIn air cover</span></div><div class="cohort"><b>Baseline cohort</b><span>Existing ABM outreach without incremental pilot advertising</span></div></div><p><b>Decision:</b> Are warmed accounts responding, meeting and progressing faster?</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="proof">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Selected proof</div><h2>Relevant examples of product messaging and paid-media execution</h2></div><p>We have curated the most relevant examples first. The complete supporting library remains available below.</p></div>
+        <div class="proof-grid">
+          <article class="proof"><div class="proof-logo"><img class="client-logo logo-ht" src="assets/logos/ht-media.png" alt="HT Media Group logo"></div><div class="proof-body"><div class="proof-tag">LinkedIn · Media</div><h3>Content-led acquisition and retargeting for a complex advertising product</h3><div class="numbers"><div><b>50%+</b><span>pipeline growth</span></div><div><b>70%</b><span>lower CPL</span></div><div><b>63%</b><span>higher engagement</span></div></div><p>Research content, webinars and document ads built warm audiences before testimonial and case-study retargeting.</p><a href="assets/case-studies/ht-media-linkedin-performance.pdf" target="_blank">Open HT Media case study ↗</a></div></article>
+          <article class="proof"><div class="proof-logo"><img class="client-logo" src="assets/logos/aon.svg" alt="AON logo"></div><div class="proof-body"><div class="proof-tag">LinkedIn · Enterprise consulting</div><h3>Persona and geography-specific campaigns across India, Southeast Asia and the Middle East</h3><div class="numbers"><div><b>50%</b><span>pipeline growth</span></div><div><b>40%</b><span>lower CPL</span></div><div><b>55%</b><span>higher engagement</span></div></div><p>Different content and LinkedIn products moved talent, L&amp;D and rewards audiences through the funnel.</p><a href="assets/case-studies/aon-linkedin-performance.pdf" target="_blank">Open AON case study ↗</a></div></article>
+          <article class="proof"><div class="proof-logo"><img class="client-logo" src="assets/logos/compport.jpg" alt="Compport logo"></div><div class="proof-body"><div class="proof-tag">B2B SaaS · HR technology</div><h3>Turning a technical compensation product into discoverable buyer problems</h3><div class="numbers"><div><b>13×</b><span>traffic growth</span></div><div><b>35%</b><span>traffic from US</span></div></div><p>A focused content and discovery system simplified a complex B2B category for buyers in India and the United States.</p><a href="assets/case-studies/compport-b2b-saas-growth.pdf" target="_blank">Open Compport case study ↗</a></div></article>
+          <article class="proof"><div class="proof-logo"><img class="client-logo logo-broomees" src="assets/logos/broomees.jpg" alt="Broomees logo"></div><div class="proof-body"><div class="proof-tag">Performance · Platform</div><h3>Improving lead quality while lowering acquisition cost</h3><div class="numbers"><div><b>30%+</b><span>lower CPL</span></div><div><b>25–30%</b><span>larger funnel</span></div></div><p>Messaging continuity across Meta, Google and retargeting helped the sales team receive more relevant conversations.</p><a href="assets/case-studies/broomees-performance-marketing.pdf" target="_blank">Open Broomees case study ↗</a></div></article>
+          <article class="proof"><div class="proof-logo"><img class="client-logo logo-ht" src="assets/logos/ht-media.png" alt="HT Media Group logo"></div><div class="proof-body"><div class="proof-tag">SEO and GEO · Media</div><h3>Making specialist content discoverable across search and AI answers</h3><div class="numbers"><div><b>100%</b><span>traffic growth</span></div><div><b>500+</b><span>LLM citations</span></div></div><p>Technical discovery, topic architecture and citation-ready content built durable visibility beyond paid reach.</p><a href="assets/case-studies/ht-media-seo-geo.pdf" target="_blank">Open HT Media SEO and GEO study ↗</a></div></article>
+          <article class="proof"><div class="proof-logo"><img class="client-logo logo-neuro" src="assets/logos/neuroequilibrium.jpg" alt="NeuroEquilibrium logo"></div><div class="proof-body"><div class="proof-tag">SEO and GEO · HealthTech</div><h3>Building category authority for a specialist healthcare product</h3><div class="numbers"><div><b>300%</b><span>impression growth</span></div><div><b>800+</b><span>monthly LLM mentions</span></div></div><p>Authority-led content and technical search improvements helped a complex healthcare offer become easier to find and trust.</p><a href="assets/case-studies/neuroequilibrium-seo-geo.pdf" target="_blank">Open NeuroEquilibrium case study ↗</a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:var(--soft)">
+      <div class="wrap">
+        <div class="section-head"><div><div class="eyebrow">Ad translation examples</div><h2>What “complex product made simple” looks like</h2></div><p>Illustrative copy directions only. They demonstrate the method and are not proposed final ads.</p></div>
+        <div class="reference">
+          <div class="ad-ref"><div class="sponsored">Observed LinkedIn personalization pattern · supplied reference</div><blockquote>“Tanmay, what if AiPply’s next ad could light up?”</blockquote><p>The ad followed with company, industry and role-specific language. The lesson is not to insert a name everywhere. It is to make the business problem feel chosen for the viewer.</p><a href="https://www.linkedin.com/feed/update/urn:li:sponsoredContentV2:(urn:li:share:7513189239057162241,urn:li:sponsoredCreative:1572913813)/?viewContext=REVIEWER" target="_blank">Open reference ad ↗</a></div>
+          <div class="concepts"><div class="concept"><small>Revenue · lending</small><strong>Recover the lending leads your team cannot call fast enough.</strong></div><div class="concept"><small>Product · build versus buy</small><strong>Building a voice demo is easy. Proving conversion lift at enterprise scale is harder.</strong></div><div class="concept"><small>Operations · proof</small><strong>Do not judge Voice AI by how it sounds. Judge it by the outcomes it creates.</strong></div><div class="concept"><small>Active deal · IT stakeholder</small><strong>Your revenue team sees the upside. Here is what implementation needs to validate.</strong></div></div>
+        </div>
+        <div class="mock-grid" aria-label="Illustrative LinkedIn ad mockups">
+          <article class="li-mock">
+            <div class="li-head"><div class="li-avatar">SS</div><div><strong>SquadStack.ai</strong><span>Promoted · Illustrative concept</span></div></div>
+            <div class="li-copy">For lending leaders: the lead is only valuable if the conversation happens while intent is still high.</div>
+            <div class="li-creative"><div><small>Revenue outcome</small><h3>Recover the lending leads your team cannot call fast enough.</h3></div><div class="li-proof"><span>Speed to lead</span><span>Conversion</span><span>Human plus AI</span></div></div>
+            <div class="li-cta"><span>Proof for enterprise revenue teams</span><b>View framework</b></div>
+          </article>
+          <article class="li-mock">
+            <div class="li-head"><div class="li-avatar">SS</div><div><strong>SquadStack.ai</strong><span>Promoted · Deal-stage concept</span></div></div>
+            <div class="li-copy">Your revenue team sees the upside. Here is what implementation needs to validate.</div>
+            <div class="li-creative light"><div><small>For IT and product stakeholders</small><h3>Move the conversation from “can it call?” to “can it work here?”</h3></div><div class="li-proof"><span>Integration</span><span>Governance</span><span>Human intervention</span></div></div>
+            <div class="li-cta"><span>Implementation evaluation brief</span><b>Review criteria</b></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-proof" id="proof-wall">
+      <div class="wrap">
+        <div class="eyebrow">Selected proof of work</div>
+        <h2>Experience across complex products and buying journeys</h2>
+        <p>The work above is supported by experience across enterprise technology, HR, financial services, media, healthcare and consumer platforms.</p>
+        <img class="logo-wall" src="assets/admomenta-client-logo-wall.png" alt="Selected Ad Momenta clients including AON, HT, Broomees, BII, Welliba, Compport, Knowmax, Spenza, Pickright, Spendflo and others">
+        <p class="proof-footnote">Logos indicate selected organisations worked with by Ad Momenta. Engagement scope varies by organisation.</p>
+      </div>
+    </section>
+
+    <section id="next">
+      <div class="wrap">
+        <div class="next"><div><div class="eyebrow" style="color:#c8b8ff">Recommended next step</div><h2>A 20-minute pilot-design session</h2><p>Choose the first account cohort, agree the commercial baseline, identify two approved proof assets and confirm the internal owners. Ad Momenta will return with the final 90-day activation plan and campaign build list.</p></div><a class="btn primary" href="mailto:hello@admomenta.com?subject=SquadStack%20ABM%20pilot%20working%20session">Design the pilot</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap"><span>Prepared by Ad Momenta for SquadStack.ai · November 2026</span><span>All campaign concepts are illustrative and subject to audience, platform, product and compliance validation.</span></div></footer>
+  <script>
+    document.querySelectorAll('.tab-buttons button').forEach(btn=>btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-buttons button').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');
+    }));
+  </script>
+</body>
+</html>
